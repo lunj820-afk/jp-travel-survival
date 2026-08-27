@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>日本旅遊數字生存教材</title>
+<style>
+:root{
+  --bg:#fdf6ec; --card:#ffffff; --text:#2b2620; --sub:#7a7266;
+  --accent:#e8604c; --accent2:#2f8f7a; --warn:#f5a623; --warnBg:#fff3d6;
+  --border:#eee0cc; --shadow:0 2px 10px rgba(0,0,0,.06);
+  --btn:#2f8f7a; --btnText:#fff; --chip:#f2e9d8;
+}
+[data-theme="dark"]{
+  --bg:#171512; --card:#231f1a; --text:#f0e9dc; --sub:#b8ac98;
+  --accent:#ff7a63; --accent2:#4fbfa4; --warn:#ffcc66; --warnBg:#3a2e14;
+  --border:#39322a; --shadow:0 2px 10px rgba(0,0,0,.4);
+  --btn:#4fbfa4; --btnText:#101010; --chip:#2c2721;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","PingFang TC",system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:70px;transition:background .2s,color .2s;}
+header{position:sticky;top:0;z-index:20;background:var(--bg);padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+header h1{font-size:17px;margin:0;}
+header .sub{font-size:11px;color:var(--sub);margin-top:2px;}
+#themeBtn{background:var(--chip);border:none;border-radius:20px;padding:8px 12px;font-size:16px;cursor:pointer;}
+main{padding:12px 14px 90px;max-width:640px;margin:0 auto;}
+.view{display:none;}
+.view.active{display:block;animation:fade .2s;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;}}
+nav.tabbar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:6px 2px calc(6px + env(safe-area-inset-bottom));z-index:30;}
+nav.tabbar button{flex:1;background:none;border:none;color:var(--sub);font-size:10px;padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:10px;}
+nav.tabbar button .ic{font-size:20px;}
+nav.tabbar button.active{color:var(--accent);font-weight:700;}
+h2.sect{font-size:16px;margin:18px 0 10px;display:flex;align-items:center;gap:6px;}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.grid.four{grid-template-columns:repeat(2,1fr);}
+.scenecard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;box-shadow:var(--shadow);}
+.scenecard .emoji{font-size:30px;}
+.scenecard .label{font-size:13px;margin-top:6px;font-weight:600;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;position:relative;}
+.card .jp{font-size:18px;font-weight:700;}
+.card .hira{font-size:13px;color:var(--sub);margin-top:2px;}
+.card .cn{font-size:13px;color:var(--accent2);margin-top:4px;}
+.card .star{position:absolute;top:10px;right:12px;font-size:18px;background:none;border:none;cursor:pointer;color:var(--sub);}
+.card .star.on{color:var(--warn);}
+.card .actions{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;}
+.card .actions button{font-size:12px;padding:6px 10px;border-radius:12px;border:1px solid var(--border);background:var(--chip);cursor:pointer;color:var(--text);font-weight:600;}
+.card .actions button:active{background:var(--accent2);color:#fff;}
+.card .body{cursor:pointer;}
+ruby{ruby-align:center;}
+rt{font-size:.55em;color:var(--sub);user-select:none;}
+.vocabGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.vocabCell{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow);cursor:pointer;}
+.vocabCell .jp{font-size:15px;font-weight:700;}
+.vocabCell .rj{font-size:11px;color:var(--sub);}
+.vocabCell .cn{font-size:12px;color:var(--accent2);margin-top:2px;}
+.tipRow{display:flex;gap:8px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:14px;}
+.tipRow .mark{font-size:16px;}
+.particleItem{font-size:13px;padding:8px 0;border-bottom:1px dashed var(--border);line-height:2;}
+.particleChip{display:inline-block;background:var(--accent2);color:#fff;border:none;border-radius:8px;padding:3px 10px;font-size:13px;font-weight:700;cursor:pointer;margin:0 2px;}
+.particleChip:active{opacity:.7;}
+.warnTag{display:inline-block;background:var(--warnBg);color:var(--warn);font-size:11px;padding:2px 7px;border-radius:8px;margin-left:6px;font-weight:700;}
+.catchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.chip{background:var(--chip);padding:7px 13px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid var(--border);}
+.chip.active{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;}
+.overlay.show{display:flex;}
+.sheet{background:var(--card);width:100%;border-radius:20px 20px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom));max-height:82vh;overflow-y:auto;}
+.sheet .bigjp{font-size:30px;font-weight:800;text-align:center;}
+.sheet .bighira{font-size:16px;color:var(--sub);text-align:center;margin-top:4px;}
+.sheet .bigcn{font-size:16px;color:var(--accent2);text-align:center;margin-top:8px;font-weight:700;}
+.sheet .romaji{text-align:center;color:var(--sub);font-size:12px;margin-top:2px;}
+.playrow{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+.playrow button{background:var(--btn);color:var(--btnText);border:none;border-radius:20px;padding:9px 14px;font-size:13px;cursor:pointer;font-weight:700;}
+.playrow button.ghost{background:var(--chip);color:var(--text);}
+.segbox{margin-top:18px;background:var(--chip);border-radius:12px;padding:12px;}
+.segbox .segtitle{font-size:12px;color:var(--sub);margin-bottom:8px;}
+.segchip{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:6px 10px;margin:3px;font-size:14px;cursor:pointer;}
+.segchip small{display:block;color:var(--sub);font-size:10px;}
+.closeSheet{display:block;margin:16px auto 0;background:none;border:1px solid var(--border);border-radius:20px;padding:8px 22px;color:var(--sub);}
+.dialogueLine{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow);}
+.dialogueLine .speaker{font-size:11px;color:var(--sub);margin-bottom:6px;font-weight:700;}
+.dialogueLine .sent{font-size:19px;line-height:1.9;}
+.dialogueLine .sent span.tok{cursor:pointer;border-bottom:2px dotted var(--accent);padding:0 1px;}
+.dialogueLine .cn{margin-top:8px;color:var(--accent2);font-size:13px;}
+.dialogueLine .tts{margin-top:8px;}
+.dialogueLine .tts button{font-size:12px;padding:6px 10px;}
+.brainCard{background:var(--warnBg);border-radius:16px;padding:16px;margin:14px 0;border:1px dashed var(--warn);}
+.brainCard .q{font-size:15px;font-weight:700;}
+.brainCard .steps div{margin-top:6px;font-size:14px;}
+.quizModeRow{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px;}
+.qCard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow);}
+.qPrompt{font-size:20px;font-weight:800;text-align:center;margin:10px 0 18px;}
+.qOptions{display:grid;gap:10px;}
+.qOptions button{padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--chip);font-size:15px;cursor:pointer;text-align:left;}
+.qOptions button.correct{background:#d7f2e0;border-color:#2f8f7a;}
+.qOptions button.wrong{background:#fcdcd6;border-color:#e8604c;}
+.qInputRow{display:flex;gap:8px;margin-top:10px;}
+.qInputRow input{flex:1;font-size:18px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);}
+.qInputRow button{background:var(--btn);color:var(--btnText);border:none;border-radius:10px;padding:0 18px;font-weight:700;}
+.qFeedback{margin-top:14px;text-align:center;font-size:15px;min-height:22px;}
+.rescueGroup{margin-bottom:18px;}
+.rescueGroup h3{font-size:14px;color:var(--sub);margin:0 0 8px;}
+.rescueRow{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:6px;}
+.rescueRow .l{font-size:17px;font-weight:700;}
+.rescueRow .r{font-size:12px;color:var(--sub);}
+.rescueRow button{background:var(--chip);border:none;border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;}
+.emptyState{text-align:center;color:var(--sub);padding:40px 20px;font-size:14px;}
+.phoneBox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;text-align:center;}
+.phoneBox input{width:100%;font-size:22px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);letter-spacing:2px;}
+.phoneBox .out{margin-top:14px;font-size:18px;line-height:1.8;}
+.speedRow{display:flex;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+.speedRow button{font-size:12px;padding:6px 10px;border-radius:14px;border:1px solid var(--border);background:var(--chip);cursor:pointer;}
+.section-intro{font-size:13px;color:var(--sub);margin-bottom:12px;line-height:1.6;}
+.mistakeCount{background:var(--accent);color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-left:6px;}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>🇯🇵 日本旅遊數字生存教材</h1>
+    <div class="sub">聽得懂、念得出、答得出</div>
+  </div>
+  <button id="themeBtn">🌙</button>
+</header>
+
+<main>
+
+  <!-- 首頁 -->
+  <section class="view active" id="view-home">
+    <h2 class="sect">🗺️ 我現在在哪裡？</h2>
+    <div class="section-intro">選一個情境，優先學這裡最需要的數字。</div>
+    <div class="grid" id="sceneGrid"></div>
+
+    <h2 class="sect">📚 依主題學習</h2>
+    <div class="grid" id="categoryGrid"></div>
+  </section>
+
+  <!-- 學習分類 -->
+  <section class="view" id="view-learn">
+    <h2 class="sect" id="learnTitle">📚 學習</h2>
+    <div class="section-intro" id="learnIntro"></div>
+    <div id="phoneToolWrap" style="display:none"></div>
+    <div id="topicQuizArea" style="margin-bottom:16px;"></div>
+    <div id="learnList"></div>
+  </section>
+
+  <!-- 情境對話 -->
+  <section class="view" id="view-dialogue">
+    <h2 class="sect">🎬 情境對話拆解</h2>
+    <div class="catchips" id="sceneChips"></div>
+    <div id="dialogueList"></div>
+  </section>
+
+  <!-- 急救卡 -->
+  <section class="view" id="view-rescue">
+    <h2 class="sect">🆘 旅遊急救卡</h2>
+    <div class="section-intro">不用學，直接查。到了日本現場就打開這頁。</div>
+    <div id="rescueList"></div>
+  </section>
+
+  <!-- 收藏/錯題 -->
+  <section class="view" id="view-me">
+    <h2 class="sect">⭐ 我的收藏</h2>
+    <div id="favList"></div>
+    <h2 class="sect">⚠️ 我的錯題</h2>
+    <div id="mistakeList"></div>
+  </section>
+
+</main>
+
+<nav class="tabbar">
+  <button data-view="home" class="active"><span class="ic">🏠</span>首頁</button>
+  <button data-view="dialogue"><span class="ic">🎬</span>情境例句</button>
+  <button data-view="rescue"><span class="ic">🆘</span>急救卡</button>
+  <button data-view="me"><span class="ic">⭐</span>我的</button>
+</nav>
+
+<div class="overlay" id="overlay">
+  <div class="sheet" id="sheetContent"></div>
+</div>
+
+<script>
+/* ============ 1. 核心數字轉換演算法 ============ */
+const DIGIT = ['', 'いち','に','さん','よん','ご','ろく','なな','はち','きゅう'];
+
+function group4Segments(n){
+  const segs = [];
+  const sen = Math.floor(n/1000), hyaku = Math.floor((n%1000)/100), juu = Math.floor((n%100)/10), ichi = n%10;
+  if(sen>0){
+    let t = sen===1?'せん': sen===3?'さんぜん': sen===8?'はっせん': DIGIT[sen]+'せん';
+    segs.push({text:t, value:sen*1000});
+  }
+  if(hyaku>0){
+    let t = hyaku===1?'ひゃく': hyaku===3?'さんびゃく': hyaku===6?'ろっぴゃく': hyaku===8?'はっぴゃく': DIGIT[hyaku]+'ひゃく';
+    segs.push({text:t, value:hyaku*100});
+  }
+  if(juu>0){
+    let t = juu===1?'じゅう': DIGIT[juu]+'じゅう';
+    segs.push({text:t, value:juu*10});
+  }
+  if(ichi>0){
+    segs.push({text:DIGIT[ichi], value:ichi});
+  }
+  return segs;
+}
+
+function numberToJapanese(num){
+  if(num===0) return {reading:'ぜろ', segments:[{text:'ぜろ',value:0}]};
+  const oku = Math.floor(num/1e8);
+  const man = Math.floor((num%1e8)/1e4);
+  const rest = num % 1e4;
+  let segments = [];
+  if(oku>0){
+    const s = group4Segments(oku);
+    const readingOku = (s.map(x=>x.text).join('')) || 'いち';
+    segments.push({text:readingOku+'おく', value:oku*1e8});
+  }
+  if(man>0){
+    const s = group4Segments(man);
+    const readingMan = (s.map(x=>x.text).join('')) || 'いち';
+    segments.push({text:readingMan+'まん', value:man*1e4});
+  }
+  if(rest>0){
+    segments.push(...group4Segments(rest));
+  }
+  const reading = segments.map(s=>s.text).join('');
+  return {reading, segments};
+}
+
+/* 自動測試（section 39 需求）*/
+(function selfTest(){
+  const nums = [1,2,3,4,5,6,7,8,9,10,11,20,21,48,99,100,101,110,111,300,301,600,800,999,1000,1100,1101,3000,3800,8000,9999,10000,10100,10800,100000,1000000,10000000,100000000];
+  console.group('🧪 數字演算法自動測試');
+  nums.forEach(n=>console.log(n.toLocaleString(), '→', numberToJapanese(n).reading));
+  console.groupEnd();
+})();
+
+/* ============ 片假名自動加註平假名（ruby furigana）============ */
+function kataToHira(s){
+  let out = '';
+  for(const ch of s){
+    const code = ch.codePointAt(0);
+    if(code >= 0x30A1 && code <= 0x30F6){ out += String.fromCodePoint(code - 0x60); }
+    else out += ch;
+  }
+  return out;
+}
+function rb(text){
+  if(!text) return text;
+  return text.replace(/[ァ-ー]+/g, run => `<ruby>${run}<rt>${kataToHira(run)}</rt></ruby>`);
+}
+
+/* ============ 2. 資料 ============ */
+function moneyItem(v){
+  const r = numberToJapanese(v);
+  const warn = r.segments.some(s=>['さんびゃく','ろっぴゃく','はっぴゃく','さんぜん','はっせん'].includes(s.text));
+  return {id:'money_'+v, kind:'money', display:v.toLocaleString()+'円', hira:r.reading+'えん',
+    cn:v.toLocaleString()+'日圓', segments:[...r.segments.map(s=>({text:s.text,meaning:s.value.toLocaleString()})),{text:'えん',meaning:'日圓'}], warn};
+}
+const MONEY_PRICES = [
+  ...Array.from({length:20},(_,i)=>i+1), // 1~20円 全部補齊
+  25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,99,
+  100,101,110,111,120,150,158,180,200,
+  300,380,500,580,600,680,780,800,880,980,
+  1000,1100,1280,1380,1580,1980,
+  2980,3000,3800,5800,8000,10800,
+  100000,1000000
+];
+const MONEY_LIST = MONEY_PRICES.map(moneyItem);
+
+const TIME_HOUR = [
+  {v:1,text:'いちじ'},{v:2,text:'にじ'},{v:3,text:'さんじ'},{v:4,text:'よじ',warn:true},
+  {v:5,text:'ごじ'},{v:6,text:'ろくじ'},{v:7,text:'しちじ',warn:true},{v:8,text:'はちじ'},
+  {v:9,text:'くじ',warn:true},{v:10,text:'じゅうじ'},{v:11,text:'じゅういちじ'},{v:12,text:'じゅうにじ'}
+];
+const TIME_MIN = [
+  {v:0,text:''},{v:5,text:'ごふん'},{v:10,text:'じゅっぷん'},{v:15,text:'じゅうごふん'},
+  {v:20,text:'にじゅっぷん'},{v:25,text:'にじゅうごふん'},{v:30,text:'さんじゅっぷん（はん）',warn:true},
+  {v:35,text:'さんじゅうごふん'},{v:40,text:'よんじゅっぷん'},{v:45,text:'よんじゅうごふん'},
+  {v:50,text:'ごじゅっぷん'},{v:55,text:'ごじゅうごふん'}
+];
+const TIME_LIST = [];
+[3,8].forEach(h=>{
+  [0,30,15].forEach(m=>{
+    const hh = TIME_HOUR.find(x=>x.v===h);
+    const mm = TIME_MIN.find(x=>x.v===m);
+    const disp = h+'時'+(m?m+'分':'');
+    const hira = hh.text+(m? mm.text:'');
+    TIME_LIST.push({id:'time_'+h+'_'+m, kind:'time', display:disp, hira, cn:'下午'+h+'點'+(m?m+'分':''),
+      segments:[{text:hh.text,meaning:h+'時'},...(m?[{text:mm.text,meaning:m+'分'}]:[])], warn:hh.warn||(mm&&mm.warn)});
+  });
+});
+TIME_HOUR.forEach(h=>{
+  TIME_LIST.push({id:'timeh_'+h.v, kind:'time', display:h.v+'時', hira:h.text, cn:h.v+'點', segments:[{text:h.text,meaning:h.v+'時'}], warn:h.warn});
+});
+
+/* 任意時刻查詢：0-23時、0-59分，含不規則讀音（4時よじ／7時しちじ／9時くじ／分的ふん・ぷん音變）*/
+const HOUR_ONES = ['','いち','に','さん','よ','ご','ろく','しち','はち','く'];
+const HOUR_TENS_PREFIX = ['','じゅう','にじゅう'];
+function hourReading(h){
+  h = Math.max(0, Math.min(23, Math.floor(h||0)));
+  if(h===0) return 'れいじ';
+  const tens = Math.floor(h/10), ones = h%10;
+  return HOUR_TENS_PREFIX[tens] + HOUR_ONES[ones] + 'じ';
+}
+const MINUTE_ONES_SUFFIX = {1:'いっぷん',2:'にふん',3:'さんぷん',4:'よんぷん',5:'ごふん',6:'ろっぷん',7:'ななふん',8:'はっぷん',9:'きゅうふん'};
+const MINUTE_TENS_ZERO = {1:'じゅっぷん',2:'にじゅっぷん',3:'さんじゅっぷん',4:'よんじゅっぷん',5:'ごじゅっぷん'};
+const MINUTE_TENS_PREFIX = ['','じゅう','にじゅう','さんじゅう','よんじゅう','ごじゅう'];
+function minuteReading(m){
+  m = Math.max(0, Math.min(59, Math.floor(m||0)));
+  if(m===0) return '';
+  const tens = Math.floor(m/10), ones = m%10;
+  if(ones===0) return MINUTE_TENS_ZERO[tens];
+  return MINUTE_TENS_PREFIX[tens] + MINUTE_ONES_SUFFIX[ones];
+}
+
+const DATE_READING = {
+  1:'ついたち',2:'ふつか',3:'みっか',4:'よっか',5:'いつか',6:'むいか',7:'なのか',8:'ようか',9:'ここのか',10:'とおか',
+  11:'じゅういちにち',12:'じゅうににち',13:'じゅうさんにち',14:'じゅうよっか',15:'じゅうごにち',
+  16:'じゅうろくにち',17:'じゅうしちにち',18:'じゅうはちにち',19:'じゅうくにち',20:'はつか',
+  21:'にじゅういちにち',22:'にじゅうににち',23:'にじゅうさんにち',24:'にじゅうよっか',25:'にじゅうごにち',
+  26:'にじゅうろくにち',27:'にじゅうしちにち',28:'にじゅうはちにち',29:'にじゅうくにち',30:'さんじゅうにち',31:'さんじゅういちにち'
+};
+const DATE_IRREGULAR = [1,2,3,4,5,6,7,8,9,10,14,20,24];
+const DATE_LIST = Object.keys(DATE_READING).map(k=>{
+  const n = Number(k);
+  return {id:'date_'+n, kind:'date', display:n+'日', hira:DATE_READING[n], cn:n+'號',
+    segments:[{text:DATE_READING[n],meaning:n+'日'}], warn:DATE_IRREGULAR.includes(n)};
+});
+
+const WEEKDAY_LIST = [
+  ['月曜日','げつようび','星期一'],['火曜日','かようび','星期二'],['水曜日','すいようび','星期三'],
+  ['木曜日','もくようび','星期四'],['金曜日','きんようび','星期五'],['土曜日','どようび','星期六'],['日曜日','にちようび','星期日']
+].map(([d,h,c],i)=>({id:'wd_'+i, kind:'weekday', display:d, hira:h, cn:c, segments:[{text:h,meaning:c}]}));
+
+/* 12個月份（4月・7月讀音不規則）*/
+const MONTH_LIST = [
+  ['1月','いちがつ','ichigatsu','一月'],['2月','にがつ','nigatsu','二月'],['3月','さんがつ','sangatsu','三月'],
+  ['4月','しがつ','shigatsu','四月'],['5月','ごがつ','gogatsu','五月'],['6月','ろくがつ','rokugatsu','六月'],
+  ['7月','しちがつ','shichigatsu','七月'],['8月','はちがつ','hachigatsu','八月'],['9月','くがつ','kugatsu','九月'],
+  ['10月','じゅうがつ','jūgatsu','十月'],['11月','じゅういちがつ','jūichigatsu','十一月'],['12月','じゅうにがつ','jūnigatsu','十二月']
+].map(([d,h,rj,c],i)=>({id:'month_'+(i+1), kind:'month', display:d, hira:h, romaji:rj, cn:c,
+  segments:[{text:h,meaning:c}], warn:(i+1===4||i+1===7)}));
+
+/* 基本日期詞彙（放在日期分類頁最上方）*/
+const DATE_VOCAB = [
+  ['年','ねん','nen','年'],['月','つき／がつ','tsuki / gatsu','月（天體／月份）'],
+  ['日','ひ／にち','hi / nichi','日（太陽／日期）'],['週','しゅう','shū','週'],
+  ['曜日','ようび','yōbi','星期幾'],['休日','きゅうじつ','kyūjitsu','休息日'],
+  ['平日','へいじつ','heijitsu','平日（工作日）'],['祝日','しゅくじつ','shukujitsu','國定假日']
+];
+
+const PEOPLE_READING = {1:'ひとり',2:'ふたり',3:'さんにん',4:'よにん',5:'ごにん',6:'ろくにん',7:'ななにん',8:'はちにん',9:'きゅうにん',10:'じゅうにん'};
+const PEOPLE_LIST = Object.keys(PEOPLE_READING).map(k=>{
+  const n=Number(k);
+  return {id:'ppl_'+n, kind:'people', display:n+'人', hira:PEOPLE_READING[n], cn:n+'位',
+    segments:[{text:PEOPLE_READING[n],meaning:n+'人'}], warn:[1,2,4].includes(n)};
+});
+
+const FLOOR_READING = {1:'いっかい',2:'にかい',3:'さんがい',4:'よんかい',5:'ごかい',6:'ろっかい',7:'ななかい',8:'はっかい',9:'きゅうかい',10:'じゅっかい'};
+const FLOOR_LIST = Object.keys(FLOOR_READING).map(k=>{
+  const n=Number(k);
+  return {id:'fl_'+n, kind:'floor', display:n+'階', hira:FLOOR_READING[n], cn:n+'樓',
+    segments:[{text:FLOOR_READING[n],meaning:n+'樓'}], warn:[1,3,6,8,10].includes(n)};
+});
+
+const TRAIN_LIST = Array.from({length:10},(_,i)=>i+1).map(n=>{
+  const r = numberToJapanese(n);
+  return {id:'train_'+n, kind:'train', display:n+'番線', hira:r.reading+'ばんせん', cn:n+'號月台',
+    segments:[...r.segments.map(s=>({text:s.text,meaning:String(s.value)})),{text:'ばんせん',meaning:'號月台'}]};
+});
+
+const ROOM_NUMS = [101,203,305,408,512,610,725,830,901,1008];
+const ROOM_LIST = ROOM_NUMS.map(n=>{
+  const r = numberToJapanese(n);
+  return {id:'room_'+n, kind:'room', display:n+'号室', hira:r.reading+'ごうしつ', cn:n+'號房',
+    segments:[...r.segments.map(s=>({text:s.text,meaning:String(s.value)})),{text:'ごうしつ',meaning:'號房'}]};
+});
+
+/* ============ 量詞系統（個/本/枚/杯/つ/冊/足）============ */
+const COUNTERS = {
+  tsu: ['','ひとつ','ふたつ','みっつ','よっつ','いつつ','むっつ','ななつ','やっつ','ここのつ','とお'],
+  ko:  ['','いっこ','にこ','さんこ','よんこ','ごこ','ろっこ','ななこ','はっこ','きゅうこ','じゅっこ'],
+  hon: ['','いっぽん','にほん','さんぼん','よんほん','ごほん','ろっぽん','ななほん','はっぽん','きゅうほん','じゅっぽん'],
+  mai: ['','いちまい','にまい','さんまい','よんまい','ごまい','ろくまい','ななまい','はちまい','きゅうまい','じゅうまい'],
+  hai: ['','いっぱい','にはい','さんばい','よんはい','ごはい','ろっぱい','ななはい','はっぱい','きゅうはい','じゅっぱい'],
+  satsu:['','いっさつ','にさつ','さんさつ','よんさつ','ごさつ','ろくさつ','ななさつ','はっさつ','きゅうさつ','じゅっさつ'],
+  soku:['','いっそく','にそく','さんそく','よんそく','ごそく','ろくそく','ななそく','はっそく','きゅうそく','じゅっそく'],
+};
+const COUNTER_SUFFIX = {tsu:'',ko:'こ',hon:'ほん',mai:'まい',hai:'はい',satsu:'さつ',soku:'そく'};
+const COUNTER_CN_UNIT = {tsu:'個',ko:'個',hon:'瓶',mai:'張',hai:'杯',satsu:'本',soku:'雙'};
+function counterReading(type, n){
+  n = Math.max(1, Math.min(99, Math.floor(n||1)));
+  if(n<=10) return COUNTERS[type][n];
+  return numberToJapanese(n).reading + COUNTER_SUFFIX[type];
+}
+function peopleReading(n){
+  n = Math.max(1, Math.min(99, Math.floor(n||1)));
+  if(PEOPLE_READING[n]) return PEOPLE_READING[n];
+  return numberToJapanese(n).reading + 'にん';
+}
+
+/* 情境購物／點餐例句（可改數量）*/
+const SCENE_ITEMS = {
+  store: [
+    {jp:'おにぎり', reading:'おにぎり', cn:'飯糰', counter:'tsu'},
+    {jp:'お弁当', reading:'おべんとう', cn:'便當', counter:'tsu'},
+    {jp:'サンドイッチ', reading:'さんどいっち', cn:'三明治', counter:'tsu'},
+    {jp:'からあげ', reading:'からあげ', cn:'炸雞塊', counter:'ko'},
+    {jp:'肉まん', reading:'にくまん', cn:'肉包', counter:'ko'},
+    {jp:'コーヒー', reading:'こーひー', cn:'咖啡', counter:'hai'},
+    {jp:'おでん', reading:'おでん', cn:'關東煮', counter:'ko'},
+    {jp:'アイス', reading:'あいす', cn:'冰淇淋', counter:'ko'},
+    {jp:'カップ麺', reading:'かっぷめん', cn:'杯麵', counter:'ko'},
+    {jp:'お菓子', reading:'おかし', cn:'零食', counter:'ko'},
+    {jp:'雑誌', reading:'ざっし', cn:'雜誌', counter:'satsu'},
+    {jp:'ペットボトルの水', reading:'ぺっとぼとるのみず', cn:'寶特瓶水', counter:'hon'},
+    {jp:'レジ袋', reading:'れじぶくろ', cn:'購物袋', counter:'mai'},
+    {jp:'温泉たまご', reading:'おんせんたまご', cn:'溫泉蛋', counter:'ko'},
+  ],
+  drug: [
+    {jp:'化粧水', reading:'けしょうすい', cn:'化妝水／爽膚水', counter:'hon'},
+    {jp:'乳液', reading:'にゅうえき', cn:'乳液', counter:'hon'},
+    {jp:'美容液', reading:'びようえき', cn:'精華液', counter:'hon'},
+    {jp:'日焼け止め', reading:'ひやけどめ', cn:'防曬乳', counter:'hon'},
+    {jp:'マスク', reading:'ますく', cn:'口罩', counter:'mai'},
+    {jp:'絆創膏', reading:'ばんそうこう', cn:'OK繃', counter:'mai'},
+    {jp:'サプリメント', reading:'さぷりめんと', cn:'保健食品', counter:'ko'},
+    {jp:'歯磨き粉', reading:'はみがきこ', cn:'牙膏', counter:'hon'},
+    {jp:'リップクリーム', reading:'りっぷくりーむ', cn:'護唇膏', counter:'hon'},
+    {jp:'シートマスク', reading:'しーとますく', cn:'面膜', counter:'mai'},
+    {jp:'目薬', reading:'めぐすり', cn:'眼藥水', counter:'hon'},
+    {jp:'入浴剤', reading:'にゅうよくざい', cn:'入浴劑', counter:'ko'},
+    {jp:'生理用ナプキン', reading:'せいりようなぷきん', cn:'衛生棉', counter:'mai'},
+    {jp:'綿棒', reading:'めんぼう', cn:'棉花棒', counter:'hon'},
+  ],
+  ramen: [
+    {jp:'ラーメン', reading:'らーめん', cn:'拉麵', counter:'tsu'},
+    {jp:'つけ麺', reading:'つけめん', cn:'沾麵', counter:'tsu'},
+    {jp:'餃子', reading:'ぎょうざ', cn:'餃子', counter:'ko'},
+    {jp:'チャーハン', reading:'ちゃーはん', cn:'炒飯', counter:'tsu'},
+    {jp:'ビール', reading:'びーる', cn:'啤酒', counter:'hai'},
+    {jp:'ライス', reading:'らいす', cn:'白飯', counter:'hai'},
+    {jp:'半熟卵', reading:'はんじゅくたまご', cn:'溏心蛋', counter:'ko'},
+    {jp:'コーラ', reading:'こーら', cn:'可樂', counter:'hai'},
+    {jp:'替え玉', reading:'かえだま', cn:'加麵', counter:'ko'},
+  ],
+  vending: [
+    {jp:'缶コーヒー', reading:'かんこーひー', cn:'罐裝咖啡', counter:'hon'},
+    {jp:'お茶', reading:'おちゃ', cn:'茶飲料', counter:'hon'},
+    {jp:'ジュース', reading:'じゅーす', cn:'果汁', counter:'hon'},
+    {jp:'水', reading:'みず', cn:'水', counter:'hon'},
+    {jp:'炭酸飲料', reading:'たんさんいんりょう', cn:'碳酸飲料', counter:'hon'},
+    {jp:'ソフトクリーム', reading:'そふとくりーむ', cn:'霜淇淋', counter:'ko'},
+    {jp:'カップスープ', reading:'かっぷすーぷ', cn:'罐裝湯', counter:'ko'},
+  ],
+  restaurant: [
+    {jp:'生ビール', reading:'なまびーる', cn:'生啤酒', counter:'hai'},
+    {jp:'お水', reading:'おみず', cn:'水', counter:'hai'},
+    {jp:'寿司', reading:'すし', cn:'壽司', counter:'ko'},
+    {jp:'天ぷら', reading:'てんぷら', cn:'天婦羅', counter:'ko'},
+    {jp:'お茶漬け', reading:'おちゃづけ', cn:'茶泡飯', counter:'tsu'},
+    {jp:'定食', reading:'ていしょく', cn:'定食套餐', counter:'tsu'},
+    {jp:'コーラ', reading:'こーら', cn:'可樂', counter:'hai'},
+    {jp:'デザート', reading:'でざーと', cn:'甜點', counter:'ko'},
+  ],
+  hotel: [
+    {jp:'タオル', reading:'たおる', cn:'毛巾', counter:'mai'},
+    {jp:'歯ブラシ', reading:'はぶらし', cn:'牙刷', counter:'hon'},
+    {jp:'枕', reading:'まくら', cn:'枕頭', counter:'ko'},
+    {jp:'スリッパ', reading:'すりっぱ', cn:'拖鞋', counter:'soku'},
+    {jp:'毛布', reading:'もうふ', cn:'毛毯', counter:'mai'},
+    {jp:'歯磨き粉', reading:'はみがきこ', cn:'牙膏', counter:'hon'},
+    {jp:'シャンプー', reading:'しゃんぷー', cn:'洗髮精', counter:'hon'},
+  ],
+  station: [
+    {jp:'きっぷ', reading:'きっぷ', cn:'車票', counter:'mai'},
+    {jp:'傘', reading:'かさ', cn:'雨傘', counter:'hon'},
+    {jp:'駅弁', reading:'えきべん', cn:'車站便當', counter:'ko'},
+  ],
+};
+
+/* ============ 文法筆記（時間表現／數量詞／相對時間／助詞）============ */
+const GRAMMAR_TIME_PATTERNS = [
+  {cat:'時間點', pattern:'時間＋に', jp:'7時に起きます。', reading:'しちじに おきます。', cn:'七點起床。'},
+  {cat:'日期', pattern:'月＋日＋に', jp:'12月5日にテストがあります。', reading:'じゅうにがつ いつかに テストが あります。', cn:'12月5日有考試。'},
+  {cat:'星期', pattern:'（曜日）＋に', jp:'月曜日に学校へ行きます。', reading:'げつようびに がっこうへ いきます。', cn:'星期一去學校。'},
+  {cat:'期間（小時）', pattern:'數字＋時間', jp:'3時間勉強します。', reading:'さんじかん べんきょうします。', cn:'讀書三小時。'},
+  {cat:'期間（週）', pattern:'數字＋週間', jp:'2週間、日本へ行きます。', reading:'にしゅうかん、にほんへ いきます。', cn:'去日本兩週。'},
+  {cat:'頻率副詞', pattern:'副詞＋動詞', jp:'よくテレビを見ます。', reading:'よく テレビを みます。', cn:'常常看電視。'},
+];
+const GRAMMAR_COUNTER_PATTERNS = [
+  {cat:'いくつ（多少個）', pattern:'名詞をいくつV', jp:'りんごをいくつ買いましたか。', reading:'りんごを いくつ かいましたか。', cn:'買了幾個蘋果？'},
+  {cat:'回答（〜つ）', pattern:'名詞を〜つV', jp:'りんごを3つ買いました。', reading:'りんごを みっつ かいました。', cn:'買了三個蘋果。'},
+  {cat:'人數（〜人）', pattern:'〜人 います', jp:'子供が2人います。', reading:'こどもが ふたり います。', cn:'有兩個小孩。'},
+  {cat:'長形（〜本）', pattern:'〜本 あります', jp:'えんぴつが3本あります。', reading:'えんぴつが さんぼん あります。', cn:'有三支鉛筆。'},
+  {cat:'扁平（〜枚）', pattern:'〜枚 あります／V', jp:'紙を1枚ください。', reading:'かみを いちまい ください。', cn:'請給我一張紙。'},
+  {cat:'小物（〜個）', pattern:'〜個 あります／V', jp:'クッキーを1個食べました。', reading:'クッキーを いっこ たべました。', cn:'吃了一個餅乾。'},
+  {cat:'動物（〜匹）', pattern:'〜匹 います', jp:'猫が2匹います。', reading:'ねこが にひき います。', cn:'有兩隻貓。'},
+  {cat:'次數（〜回）', pattern:'〜回 V', jp:'3回練習しました。', reading:'さんかい れんしゅうしました。', cn:'練習了三次。'},
+];
+const GRAMMAR_ORDER_TIPS = [
+  {jp:'りんごを3つ食べます。', ok:true, cn:'吃三個蘋果。', note:'最常見：受詞＋を＋數量。'},
+  {jp:'3つりんごを食べます。', ok:true, cn:'三個蘋果吃。', note:'數量放前面也可以。'},
+  {jp:'りんご3つを食べます。', ok:false, cn:'（錯誤用法）', note:'「3つを」幾乎不用，助詞位置錯誤。'},
+];
+const RELATIVE_TIME_VOCAB = [
+  ['今日','きょう','kyō','今天'],['昨日','きのう','kinō','昨天'],['一昨日','おととい','ototoi','前天'],
+  ['明日','あした／あす','ashita / asu','明天'],['明後日','あさって','asatte','後天'],
+  ['先週','せんしゅう','senshū','上週'],['今週','こんしゅう','konshū','本週'],['来週','らいしゅう','raishū','下週'],
+  ['先月','せんげつ','sengetsu','上個月'],['今月','こんげつ','kongetsu','本月'],['来月','らいげつ','raigetsu','下個月'],
+  ['去年','きょねん','kyonen','去年'],['今年','ことし','kotoshi','今年'],['来年','らいねん','rainen','明年'],
+];
+const OTHER_DATE_VOCAB = [
+  ['毎日','まいにち','mainichi','每天'],['毎週','まいしゅう','maishū','每週'],['毎月','まいつき','maitsuki','每月'],
+  ['毎年','まいとし／まいねん','maitoshi / mainen','每年'],['一日中','いちにちじゅう','ichinichijū','一整天'],
+  ['昼間','ひるま','hiruma','白天'],['夜','よる','yoru','夜晚'],['深夜','しんや','shinya','深夜'],
+];
+const PARTICLE_PATTERNS = [
+  [['幾點起床','に']],
+  [['關什麼','を']],
+  [['等誰','を'],['在哪裡等','で']],
+  [['停什麼','を'],['停在哪裡','に']],
+  [['在哪裡轉彎','を'],['往哪個方向','へ']],
+  [['帶什麼','を']],
+  [['幾點結束','に']],
+  [['叫什麼、誰','を'],['在哪裡叫','で']],
+  [['跟誰說話','と'],['說什麼','を']],
+  [['給看什麼','を'],['給誰看','に']],
+  [['教什麼','を'],['教給誰','に']],
+  [['去哪裡','へ'],['搭什麼去','で'],['跟誰去','と']],
+  [['站在哪裡','に']],
+  [['坐在哪裡','に']],
+  [['使用什麼','を']],
+  [['做、生產什麼','を']],
+  [['賣什麼','を'],['在哪裡賣','で']],
+  [['想起、回憶什麼','を']],
+  [['搭乘','に']],
+  [['走到哪裡','へ'],['搭什麼去','で'],['跟誰去','と']],
+  [['下車','を'],['在哪裡下','で']],
+  [['轉換','に']],
+  [['洗澡','を'],['泡澡','に']],
+  [['把什麼放進去','を'],['放進哪裡','に']],
+  [['把什麼拿出來','を'],['從哪裡拿出來','から']],
+  [['按、壓什麼','を']],
+  [['記住什麼','を']],
+  [['回哪裡','へ'],['搭什麼回','で'],['跟誰回','と']],
+  [['忘記什麼','を'],['忘在哪裡','に']],
+  [['丟失什麼','を'],['在哪裡丟','で']],
+];
+
+const CATEGORIES = {
+  money:{title:'金額 Money',icon:'💰',items:MONEY_LIST,intro:'日本現場最常聽到的價格，點卡片看拆解、練發音。'},
+  time:{title:'時間 Time',icon:'🕒',items:TIME_LIST,intro:'幾點、幾分、約時間都在這裡。'},
+  date:{title:'日期 Date',icon:'📅',items:DATE_LIST,intro:'日期讀法很不規則，1-10日、14/20/24日要特別記。'},
+  month:{title:'月份 Month',icon:'🈷️',items:MONTH_LIST,intro:'4月（しがつ）和7月（しちがつ）發音容易搞錯，特別注意。'},
+  weekday:{title:'星期',icon:'📆',items:WEEKDAY_LIST,intro:'星期一到星期日。'},
+  people:{title:'人數',icon:'👥',items:PEOPLE_LIST,intro:'餐廳一定會被問「幾位？」，先練這個。'},
+  floor:{title:'樓層',icon:'🏢',items:FLOOR_LIST,intro:'3階/6階/8階/10階讀音都不規則。'},
+  train:{title:'電車月台',icon:'🚃',items:TRAIN_LIST,intro:'幾號月台、幾號線。'},
+  room:{title:'房號',icon:'🏨',items:ROOM_LIST,intro:'飯店房號、房間號碼。'},
+  phone:{title:'電話號碼',icon:'📞',items:null,intro:'電話號碼是一個數字一個一個念，不能用金額的讀法！'}
+};
+
+const SCENES = [
+  {id:'store',emoji:'🏪',title:'便利商店'},
+  {id:'drug',emoji:'🛍️',title:'藥妝店'},
+  {id:'ramen',emoji:'🍜',title:'拉麵店'},
+  {id:'vending',emoji:'🥤',title:'自動販賣機'},
+  {id:'restaurant',emoji:'🍣',title:'餐廳',tool:'people'},
+  {id:'hotel',emoji:'🏨',title:'飯店',tool:'room'},
+  {id:'station',emoji:'🚃',title:'車站',tool:'train'},
+];
+
+/* 情境對話（逐字拆解）*/
+const DIALOGUES = [
+  {sceneId:'store', title:'🏪 便利商店結帳', lines:[
+    {sp:'店員', jp:'お会計は580円です。', cn:'結帳金額是580日圓。', segs:[
+      {t:'お会計',r:'おかいけい',m:'結帳／帳單'},{t:'は',r:'は',m:'助詞・主題標記'},{t:'580円',r:'ごひゃくはちじゅうえん',m:'580日圓'},{t:'です',r:'です',m:'禮貌句尾「是」'}
+    ]},
+  ]},
+  {sceneId:'drug', title:'🛍️ 藥妝店結帳', lines:[
+    {sp:'店員', jp:'1,580円です。', cn:'1,580日圓。', segs:[
+      {t:'せん',r:'せん',m:'1,000'},{t:'ごひゃく',r:'ごひゃく',m:'500'},{t:'はちじゅう',r:'はちじゅう',m:'80'},{t:'えん',r:'えん',m:'日圓'},{t:'です',r:'です',m:'禮貌句尾'}
+    ]},
+  ]},
+  {sceneId:'ramen', title:'🍜 拉麵店結帳', lines:[
+    {sp:'店員', jp:'お会計は980円です。', cn:'結帳是980日圓。', segs:[
+      {t:'お会計',r:'おかいけい',m:'結帳'},{t:'は',r:'は',m:'助詞'},{t:'980円',r:'きゅうひゃくはちじゅうえん',m:'980日圓'},{t:'です',r:'です',m:'禮貌句尾'}
+    ]},
+  ]},
+  {sceneId:'vending', title:'🥤 自動販賣機', lines:[
+    {sp:'標示', jp:'この飲み物は150円です。', cn:'這個飲料150日圓。', segs:[
+      {t:'この',r:'この',m:'這個'},{t:'飲み物',r:'のみもの',m:'飲料'},{t:'は',r:'は',m:'助詞'},{t:'150円',r:'ひゃくごじゅうえん',m:'150日圓'},{t:'です',r:'です',m:'禮貌句尾'}
+    ]},
+  ]},
+  {sceneId:'restaurant', title:'🍣 餐廳帶位', lines:[
+    {sp:'店員', jp:'何名様ですか？', cn:'請問幾位？', segs:[
+      {t:'何名様',r:'なんめいさま',m:'幾位（敬語）'},{t:'ですか',r:'ですか',m:'是…嗎？'}
+    ]},
+    {sp:'你', jp:'二人です。', cn:'兩位。', segs:[
+      {t:'二人',r:'ふたり',m:'兩人'},{t:'です',r:'です',m:'禮貌句尾'}
+    ]},
+    {sp:'店員', jp:'3時に会いましょう。', cn:'3點見。', segs:[
+      {t:'3時',r:'さんじ',m:'3點'},{t:'に',r:'に',m:'助詞（時間點）'},{t:'会いましょう',r:'あいましょう',m:'一起見面吧'}
+    ]},
+  ]},
+  {sceneId:'hotel', title:'🏨 飯店櫃檯', lines:[
+    {sp:'櫃檯', jp:'お部屋は305号室です。', cn:'您的房間是305號。', segs:[
+      {t:'お部屋',r:'おへや',m:'房間'},{t:'は',r:'は',m:'助詞'},{t:'305号室',r:'さんびゃくごごうしつ',m:'305號房'},{t:'です',r:'です',m:'禮貌句尾'}
+    ]},
+    {sp:'你', jp:'部屋番号は何番ですか？', cn:'房間號碼是多少？', segs:[
+      {t:'部屋番号',r:'へやばんごう',m:'房間號碼'},{t:'は',r:'は',m:'助詞'},{t:'何番',r:'なんばん',m:'幾號'},{t:'ですか',r:'ですか',m:'是…嗎？'}
+    ]},
+  ]},
+  {sceneId:'station', title:'🚃 車站找月台', lines:[
+    {sp:'廣播', jp:'大阪駅の3番線です。', cn:'大阪車站的3號月台。', segs:[
+      {t:'大阪駅',r:'おおさかえき',m:'大阪車站'},{t:'の',r:'の',m:'助詞（的）'},{t:'3番線',r:'さんばんせん',m:'3號月台'},{t:'です',r:'です',m:'禮貌句尾'}
+    ]},
+    {sp:'你', jp:'東京行きは何番線ですか？', cn:'前往東京的車是幾號月台？', segs:[
+      {t:'東京行き',r:'とうきょういき',m:'往東京'},{t:'は',r:'は',m:'助詞'},{t:'何番線',r:'なんばんせん',m:'幾號月台'},{t:'ですか',r:'ですか',m:'是…嗎？'}
+    ]},
+  ]},
+  {sceneId:'phone_date', title:'📞📅 電話與日期', lines:[
+    {sp:'店員', jp:'電話番号をお願いします。', cn:'請告訴我電話號碼。', segs:[
+      {t:'電話番号',r:'でんわばんごう',m:'電話號碼'},{t:'を',r:'を',m:'助詞（受詞標記）'},{t:'お願いします',r:'おねがいします',m:'麻煩您了'}
+    ]},
+    {sp:'標示', jp:'8月20日です。', cn:'8月20日。', segs:[
+      {t:'8月',r:'はちがつ',m:'8月'},{t:'20日',r:'はつか',m:'20日（不規則）'},{t:'です',r:'です',m:'禮貌句尾'}
+    ]},
+  ]},
+];
+
+/* 腦袋當機卡 */
+const BRAIN_CARDS = [
+  {jp:'せんごひゃくはちじゅうえんです。', steps:[['せん','1,000'],['ごひゃく','500'],['はちじゅう','80'],['えん','日圓']], total:'1,000 + 500 + 80 = 1,580円'},
+  {jp:'にせんきゅうひゃくはちじゅうえんです。', steps:[['にせん','2,000'],['きゅうひゃく','900'],['はちじゅう','80'],['えん','日圓']], total:'2,000 + 900 + 80 = 2,980円'},
+];
+
+/* 急救卡內容 */
+const RESCUE = {
+  '💰 價格': MONEY_LIST.filter(m=>[110,500,1000,1580,2980].includes(Number(m.id.split('_')[1]))),
+  '👥 人數': PEOPLE_LIST.slice(0,3),
+  '🕒 時間': TIME_LIST.filter(t=>t.id.startsWith('timeh_')).filter(t=>[1,3,5].includes(Number(t.id.split('_')[1]))),
+  '🚃 月台': TRAIN_LIST.slice(0,3),
+};
+
+/* ============ 3. localStorage ============ */
+const LS_FAV = 'jp_survival_favs', LS_MIS = 'jp_survival_mistakes', LS_THEME='jp_survival_theme';
+function getFavs(){ return JSON.parse(localStorage.getItem(LS_FAV)||'[]'); }
+function toggleFav(item){
+  let favs = getFavs();
+  const idx = favs.findIndex(f=>f.id===item.id);
+  if(idx>=0) favs.splice(idx,1); else favs.push(item);
+  localStorage.setItem(LS_FAV, JSON.stringify(favs));
+  return favs.some(f=>f.id===item.id);
+}
+function isFav(id){ return getFavs().some(f=>f.id===id); }
+function getMistakes(){ return JSON.parse(localStorage.getItem(LS_MIS)||'{}'); }
+function recordMistake(item){
+  const m = getMistakes();
+  if(!m[item.id]) m[item.id] = {item, count:0};
+  m[item.id].count++;
+  localStorage.setItem(LS_MIS, JSON.stringify(m));
+}
+
+/* ============ 4. TTS ============ */
+let _jaVoice = null;
+function getJaVoice(){
+  if(_jaVoice) return _jaVoice;
+  const voices = window.speechSynthesis.getVoices();
+  _jaVoice = voices.find(v=>v.lang==='ja-JP') || voices.find(v=>v.lang && v.lang.startsWith('ja')) || null;
+  return _jaVoice;
+}
+if('speechSynthesis' in window){
+  window.speechSynthesis.onvoiceschanged = ()=>{ _jaVoice = null; getJaVoice(); };
+}
+function speak(text, rate){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP';
+  const v = getJaVoice();
+  if(v) u.voice = v;
+  // 短句在多數瀏覽器語音引擎上，0.7~0.8 的差異幾乎聽不出來，
+  // 這裡把「慢速」拉開到真正明顯變慢，同一顆語音引擎才能公平比較。
+  u.rate = rate || 1.0;
+  window.speechSynthesis.speak(u);
+}
+
+/* ============ 5. 畫面切換 ============ */
+document.querySelectorAll('nav.tabbar button').forEach(btn=>{
+  btn.addEventListener('click', ()=>switchView(btn.dataset.view));
+});
+function switchView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('nav.tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.view===v));
+  if(v==='dialogue') renderDialogueView();
+  if(v==='rescue') renderRescue();
+  if(v==='me') renderMe();
+  window.scrollTo(0,0);
+}
+
+/* ============ 6. 首頁 ============ */
+function renderHome(){
+  const sceneGrid = document.getElementById('sceneGrid');
+  sceneGrid.innerHTML = SCENES.map(s=>
+    `<div class="scenecard" data-scene="${s.id}"><div class="emoji">${s.emoji}</div><div class="label">${s.title}</div></div>`
+  ).join('');
+  sceneGrid.querySelectorAll('.scenecard').forEach(el=>{
+    el.addEventListener('click', ()=>openScene(el.dataset.scene));
+  });
+  const catGrid = document.getElementById('categoryGrid');
+  catGrid.innerHTML = Object.keys(CATEGORIES).map(k=>{
+    const c = CATEGORIES[k];
+    return `<div class="scenecard" data-cat="${k}"><div class="emoji">${c.icon}</div><div class="label">${c.title}</div></div>`;
+  }).join('') + `<div class="scenecard" data-special="grammar"><div class="emoji">📖</div><div class="label">文法筆記</div></div>`;
+  catGrid.querySelectorAll('[data-cat]').forEach(el=>{
+    el.addEventListener('click', ()=>openLearn(el.dataset.cat));
+  });
+  catGrid.querySelectorAll('[data-special]').forEach(el=>{
+    el.addEventListener('click', ()=>openGrammarNotes());
+  });
+}
+
+/* ---- 情境頁：購物／點餐例句，數量可即時修改 ---- */
+function openScene(sceneId){
+  switchView('learn');
+  const scene = SCENES.find(s=>s.id===sceneId);
+  document.getElementById('learnTitle').textContent = scene.emoji+' '+scene.title+' 情境例句';
+  document.getElementById('learnIntro').textContent = '輸入數量，句子會自動改變讀音（日文的「個/本/枚/杯」量詞念法都不一樣）。';
+  const toolWrap = document.getElementById('phoneToolWrap');
+  toolWrap.innerHTML = '';
+  if(scene.tool==='room'){ toolWrap.style.display='block'; renderRoomLookupTool(); }
+  else if(scene.tool==='train'){ toolWrap.style.display='block'; renderTrainLookupTool(); }
+  else if(scene.tool==='people'){ toolWrap.style.display='block'; renderPeopleCounterTool(); }
+  else { toolWrap.style.display='none'; }
+  renderSceneItems(sceneId);
+}
+
+function renderSceneItems(sceneId){
+  const items = SCENE_ITEMS[sceneId] || [];
+  const list = document.getElementById('learnList');
+  list.innerHTML = items.map((it,i)=>`
+    <div class="card" data-idx="${i}">
+      <div class="jp">${rb(it.jp)} <span style="font-size:12px;color:var(--accent2);">${it.cn}</span></div>
+      <div class="hira">${it.reading}</div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:12px;color:var(--sub);">數量：</span>
+        <input type="number" min="1" max="20" value="1" data-qty="${i}" style="width:60px;padding:6px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;">
+      </div>
+      <div class="hira" data-out="${i}" style="margin-top:8px;font-size:16px;color:var(--text);font-weight:700;"></div>
+      <div class="cn" data-outcn="${i}"></div>
+      <div class="actions">
+        <button data-rate="0.5" data-say="${i}">🐢 慢速 0.5x</button>
+        <button data-rate="0.65" data-say="${i}">🐢 慢速 0.65x</button>
+        <button data-rate="1.0" data-say="${i}">▶️ 正常</button>
+      </div>
+    </div>
+  `).join('') || '<div class="emptyState">這個情境暫時沒有例句。</div>';
+
+  function updateSentence(i){
+    const it = items[i];
+    const input = list.querySelector(`[data-qty="${i}"]`);
+    const n = Number(input.value)||1;
+    const cReading = counterReading(it.counter, n);
+    const sentence = `${it.jp}を${cReading}ください。`;
+    const cn = `請給我 ${n} ${COUNTER_CN_UNIT[it.counter]} ${it.cn}。`;
+    list.querySelector(`[data-out="${i}"]`).textContent = `${it.reading}を ${cReading} ください。`;
+    list.querySelector(`[data-outcn="${i}"]`).textContent = cn;
+    list.querySelector(`[data-out="${i}"]`).dataset.full = sentence;
+  }
+  items.forEach((it,i)=>updateSentence(i));
+  list.querySelectorAll('[data-qty]').forEach(inp=>{
+    inp.addEventListener('input', ()=>updateSentence(Number(inp.dataset.qty)));
+  });
+  list.querySelectorAll('[data-say]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const i = btn.dataset.say;
+      const full = list.querySelector(`[data-out="${i}"]`).dataset.full;
+      speak(full, Number(btn.dataset.rate));
+    });
+  });
+}
+
+function renderRoomLookupTool(){
+  const wrap = document.getElementById('phoneToolWrap');
+  wrap.innerHTML = `
+    <div class="phoneBox" style="margin-bottom:16px;">
+      <div style="margin-bottom:10px;color:var(--sub);font-size:13px;">🔍 查詢任意房號</div>
+      <input id="roomLookupInput" type="number" placeholder="輸入房號，例如 812">
+      <div id="roomLookupOut" class="out"></div>
+    </div>
+  `;
+  const input = document.getElementById('roomLookupInput');
+  input.addEventListener('input', ()=>{
+    const v = Number(input.value);
+    const out = document.getElementById('roomLookupOut');
+    if(!v){ out.innerHTML=''; return; }
+    const r = numberToJapanese(v);
+    const hira = r.reading+'ごうしつ';
+    out.innerHTML = `<div>${v}号室 → ${hira}</div><div class="playrow"><button id="roomPlayBtn">🔊 播放</button></div>`;
+    document.getElementById('roomPlayBtn').addEventListener('click', ()=>speak(hira,0.9));
+  });
+}
+
+function renderTrainLookupTool(){
+  const wrap = document.getElementById('phoneToolWrap');
+  wrap.innerHTML = `
+    <div class="phoneBox" style="margin-bottom:16px;">
+      <div style="margin-bottom:10px;color:var(--sub);font-size:13px;">🔍 查詢任意月台號</div>
+      <input id="trainLookupInput" type="number" placeholder="輸入月台號，例如 7">
+      <div id="trainLookupOut" class="out"></div>
+    </div>
+  `;
+  const input = document.getElementById('trainLookupInput');
+  input.addEventListener('input', ()=>{
+    const v = Number(input.value);
+    const out = document.getElementById('trainLookupOut');
+    if(!v){ out.innerHTML=''; return; }
+    const r = numberToJapanese(v);
+    const hira = r.reading+'ばんせん';
+    out.innerHTML = `<div>${v}番線 → ${hira}</div><div class="playrow"><button id="trainPlayBtn">🔊 播放</button></div>`;
+    document.getElementById('trainPlayBtn').addEventListener('click', ()=>speak(hira,0.9));
+  });
+}
+
+function renderPeopleCounterTool(){
+  const wrap = document.getElementById('phoneToolWrap');
+  wrap.innerHTML = `
+    <div class="phoneBox" style="margin-bottom:16px;">
+      <div style="margin-bottom:10px;color:var(--sub);font-size:13px;">🔍 幾位？輸入人數</div>
+      <input id="peopleLookupInput" type="number" min="1" max="20" placeholder="輸入人數，例如 5">
+      <div id="peopleLookupOut" class="out"></div>
+    </div>
+  `;
+  const input = document.getElementById('peopleLookupInput');
+  input.addEventListener('input', ()=>{
+    const v = Number(input.value);
+    const out = document.getElementById('peopleLookupOut');
+    if(!v){ out.innerHTML=''; return; }
+    const hira = peopleReading(v)+'です。';
+    out.innerHTML = `<div>${v}人 → ${hira}</div><div class="playrow"><button id="peoplePlayBtn">🔊 播放</button></div>`;
+    document.getElementById('peoplePlayBtn').addEventListener('click', ()=>speak(hira,0.9));
+  });
+}
+
+function renderTimeLookupTool(){
+  const wrap = document.getElementById('phoneToolWrap');
+  wrap.innerHTML = `
+    <div class="phoneBox" style="margin-bottom:16px;">
+      <div style="margin-bottom:10px;color:var(--sub);font-size:13px;">🔍 查詢任意時刻</div>
+      <div style="display:flex;gap:10px;align-items:center;justify-content:center;">
+        <input id="hourLookupInput" type="number" min="0" max="23" placeholder="時" style="width:90px;font-size:22px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);">
+        <span style="font-size:13px;color:var(--sub);">時</span>
+        <input id="minuteLookupInput" type="number" min="0" max="59" placeholder="分" style="width:90px;font-size:22px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);">
+        <span style="font-size:13px;color:var(--sub);">分</span>
+      </div>
+      <div id="timeLookupOut" class="out"></div>
+    </div>
+  `;
+  const hInput = document.getElementById('hourLookupInput');
+  const mInput = document.getElementById('minuteLookupInput');
+  function update(){
+    const out = document.getElementById('timeLookupOut');
+    if(hInput.value===''){ out.innerHTML=''; return; }
+    const h = Number(hInput.value);
+    const m = mInput.value===''? 0 : Number(mInput.value);
+    const hira = hourReading(h) + minuteReading(m);
+    const disp = h+'時'+(m?m+'分':'');
+    out.innerHTML = `<div>${disp} → ${hira}</div>
+      <div class="playrow">
+        <button data-rate="0.5">🐢 慢速 0.5x</button>
+        <button data-rate="1.0">▶️ 正常</button>
+      </div>`;
+    out.querySelectorAll('[data-rate]').forEach(b=>b.addEventListener('click',()=>speak(hira, Number(b.dataset.rate))));
+  }
+  hInput.addEventListener('input', update);
+  mInput.addEventListener('input', update);
+}
+
+/* ---- 文法筆記頁 ---- */
+function openGrammarNotes(){
+  switchView('learn');
+  document.getElementById('learnTitle').textContent = '📖 文法筆記';
+  document.getElementById('learnIntro').textContent = '點卡片／按鈕直接聽發音，不用自己讀一堆日文。';
+  document.getElementById('phoneToolWrap').innerHTML='';
+  document.getElementById('phoneToolWrap').style.display='none';
+  const list = document.getElementById('learnList');
+  list.innerHTML = `
+    <h3 style="font-size:14px;color:var(--sub);margin:4px 0 8px;">五、時間表現（時間點／日期／期間／頻率）</h3>
+    <div class="vocabGrid">
+      ${GRAMMAR_TIME_PATTERNS.map((p,i)=>`
+        <div class="vocabCell" data-say="tp${i}">
+          <div style="font-size:10px;color:var(--sub);">${p.cat}｜${p.pattern}</div>
+          <div class="jp">${rb(p.jp)}</div>
+          <div class="cn">${p.cn}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">六、數量詞（いくつ／〜人／〜本／〜枚／〜個／〜匹／〜回）</h3>
+    <div class="vocabGrid">
+      ${GRAMMAR_COUNTER_PATTERNS.map((p,i)=>`
+        <div class="vocabCell" data-say="cp${i}">
+          <div style="font-size:10px;color:var(--sub);">${p.cat}｜${p.pattern}</div>
+          <div class="jp">${rb(p.jp)}</div>
+          <div class="cn">${p.cn}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">六-易搞混：數量詞的位置</h3>
+    ${GRAMMAR_ORDER_TIPS.map((t,i)=>`
+      <div class="tipRow" data-tip="${i}" style="cursor:pointer;">
+        <span class="mark">${t.ok?'✅':'❌'}</span>
+        <div><b>${rb(t.jp)}</b><div style="color:var(--sub);font-size:12px;">${t.cn}｜${t.note}</div></div>
+      </div>
+    `).join('')}
+
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">時間表達（相對時間）</h3>
+    <div class="vocabGrid">
+      ${RELATIVE_TIME_VOCAB.map(([jp,h,rj,cn])=>`<div class="vocabCell" data-speak="${h.split('／')[0]}"><div class="jp">${jp}（${h}）</div><div class="rj">${rj}</div><div class="cn">${cn}</div></div>`).join('')}
+    </div>
+
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">其他日期相關表達</h3>
+    <div class="vocabGrid">
+      ${OTHER_DATE_VOCAB.map(([jp,h,rj,cn])=>`<div class="vocabCell" data-speak="${h.split('／')[0]}"><div class="jp">${jp}（${h}）</div><div class="rj">${rj}</div><div class="cn">${cn}</div></div>`).join('')}
+    </div>
+
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">助詞判斷小抄（30句）－點藍色小按鈕聽發音</h3>
+    ${PARTICLE_PATTERNS.map((parts,i)=>`
+      <div class="particleItem">
+        ${i+1}. ${parts.map(([zh,p])=>`${zh}是 <button class="particleChip" data-p="${p}">${p}</button>`).join('，')}
+      </div>
+    `).join('')}
+  `;
+  const patternAll = {};
+  GRAMMAR_TIME_PATTERNS.forEach((p,i)=>patternAll['tp'+i]=p.jp);
+  GRAMMAR_COUNTER_PATTERNS.forEach((p,i)=>patternAll['cp'+i]=p.jp);
+  list.querySelectorAll('[data-say]').forEach(el=>{
+    el.addEventListener('click', ()=>speak(patternAll[el.dataset.say], 0.85));
+  });
+  list.querySelectorAll('[data-tip]').forEach(el=>{
+    el.addEventListener('click', ()=>speak(GRAMMAR_ORDER_TIPS[Number(el.dataset.tip)].jp, 0.85));
+  });
+  list.querySelectorAll('.vocabCell').forEach(el=>{
+    el.addEventListener('click', ()=>speak(el.dataset.speak, 0.9));
+  });
+  list.querySelectorAll('.particleChip').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      speak(el.dataset.p, 0.8);
+    });
+  });
+}
+
+function openLearn(catKey){
+  switchView('learn');
+  const c = CATEGORIES[catKey];
+  document.getElementById('learnTitle').textContent = c.icon+' '+c.title;
+  document.getElementById('learnIntro').textContent = c.intro;
+  document.getElementById('phoneToolWrap').innerHTML = '';
+  document.getElementById('topicQuizArea').innerHTML = '';
+  if(catKey==='phone'){
+    document.getElementById('learnList').innerHTML='';
+    document.getElementById('phoneToolWrap').style.display='block';
+    renderPhoneTool();
+  } else if(catKey==='money'){
+    document.getElementById('phoneToolWrap').style.display='block';
+    renderMoneyLookupTool();
+    renderLearnList(c.items);
+  } else if(catKey==='date'){
+    document.getElementById('phoneToolWrap').style.display='none';
+    renderDateVocab();
+    renderTopicQuizToggle(c.items, c.title);
+    renderLearnList(c.items);
+  } else if(catKey==='time'){
+    document.getElementById('phoneToolWrap').style.display='block';
+    renderTimeLookupTool();
+    renderTopicQuizToggle(c.items, c.title);
+    renderLearnList(c.items);
+  } else {
+    document.getElementById('phoneToolWrap').style.display='none';
+    renderTopicQuizToggle(c.items, c.title);
+    renderLearnList(c.items);
+  }
+}
+
+function renderDateVocab(){
+  const list = document.getElementById('learnList');
+  list.innerHTML = `<div style="font-size:13px;color:var(--sub);margin-bottom:8px;">📖 基本日期詞彙</div>
+    <div class="vocabGrid">
+      ${DATE_VOCAB.map(([jp,h,rj,cn])=>`
+        <div class="vocabCell" data-speak="${h.replace(/／.*/,'')}">
+          <div class="jp">${jp}（${h}）</div>
+          <div class="rj">${rj}</div>
+          <div class="cn">${cn}</div>
+        </div>
+      `).join('')}
+    </div>`;
+  list.querySelectorAll('.vocabCell').forEach(el=>{
+    el.addEventListener('click', ()=>speak(el.dataset.speak, 0.9));
+  });
+}
+
+const MONEY_MAGNITUDES = [1,10,100,1000,10000,100000,1000000];
+function renderMoneyLookupTool(){
+  const wrap = document.getElementById('phoneToolWrap');
+  wrap.innerHTML = `
+    <div class="phoneBox" style="margin-bottom:16px;">
+      <div style="margin-bottom:10px;color:var(--sub);font-size:13px;">🔍 查詢任意金額（1～99,999,999円）</div>
+      <input id="moneyLookupInput" type="number" placeholder="輸入任意數字，例如 2350">
+      <div id="moneyLookupOut"></div>
+    </div>
+    <div style="margin-bottom:6px;color:var(--sub);font-size:13px;">📂 快速跳到區間（點了同時會出現該範圍的測驗）</div>
+    <div class="catchips" id="moneyMagRow" style="margin-bottom:16px;">
+      <div class="chip active" data-mag="all">全部</div>
+      ${MONEY_MAGNITUDES.map(m=>`<div class="chip" data-mag="${m}">${m.toLocaleString()}</div>`).join('')}
+    </div>
+  `;
+  const magRow = document.getElementById('moneyMagRow');
+  function mountMoneyQuiz(pool, label){
+    const area = document.getElementById('topicQuizArea');
+    area.innerHTML = `<div style="font-size:13px;color:var(--sub);margin-bottom:8px;">🧠 測驗：${label}</div><div id="moneyQuizInner"></div>`;
+    mountQuiz(document.getElementById('moneyQuizInner'), pool);
+  }
+  magRow.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      magRow.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      const mag = chip.dataset.mag;
+      if(mag==='all'){ renderLearnList(MONEY_LIST); mountMoneyQuiz(MONEY_LIST, '全部金額'); return; }
+      const lo = Number(mag), hi = lo*10;
+      const pool = MONEY_LIST.filter(it=>{ const v=Number(it.id.split('_')[1]); return v>=lo && v<hi; });
+      renderLearnList(pool);
+      mountMoneyQuiz(pool, lo.toLocaleString()+' ~ '+(hi-1).toLocaleString());
+    });
+  });
+  const input = document.getElementById('moneyLookupInput');
+  input.addEventListener('input', ()=>{
+    const v = Number(input.value);
+    const out = document.getElementById('moneyLookupOut');
+    if(!v || v<1 || v>99999999){ out.innerHTML=''; return; }
+    const item = moneyItem(v);
+    out.innerHTML = `<div class="card" style="text-align:left;margin-top:12px;">
+      <div class="body">
+        <div class="jp">${item.display} ${item.warn?'<span class="warnTag">⚠️易錯</span>':''}</div>
+        <div class="hira">${item.hira}</div>
+        <div class="cn">${item.cn}</div>
+      </div>
+      <div class="actions">
+        <button data-rate="0.5">🐢 慢速 0.5x</button>
+        <button data-rate="0.65">🐢 慢速 0.65x</button>
+        <button data-rate="1.0">▶️ 正常</button>
+        <button data-breakdown="1">🧩 拆解</button>
+      </div>
+    </div>`;
+    out.querySelectorAll('[data-rate]').forEach(b=>b.addEventListener('click',()=>speak(item.hira, Number(b.dataset.rate))));
+    out.querySelector('[data-breakdown]').addEventListener('click', ()=>openSheet(item));
+  });
+}
+
+function renderLearnList(items){
+  const list = document.getElementById('learnList');
+  list.innerHTML = items.map(it=>`
+    <div class="card" data-id="${it.id}">
+      <button class="star ${isFav(it.id)?'on':''}" data-star="${it.id}">★</button>
+      <div class="body" data-body="${it.id}">
+        <div class="jp">${it.display} ${it.warn?'<span class="warnTag">⚠️易錯</span>':''}</div>
+        <div class="hira">${it.hira}${it.romaji?' · '+it.romaji:''}</div>
+        <div class="cn">${it.cn}</div>
+      </div>
+      <div class="actions">
+        <button data-rate="0.5" data-id2="${it.id}">🐢 慢速 0.5x</button>
+        <button data-rate="0.65" data-id2="${it.id}">🐢 慢速 0.65x</button>
+        <button data-rate="1.0" data-id2="${it.id}">▶️ 正常</button>
+      </div>
+    </div>
+  `).join('');
+  list.querySelectorAll('[data-body]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const item = items.find(i=>i.id===el.dataset.body);
+      openSheet(item);
+    });
+  });
+  list.querySelectorAll('[data-rate]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const item = items.find(i=>i.id===el.dataset.id2);
+      speak(item.hira, Number(el.dataset.rate));
+    });
+  });
+  list.querySelectorAll('[data-star]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const item = items.find(i=>i.id===el.dataset.star);
+      const on = toggleFav(item);
+      el.classList.toggle('on', on);
+    });
+  });
+}
+
+function renderPhoneTool(){
+  const wrap = document.getElementById('phoneToolWrap');
+  wrap.innerHTML = `
+    <div class="phoneBox">
+      <div style="margin-bottom:10px;color:var(--sub);font-size:13px;">輸入電話號碼（只需數字）</div>
+      <input id="phoneInput" type="tel" placeholder="09012345678" maxlength="15">
+      <div class="out" id="phoneOut"></div>
+      <div class="playrow" id="phonePlayRow" style="display:none">
+        <button id="phonePlayBtn">🔊 播放</button>
+      </div>
+    </div>
+  `;
+  const digitJp = ['ぜろ','いち','に','さん','よん','ご','ろく','なな','はち','きゅう'];
+  const input = document.getElementById('phoneInput');
+  input.addEventListener('input', ()=>{
+    const digits = input.value.replace(/[^0-9]/g,'');
+    const out = document.getElementById('phoneOut');
+    const playRow = document.getElementById('phonePlayRow');
+    if(!digits){ out.innerHTML=''; playRow.style.display='none'; return; }
+    const groups = digits.match(/.{1,4}/g) || [];
+    const readings = groups.map(g=>g.split('').map(d=>digitJp[Number(d)]).join(' '));
+    out.innerHTML = groups.map((g,i)=>`<div>${g} → ${readings[i]}</div>`).join('');
+    playRow.style.display='flex';
+    document.getElementById('phonePlayBtn').onclick = ()=>speak(digits.split('').map(d=>digitJp[Number(d)]).join('、'), 0.8);
+  });
+}
+
+/* ============ 7. Bottom Sheet ============ */
+function openSheet(item){
+  const overlay = document.getElementById('overlay');
+  const sheet = document.getElementById('sheetContent');
+  sheet.innerHTML = `
+    <div class="bigjp">${item.display}</div>
+    <div class="bighira">${item.hira}${item.romaji?' · '+item.romaji:''}</div>
+    <div class="bigcn">${item.cn}</div>
+    ${item.warn?'<div style="text-align:center;margin-top:8px;"><span class="warnTag">⚠️ 容易搞混，特別記！</span></div>':''}
+    <div class="playrow">
+      <button id="favBtn" class="ghost">${isFav(item.id)?'★ 已收藏':'☆ 收藏'}</button>
+    </div>
+    <div class="segbox">
+      <div class="segtitle">👆 點一下拆解每個部分（會直接發音）</div>
+      ${item.segments.map(s=>`<span class="segchip" data-t="${s.text}">${s.text}<small>${s.meaning}</small></span>`).join('')}
+    </div>
+    <button class="closeSheet" id="closeSheetBtn">關閉</button>
+  `;
+  sheet.querySelectorAll('.segchip').forEach(b=>b.addEventListener('click',()=>speak(b.dataset.t, 0.8)));
+  document.getElementById('favBtn').addEventListener('click', (e)=>{
+    const on = toggleFav(item);
+    e.target.textContent = on?'★ 已收藏':'☆ 收藏';
+  });
+  document.getElementById('closeSheetBtn').addEventListener('click', closeSheet);
+  overlay.classList.add('show');
+}
+function closeSheet(){ document.getElementById('overlay').classList.remove('show'); }
+document.getElementById('overlay').addEventListener('click', (e)=>{ if(e.target.id==='overlay') closeSheet(); });
+
+/* ============ 8. 情境對話 ============ */
+function renderDialogueView(){
+  const chips = document.getElementById('sceneChips');
+  chips.innerHTML = `<div class="chip active" data-s="all">全部</div>` + SCENES.map(s=>`<div class="chip" data-s="${s.id}">${s.emoji} ${s.title}</div>`).join('');
+  chips.querySelectorAll('.chip').forEach(c=>{
+    c.addEventListener('click', ()=>{
+      chips.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+      renderDialogueList(c.dataset.s);
+    });
+  });
+  renderDialogueList('all');
+}
+function renderDialogueList(filter){
+  const dlgs = DIALOGUES.filter(d=> filter==='all' || d.sceneId===filter || (filter==='phone_date'&&d.sceneId==='phone_date'));
+  const list = document.getElementById('dialogueList');
+  list.innerHTML = dlgs.map(d=>`
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${d.title}</h3>
+    ${d.lines.map((ln,li)=>`
+      <div class="dialogueLine" data-dlg="${d.title}" data-li="${li}">
+        <div class="speaker">${ln.sp}</div>
+        <div class="sent">${ln.segs.map((s,si)=>`<span class="tok" data-si="${si}">${s.t}</span>`).join('')}</div>
+        <div class="cn">${ln.cn}</div>
+        <div class="tts">
+          <button data-full="1">🔊 整句</button>
+          <button data-full="1" data-rate="0.5">🐢 慢速</button>
+        </div>
+      </div>
+    `).join('')}
+  `).join('') || '<div class="emptyState">這個情境目前還沒有例句，先看看其他情境吧！</div>';
+
+  list.querySelectorAll('.dialogueLine').forEach(el=>{
+    const d = dlgs.find(x=>x.title===el.dataset.dlg);
+    const ln = d.lines[Number(el.dataset.li)];
+    el.querySelectorAll('.tok').forEach(tok=>{
+      tok.addEventListener('click', ()=>{
+        const seg = ln.segs[Number(tok.dataset.si)];
+        openSegSheet(seg);
+      });
+    });
+    el.querySelectorAll('[data-full]').forEach(btn=>{
+      btn.addEventListener('click', ()=>speak(ln.jp, btn.dataset.rate?Number(btn.dataset.rate):1.0));
+    });
+  });
+
+  // 腦袋當機卡插入
+  if(filter==='all'){
+    const brainHtml = BRAIN_CARDS.map(b=>`
+      <div class="brainCard">
+        <div class="q">😭 腦袋當機：「${b.jp}」</div>
+        <div class="steps">${b.steps.map(([t,m])=>`<div>🧠 ${t} → ${m}</div>`).join('')}</div>
+        <div style="margin-top:8px;font-weight:700;">💡 ${b.total}</div>
+        <div class="playrow"><button data-brain="${b.jp}">🎉 再聽一次</button></div>
+      </div>
+    `).join('');
+    list.insertAdjacentHTML('afterbegin', `<h3 style="font-size:14px;color:var(--sub);margin:0 0 8px;">😭 真實旅遊腦袋當機練習</h3>${brainHtml}`);
+    list.querySelectorAll('[data-brain]').forEach(b=>b.addEventListener('click',()=>speak(b.dataset.brain,0.8)));
+  }
+}
+function openSegSheet(seg){
+  const overlay = document.getElementById('overlay');
+  const sheet = document.getElementById('sheetContent');
+  sheet.innerHTML = `
+    <div class="bigjp">${seg.t}</div>
+    <div class="bighira">${seg.r}</div>
+    <div class="bigcn">${seg.m}</div>
+    <div class="playrow">
+      <button data-rate="0.5">🐢 慢速</button>
+      <button data-rate="1.0">▶️ 正常</button>
+    </div>
+    <button class="closeSheet" id="closeSheetBtn">關閉</button>
+  `;
+  sheet.querySelectorAll('[data-rate]').forEach(b=>b.addEventListener('click',()=>speak(seg.r, Number(b.dataset.rate))));
+  document.getElementById('closeSheetBtn').addEventListener('click', closeSheet);
+  overlay.classList.add('show');
+  speak(seg.r, 0.85);
+}
+
+/* ============ 9. 測驗（內嵌在各主題頁面裡）============ */
+function randPick(arr,n,excludeId){
+  const pool = arr.filter(x=>x.id!==excludeId);
+  const picked = [];
+  while(picked.length<n && pool.length){
+    const i = Math.floor(Math.random()*pool.length);
+    picked.push(pool.splice(i,1)[0]);
+  }
+  return picked;
+}
+/* 通用測驗元件：傳入任一題庫(pool，需有 id/display/hira 欄位)，掛載到指定容器 */
+function mountQuiz(container, pool){
+  if(!pool || pool.length<4){
+    container.innerHTML = '<div class="emptyState">這個範圍題目太少（至少需要4筆才能出選擇題）。</div>';
+    return;
+  }
+  container.innerHTML = `
+    <div class="quizModeRow" id="qmRow">
+      <div class="chip active" data-m="listen">🎧 聽力選擇</div>
+      <div class="chip" data-m="read">📖 看讀音選答案</div>
+    </div>
+    <div id="qmCard"></div>
+  `;
+  let mode = 'listen';
+  const cardEl = container.querySelector('#qmCard');
+  function draw(){
+    const item = pool[Math.floor(Math.random()*pool.length)];
+    const distractors = randPick(pool,3,item.id);
+    const options = [item,...distractors].sort(()=>Math.random()-0.5);
+    if(mode==='listen'){
+      cardEl.innerHTML = `
+        <div class="qCard">
+          <div style="text-align:center;color:var(--sub);font-size:13px;">🎧 聽發音，選出正確答案</div>
+          <div class="playrow"><button id="qPlay">🔊 播放</button></div>
+          <div class="qOptions" style="margin-top:16px;">${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
+          <div class="qFeedback" id="qFeedback"></div>
+          <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
+        </div>`;
+      cardEl.querySelector('#qPlay').addEventListener('click',()=>speak(item.hira,0.9));
+      speak(item.hira,0.9);
+    } else {
+      cardEl.innerHTML = `
+        <div class="qCard">
+          <div style="text-align:center;color:var(--sub);font-size:13px;">請選出正確答案</div>
+          <div class="qPrompt">「${item.hira}」</div>
+          <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
+          <div class="qFeedback" id="qFeedback"></div>
+          <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
+        </div>`;
+    }
+    cardEl.querySelectorAll('.qOptions button').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const correct = b.dataset.id===item.id;
+        b.classList.add(correct?'correct':'wrong');
+        cardEl.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）';
+        if(!correct) recordMistake(item);
+        cardEl.querySelectorAll('.qOptions button').forEach(x=>x.disabled=true);
+        cardEl.querySelector('#qNext').style.display='inline-block';
+      });
+    });
+    cardEl.querySelector('#qNext').addEventListener('click', draw);
+  }
+  container.querySelectorAll('#qmRow .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      container.querySelectorAll('#qmRow .chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      mode = chip.dataset.m;
+      draw();
+    });
+  });
+  draw();
+}
+/* 一般主題頁：一顆「🧠 測驗」開關按鈕 */
+function renderTopicQuizToggle(pool, label){
+  const area = document.getElementById('topicQuizArea');
+  area.innerHTML = `<button id="topicQuizBtn" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--chip);font-size:14px;font-weight:700;cursor:pointer;color:var(--text);">🧠 測驗：${label}</button><div id="topicQuizInner" style="margin-top:12px;"></div>`;
+  document.getElementById('topicQuizBtn').addEventListener('click', ()=>{
+    const inner = document.getElementById('topicQuizInner');
+    if(inner.dataset.open==='1'){ inner.innerHTML=''; inner.dataset.open='0'; return; }
+    inner.dataset.open='1';
+    mountQuiz(inner, pool);
+  });
+}
+
+/* ============ 10. 急救卡 ============ */
+function renderRescue(){
+  const wrap = document.getElementById('rescueList');
+  wrap.innerHTML = Object.keys(RESCUE).map(group=>`
+    <div class="rescueGroup">
+      <h3>${group}</h3>
+      ${RESCUE[group].map(it=>`
+        <div class="rescueRow" data-id="${it.id}">
+          <div><div class="l">${it.display}</div><div class="r">${it.hira}</div></div>
+          <button data-play="${it.id}">🔊</button>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  const all = Object.values(RESCUE).flat();
+  wrap.querySelectorAll('[data-play]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const it = all.find(x=>x.id===b.dataset.play);
+      speak(it.hira, 0.9);
+    });
+  });
+}
+
+/* ============ 11. 我的收藏 / 錯題本 ============ */
+function renderMe(){
+  const favs = getFavs();
+  const favWrap = document.getElementById('favList');
+  favWrap.innerHTML = favs.length? favs.map(it=>`
+    <div class="rescueRow" data-id="${it.id}">
+      <div><div class="l">${it.display}</div><div class="r">${it.hira} · ${it.cn}</div></div>
+      <button data-play="${it.id}">🔊</button>
+    </div>
+  `).join('') : '<div class="emptyState">還沒有收藏，去學習頁點 ☆ 收藏喜歡的內容吧！</div>';
+  favWrap.querySelectorAll('[data-play]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const it = favs.find(x=>x.id===b.dataset.play);
+      speak(it.hira, 0.9);
+    });
+  });
+
+  const mistakes = Object.values(getMistakes()).sort((a,b)=>b.count-a.count);
+  const misWrap = document.getElementById('mistakeList');
+  misWrap.innerHTML = mistakes.length? mistakes.map(m=>`
+    <div class="rescueRow">
+      <div><div class="l">${m.item.display}<span class="mistakeCount">錯 ${m.count} 次</span></div><div class="r">${m.item.hira}</div></div>
+      <button data-play="${m.item.id}">🔊</button>
+    </div>
+  `).join('') : '<div class="emptyState">目前沒有錯題紀錄，去測驗頁練習看看！</div>';
+  misWrap.querySelectorAll('[data-play]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const m = mistakes.find(x=>x.item.id===b.dataset.play);
+      speak(m.item.hira, 0.8);
+    });
+  });
+}
+
+/* ============ 12. 深色模式 ============ */
+function initTheme(){
+  const saved = localStorage.getItem(LS_THEME) || 'light';
+  document.documentElement.setAttribute('data-theme', saved==='dark'?'dark':'light');
+  document.getElementById('themeBtn').textContent = saved==='dark'?'☀️':'🌙';
+}
+document.getElementById('themeBtn').addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem(LS_THEME, next);
+  document.getElementById('themeBtn').textContent = next==='dark'?'☀️':'🌙';
+});
+
+/* ============ 初始化 ============ */
+initTheme();
+renderHome();
+</script>
+</body>
+</html>
