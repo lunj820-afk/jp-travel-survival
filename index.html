@@ -962,8 +962,7 @@ const TRIP_CATEGORIES = [
 const CATEGORIES = {
   money:{title:'金額 Money',icon:'💰',items:MONEY_LIST,intro:'日本現場最常聽到的價格，點卡片看拆解、練發音。'},
   time:{title:'時間 Time',icon:'🕒',items:TIME_LIST,intro:'幾點、幾分、約時間都在這裡。'},
-  date:{title:'日期 Date',icon:'📅',items:DATE_LIST,intro:'日期讀法很不規則，1-10日、14/20/24日要特別記。'},
-  month:{title:'月份 Month',icon:'🈷️',items:MONTH_LIST,intro:'4月（しがつ）和7月（しちがつ）發音容易搞錯，特別注意。'},
+  date:{title:'幾月幾號',icon:'📅',items:[...MONTH_LIST,...DATE_LIST],intro:'輸入月＋日就能唸出完整日期，日期讀法很不規則，1-10日、14/20/24日、4月/7月要特別記。'},
   weekday:{title:'星期',icon:'📆',items:WEEKDAY_LIST,intro:'星期一到星期日。'},
   people:{title:'人數',icon:'👥',items:PEOPLE_LIST,intro:'餐廳一定會被問「幾位？」，先練這個。'},
   floor:{title:'樓層',icon:'🏢',items:FLOOR_LIST,intro:'3階/6階/8階/10階讀音都不規則。'},
@@ -1557,10 +1556,10 @@ function openLearn(catKey){
     renderMoneyLookupTool();
     renderLearnList(c.items);
   } else if(catKey==='date'){
-    document.getElementById('phoneToolWrap').style.display='none';
-    renderDateVocab();
+    document.getElementById('phoneToolWrap').style.display='block';
+    renderMonthDateLookupTool();
     renderTopicQuizToggle(c.items, c.title);
-    renderLearnList(c.items);
+    renderDateMonthBrowse();
   } else if(catKey==='time'){
     document.getElementById('phoneToolWrap').style.display='block';
     renderTimeLookupTool();
@@ -1573,9 +1572,59 @@ function openLearn(catKey){
   }
 }
 
-function renderDateVocab(){
+function renderMonthDateLookupTool(){
+  const wrap = document.getElementById('phoneToolWrap');
+  wrap.innerHTML = `
+    <div class="phoneBox" style="margin-bottom:16px;">
+      <div style="margin-bottom:10px;color:var(--sub);font-size:13px;">🔍 查詢任意月日（幾月幾號）</div>
+      <div style="display:flex;gap:10px;align-items:center;justify-content:center;">
+        <input id="monthLookupInput2" type="number" min="1" max="12" placeholder="月" style="width:90px;font-size:22px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);">
+        <span style="font-size:13px;color:var(--sub);">月</span>
+        <input id="dayLookupInput" type="number" min="1" max="31" placeholder="日" style="width:90px;font-size:22px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);">
+        <span style="font-size:13px;color:var(--sub);">日</span>
+      </div>
+      <div id="monthDayOut" class="out"></div>
+    </div>
+  `;
+  const mInput = document.getElementById('monthLookupInput2');
+  const dInput = document.getElementById('dayLookupInput');
+  function update(){
+    const out = document.getElementById('monthDayOut');
+    if(mInput.value===''||dInput.value===''){ out.innerHTML=''; return; }
+    const m = Math.max(1, Math.min(12, Number(mInput.value)));
+    const d = Math.max(1, Math.min(31, Number(dInput.value)));
+    const hira = MONTH_LIST[m-1].hira + DATE_READING[d];
+    const disp = m+'月'+d+'日';
+    out.innerHTML = `<div>${disp} → ${hira}</div>
+      <div class="playrow">
+        <button data-rate="0.5">🐢 慢速 0.5x</button>
+        <button data-rate="1.0">▶️ 正常</button>
+      </div>`;
+    out.querySelectorAll('[data-rate]').forEach(b=>b.addEventListener('click',()=>speak(hira, Number(b.dataset.rate))));
+  }
+  mInput.addEventListener('input', update);
+  dInput.addEventListener('input', update);
+}
+
+function renderDateMonthBrowse(){
   const list = document.getElementById('learnList');
-  list.innerHTML = `<div style="font-size:13px;color:var(--sub);margin-bottom:8px;">📖 基本日期詞彙</div>
+  const cardGroup = (items) => items.map(it=>`
+    <div class="card" data-id="${it.id}">
+      <button class="star ${isFav(it.id)?'on':''}" data-star="${it.id}">★</button>
+      <div class="body" data-body="${it.id}">
+        <div class="jp">${rb(it.display)} ${it.warn?'<span class="warnTag">⚠️易錯</span>':''}</div>
+        <div class="hira">${it.hira}${it.romaji?' · '+it.romaji:''}</div>
+        <div class="cn">${it.cn}</div>
+      </div>
+      <div class="actions">
+        <button data-rate="0.5" data-id2="${it.id}">🐢 慢速 0.5x</button>
+        <button data-rate="0.65" data-id2="${it.id}">🐢 慢速 0.65x</button>
+        <button data-rate="1.0" data-id2="${it.id}">▶️ 正常</button>
+      </div>
+    </div>
+  `).join('');
+  list.innerHTML = `
+    <div style="font-size:13px;color:var(--sub);margin-bottom:8px;">📖 基本日期詞彙</div>
     <div class="vocabGrid">
       ${DATE_VOCAB.map(([jp,h,rj,cn])=>`
         <div class="vocabCell" data-speak="${h.replace(/／.*/,'')}">
@@ -1584,9 +1633,36 @@ function renderDateVocab(){
           <div class="cn">${cn}</div>
         </div>
       `).join('')}
-    </div>`;
+    </div>
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🈷️ 月份 1～12月</h3>
+    ${cardGroup(MONTH_LIST)}
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">📆 日期 1～31日</h3>
+    ${cardGroup(DATE_LIST)}
+  `;
   list.querySelectorAll('.vocabCell').forEach(el=>{
     el.addEventListener('click', ()=>speak(el.dataset.speak, 0.9));
+  });
+  const allItems = [...MONTH_LIST, ...DATE_LIST];
+  list.querySelectorAll('[data-body]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const item = allItems.find(i=>i.id===el.dataset.body);
+      openSheet(item);
+    });
+  });
+  list.querySelectorAll('[data-rate]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const item = allItems.find(i=>i.id===el.dataset.id2);
+      speak(item.hira, Number(el.dataset.rate));
+    });
+  });
+  list.querySelectorAll('[data-star]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const item = allItems.find(i=>i.id===el.dataset.star);
+      const on = toggleFav(item);
+      el.classList.toggle('on', on);
+    });
   });
 }
 
