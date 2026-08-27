@@ -240,6 +240,9 @@ function numberToJapanese(num){
 })();
 
 /* ============ 片假名自動加註平假名（ruby furigana）============ */
+const KANJI_SIMPLE = {"円": "えん", "本": "ほん", "会": "かい", "先": "せん", "列": "れつ", "寺": "てら", "缶": "かん", "肉": "にく", "串": "くし", "何": "なん", "忘": "わす", "杖": "つえ", "来": "らい", "見": "み", "並": "なら", "使": "つか", "券": "けん", "押": "お", "枕": "まくら", "枚": "まい", "玉": "だま", "物": "もの", "乗": "の", "城": "じょう", "姫": "ひめ", "待": "ま", "持": "も", "食": "た", "帰": "かえ", "時": "じ", "粉": "こ", "紙": "かみ", "茶": "ちゃ", "起": "お", "袋": "ふくろ", "傘": "かさ", "割": "わ", "換": "か", "替": "か", "歯": "は", "温": "あたた", "焼": "や", "猫": "ねこ", "買": "か", "階": "かい", "飲": "の", "話": "はな", "道": "みち", "預": "あず", "箸": "はし", "撮": "さつ", "麺": "めん", "願": "ねが", "止": "ど", "匹": "ひき", "一人": "ひとり", "二人": "ふたり", "三人": "さんにん", "四人": "よにん", "人数": "にんずう", "入口": "いりぐち", "三枚": "さんまい", "二枚": "にまい", "千尋": "ちひろ", "土産": "みやげ", "大福": "だいふく", "子供": "こども", "予約": "よやく", "天空": "てんくう", "少々": "しょうしょう", "日本": "にほん", "日焼": "ひや", "毛布": "もうふ", "牛丼": "ぎゅうどん", "写真": "しゃしん", "出口": "でぐち", "台湾": "たいわん", "号室": "ごうしつ", "弁当": "べんとう", "目薬": "めぐすり", "両替": "りょうがえ", "会計": "かいけい", "名詞": "めいし", "団子": "だんご", "地方": "ちほう", "何時": "なんじ", "何番": "なんばん", "何歳": "なんさい", "免税": "めんぜい", "寿司": "すし", "乳液": "にゅうえき", "刺身": "さしみ", "始発": "しはつ", "学校": "がっこう", "定食": "ていしょく", "店内": "てんない", "抹茶": "まっちゃ", "放題": "ほうだい", "注文": "ちゅうもん", "空室": "くうしつ", "空港": "くうこう", "返却": "へんきゃく", "前売": "まえうり", "英語": "えいご", "限定": "げんてい", "神社": "じんじゃ", "茶漬": "ちゃづけ", "國家": "こっか", "梅田": "うめだ", "現金": "げんきん", "着物": "きもの", "終電": "しゅうでん", "荷物": "にもつ", "部屋": "へや", "場所": "ばしょ", "歯磨": "はみが", "温泉": "おんせん", "満室": "まんしつ", "満席": "まんせき", "焼肉": "やきにく", "番線": "ばんせん", "菓子": "かし", "週間": "しゅうかん", "階段": "かいだん", "禁煙": "きんえん", "試着": "しちゃく", "遅延": "ちえん", "運休": "うんきゅう", "電車": "でんしゃ", "綿棒": "めんぼう", "雑誌": "ざっし", "餃子": "ぎょうざ", "駅弁": "えきべん", "數字": "すうじ", "難波": "なんば", "魔法": "まほう", "入浴剤": "にゅうよくざい", "土曜日": "どようび", "大丈夫": "だいじょうぶ", "大阪城": "おおさかじょう", "大阪駅": "おおさかえき", "女性用": "じょせいよう", "中国語": "ちゅうごくご", "化粧水": "けしょうすい", "心斎橋": "しんさいばし", "日本語": "にほんご", "日曜日": "にちようび", "月曜日": "げつようび", "木曜日": "もくようび", "水曜日": "すいようび", "火曜日": "かようび", "半熟卵": "はんじゅくたまご", "台湾人": "たいわんじん", "生理用": "せいりよう", "回練習": "かいれんしゅう", "当日券": "とうじつけん", "何分制": "なんぷんせい", "何名様": "なんめいさま", "何番線": "なんばんせん", "呂恩潔": "ロエンジエ", "改札口": "かいさつぐち", "男性用": "だんせいよう", "券売機": "けんばいき", "東京行": "とうきょうゆき", "金曜日": "きんようび", "非常口": "ひじょうぐち", "故障中": "こしょうちゅう", "美容液": "びようえき", "宮崎駿": "みやざきはやお", "案内所": "あんないじょ", "海遊館": "かいゆうかん", "営業中": "えいぎょうちゅう", "現在地": "げんざいち", "絆創膏": "ばんそうこう", "通天閣": "つうてんかく", "最終便": "さいしゅうびん", "喫煙所": "きつえんじょ", "新今宮": "しんいまみや", "新世界": "しんせかい", "準備中": "じゅんびちゅう", "道頓堀": "どうとんぼり", "精算機": "せいさんき", "摩耶山": "まやさん", "親子丼": "おやこどん", "優先席": "ゆうせんせき", "大人一枚": "おとないちまい", "大人二枚": "おとなにまい", "子供一枚": "こどもいちまい", "子供料金": "こどもりょうきん", "立入禁止": "たちいりきんし", "使用禁止": "しようきんし", "往復二枚": "おうふくにまい", "炭酸飲料": "たんさんいんりょう", "時間勉強": "じかんべんきょう", "部屋番号": "へやばんごう", "黒門市場": "くろもんいちば", "飲食禁止": "いんしょくきんし", "電話番号": "でんわばんごう", "撮影禁止": "さつえいきんし", "自動販売機": "じどうはんばいき", "観光案内所": "かんこうあんないじょ", "大阪城天守閣": "おおさかじょうてんしゅかく", "女性専用車両": "じょせいせんようしゃりょう", "天王寺動物園": "てんのうじどうぶつえん", "関西国際空港": "かんさいこくさいくうこう", "大阪生活今昔館": "おおさかせいかつこんじゃくかん", "天神橋筋商店街": "てんじんばしすじしょうてんがい", "個": "こ"};
+const KANJI_CONTEXT = [["二つ", 1, "ふた"], ["三つ", 1, "みっ"], ["大きい", 1, "おお"], ["小さい", 1, "ちい"], ["少し", 1, "すこ"], ["引く", 1, "ひ"], ["撮って", 1, "と"], ["撮っていただけますか", 1, "と"], ["行きたい", 1, "い"], ["行きます", 1, "い"], ["行きますか", 1, "い"], ["行って", 1, "い"], ["来ました", 1, "き"], ["来ましたか", 1, "き"], ["曲がってください", 1, "ま"], ["辛くない", 1, "から"], ["迷い", 1, "まよ"]];
+const KANJI_MAXLEN = 10;
 function kataToHira(s){
   let out = '';
   for(const ch of s){
@@ -249,9 +252,53 @@ function kataToHira(s){
   }
   return out;
 }
+/* 漢字自動加註平假名：字典比對（詞彙優先於單字），比對不到的漢字保持原樣（寧可不標，不亂標）*/
+function isKanji(ch){
+  const c = ch.codePointAt(0);
+  return (c>=0x4E00 && c<=0x9FFF) || ch==='々';
+}
+function isKatakana(ch){
+  const c = ch.codePointAt(0);
+  return (c>=0x30A1 && c<=0x30F6) || ch==='ー';
+}
 function rb(text){
   if(!text) return text;
-  return text.replace(/[ァ-ー]+/g, run => `<ruby>${run}<rt>${kataToHira(run)}</rt></ruby>`);
+  let out = '';
+  let i = 0;
+  const n = text.length;
+  while(i < n){
+    const ch = text[i];
+    if(isKanji(ch)){
+      let matched = false;
+      const maxLen = Math.min(KANJI_MAXLEN, n-i);
+      for(let len = maxLen; len >= 1 && !matched; len--){
+        const sub = text.slice(i, i+len);
+        if(Object.prototype.hasOwnProperty.call(KANJI_SIMPLE, sub)){
+          out += `<ruby>${sub}<rt>${KANJI_SIMPLE[sub]}</rt></ruby>`;
+          i += len; matched = true;
+        } else {
+          const ctx = KANJI_CONTEXT.find(c => c[0] === sub);
+          if(ctx){
+            const [lit, klen, reading] = ctx;
+            out += `<ruby>${lit.slice(0,klen)}<rt>${reading}</rt></ruby>${lit.slice(klen)}`;
+            i += lit.length; matched = true;
+          }
+        }
+      }
+      if(!matched){ out += ch; i += 1; }
+      continue;
+    }
+    if(isKatakana(ch)){
+      let j = i;
+      while(j < n && isKatakana(text[j])) j++;
+      const run = text.slice(i, j);
+      out += `<ruby>${run}<rt>${kataToHira(run)}</rt></ruby>`;
+      i = j;
+      continue;
+    }
+    out += ch; i += 1;
+  }
+  return out;
 }
 
 /* ============ 2. 資料 ============ */
@@ -402,6 +449,32 @@ function peopleReading(n){
   n = Math.max(1, Math.min(99, Math.floor(n||1)));
   if(PEOPLE_READING[n]) return PEOPLE_READING[n];
   return numberToJapanese(n).reading + 'にん';
+}
+
+/* 自動偵測句子裡的「漢數字＋量詞」，讓短句裡的數字可以改 */
+const KANJI_NUM_MAP = {'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10};
+const COUNTER_CHAR_TYPE = {'枚':'mai','人':'nin','つ':'tsu'};
+function findCounters(jp){
+  const re = /([一二三四五六七八九十]+)(枚|人|つ)/g;
+  const matches = [];
+  let m;
+  while((m = re.exec(jp))){
+    const n = KANJI_NUM_MAP[m[1]];
+    if(!n) continue;
+    matches.push({start:m.index, end:m.index+m[0].length, n, counterType:COUNTER_CHAR_TYPE[m[2]]});
+  }
+  return matches;
+}
+function rebuildPhraseWithCounters(jp, matches, values){
+  let result = '', cursor = 0;
+  matches.forEach((m,idx)=>{
+    result += jp.slice(cursor, m.start);
+    const n = values[idx];
+    result += m.counterType==='nin' ? peopleReading(n) : counterReading(m.counterType, n);
+    cursor = m.end;
+  });
+  result += jp.slice(cursor);
+  return result;
 }
 
 /* 情境購物／點餐例句（可改數量）*/
@@ -1156,27 +1229,49 @@ function openPhraseBrowser(categories, title){
     inner.innerHTML = cats.map(c=>`
       <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${c.title}</h3>
       ${c.note?`<div class="section-intro">${c.note}</div>`:''}
-      ${c.items.map(it=>`
-        <div class="card">
-          <div class="jp">${rb(it.jp)}</div>
+      ${c.items.map(it=>{
+        const counters = findCounters(it.jp);
+        return `
+        <div class="card" data-item="${it.id}">
+          <div class="jp" data-jpline="${it.id}">${rb(it.jp)}</div>
           <div class="hira">${it.romaji}</div>
           <div class="cn">${it.cn}${it.note?' · '+it.note:''}</div>
           <div class="cn" style="color:var(--sub);">${it.en}</div>
+          ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-cnt="${it.id}_${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
+          </div>` : ''}
           <div class="actions">
             <button data-rate="0.5" data-say="${it.id}">🐢 慢速 0.5x</button>
             <button data-rate="0.65" data-say="${it.id}">🐢 慢速 0.65x</button>
             <button data-rate="1.0" data-say="${it.id}">▶️ 正常</button>
           </div>
         </div>
-      `).join('')}
+      `;}).join('')}
     `).join('');
     const flatItems = cats.flatMap(c=>c.items);
-    inner.querySelectorAll('[data-say]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const it = flatItems.find(x=>x.id===btn.dataset.say);
-        speak(it.jp, Number(btn.dataset.rate));
+    const currentJp = {};
+    flatItems.forEach(it=>{ currentJp[it.id] = it.jp; });
+    inner.querySelectorAll('[data-cnt]').forEach(inp=>{
+      inp.addEventListener('input', ()=>{
+        const [itemId] = inp.dataset.cnt.split('_');
+        const it = flatItems.find(x=>x.id===itemId);
+        const counters = findCounters(it.jp);
+        const values = counters.map((m,ci)=>{
+          const el = inner.querySelector(`[data-cnt="${itemId}_${ci}"]`);
+          return Number(el.value) || m.n;
+        });
+        const newJp = rebuildPhraseWithCounters(it.jp, counters, values);
+        currentJp[itemId] = newJp;
+        inner.querySelector(`[data-jpline="${itemId}"]`).innerHTML = rb(newJp);
       });
     });
+    inner.querySelectorAll('[data-say]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        speak(currentJp[btn.dataset.say], Number(btn.dataset.rate));
+      });
+    });
+    const quizLabel = idx===-1 ? '全部' : cats[0].title.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯]\s*/,'');
+    renderTopicQuizToggle(flatItems.map(it=>({id:it.id, display:it.cn, hira:it.jp})), quizLabel);
   }
   renderList(-1);
   document.getElementById('phraseChips').querySelectorAll('.chip').forEach(chip=>{
@@ -1514,7 +1609,7 @@ function renderMoneyLookupTool(){
     const item = moneyItem(v);
     out.innerHTML = `<div class="card" style="text-align:left;margin-top:12px;">
       <div class="body">
-        <div class="jp">${item.display} ${item.warn?'<span class="warnTag">⚠️易錯</span>':''}</div>
+        <div class="jp">${rb(item.display)} ${item.warn?'<span class="warnTag">⚠️易錯</span>':''}</div>
         <div class="hira">${item.hira}</div>
         <div class="cn">${item.cn}</div>
       </div>
@@ -1536,7 +1631,7 @@ function renderLearnList(items){
     <div class="card" data-id="${it.id}">
       <button class="star ${isFav(it.id)?'on':''}" data-star="${it.id}">★</button>
       <div class="body" data-body="${it.id}">
-        <div class="jp">${it.display} ${it.warn?'<span class="warnTag">⚠️易錯</span>':''}</div>
+        <div class="jp">${rb(it.display)} ${it.warn?'<span class="warnTag">⚠️易錯</span>':''}</div>
         <div class="hira">${it.hira}${it.romaji?' · '+it.romaji:''}</div>
         <div class="cn">${it.cn}</div>
       </div>
@@ -1602,7 +1697,7 @@ function openSheet(item){
   const overlay = document.getElementById('overlay');
   const sheet = document.getElementById('sheetContent');
   sheet.innerHTML = `
-    <div class="bigjp">${item.display}</div>
+    <div class="bigjp">${rb(item.display)}</div>
     <div class="bighira">${item.hira}${item.romaji?' · '+item.romaji:''}</div>
     <div class="bigcn">${item.cn}</div>
     ${item.warn?'<div style="text-align:center;margin-top:8px;"><span class="warnTag">⚠️ 容易搞混，特別記！</span></div>':''}
@@ -1647,7 +1742,7 @@ function renderDialogueList(filter){
     ${d.lines.map((ln,li)=>`
       <div class="dialogueLine" data-dlg="${d.title}" data-li="${li}">
         <div class="speaker">${ln.sp}</div>
-        <div class="sent">${ln.segs.map((s,si)=>`<span class="tok" data-si="${si}">${s.t}</span>`).join('')}</div>
+        <div class="sent">${ln.segs.map((s,si)=>`<span class="tok" data-si="${si}">${rb(s.t)}</span>`).join('')}</div>
         <div class="cn">${ln.cn}</div>
         <div class="tts">
           <button data-full="1">🔊 整句</button>
@@ -1675,7 +1770,7 @@ function renderDialogueList(filter){
   if(filter==='all'){
     const brainHtml = BRAIN_CARDS.map(b=>`
       <div class="brainCard">
-        <div class="q">😭 腦袋當機：「${b.jp}」</div>
+        <div class="q">😭 腦袋當機：「${rb(b.jp)}」</div>
         <div class="steps">${b.steps.map(([t,m])=>`<div>🧠 ${t} → ${m}</div>`).join('')}</div>
         <div style="margin-top:8px;font-weight:700;">💡 ${b.total}</div>
         <div class="playrow"><button data-brain="${b.jp}">🎉 再聽一次</button></div>
@@ -1689,7 +1784,7 @@ function openSegSheet(seg){
   const overlay = document.getElementById('overlay');
   const sheet = document.getElementById('sheetContent');
   sheet.innerHTML = `
-    <div class="bigjp">${seg.t}</div>
+    <div class="bigjp">${rb(seg.t)}</div>
     <div class="bighira">${seg.r}</div>
     <div class="bigcn">${seg.m}</div>
     <div class="playrow">
@@ -1738,7 +1833,7 @@ function mountQuiz(container, pool){
         <div class="qCard">
           <div style="text-align:center;color:var(--sub);font-size:13px;">🎧 聽發音，選出正確答案</div>
           <div class="playrow"><button id="qPlay">🔊 播放</button></div>
-          <div class="qOptions" style="margin-top:16px;">${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
+          <div class="qOptions" style="margin-top:16px;">${options.map(o=>`<button data-id="${o.id}">${rb(o.display)}</button>`).join('')}</div>
           <div class="qFeedback" id="qFeedback"></div>
           <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
         </div>`;
@@ -1749,7 +1844,7 @@ function mountQuiz(container, pool){
         <div class="qCard">
           <div style="text-align:center;color:var(--sub);font-size:13px;">請選出正確答案</div>
           <div class="qPrompt">「${item.hira}」</div>
-          <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
+          <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${rb(o.display)}</button>`).join('')}</div>
           <div class="qFeedback" id="qFeedback"></div>
           <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
         </div>`;
@@ -1796,7 +1891,7 @@ function renderRescue(){
       <h3>${group}</h3>
       ${RESCUE[group].map(it=>`
         <div class="rescueRow" data-id="${it.id}">
-          <div><div class="l">${it.display}</div><div class="r">${it.hira}</div></div>
+          <div><div class="l">${rb(it.display)}</div><div class="r">${it.hira}</div></div>
           <button data-play="${it.id}">🔊</button>
         </div>
       `).join('')}
@@ -1817,7 +1912,7 @@ function renderMe(){
   const favWrap = document.getElementById('favList');
   favWrap.innerHTML = favs.length? favs.map(it=>`
     <div class="rescueRow" data-id="${it.id}">
-      <div><div class="l">${it.display}</div><div class="r">${it.hira} · ${it.cn}</div></div>
+      <div><div class="l">${rb(it.display)}</div><div class="r">${it.hira} · ${it.cn}</div></div>
       <button data-play="${it.id}">🔊</button>
     </div>
   `).join('') : '<div class="emptyState">還沒有收藏，去學習頁點 ☆ 收藏喜歡的內容吧！</div>';
@@ -1832,7 +1927,7 @@ function renderMe(){
   const misWrap = document.getElementById('mistakeList');
   misWrap.innerHTML = mistakes.length? mistakes.map(m=>`
     <div class="rescueRow">
-      <div><div class="l">${m.item.display}<span class="mistakeCount">錯 ${m.count} 次</span></div><div class="r">${m.item.hira}</div></div>
+      <div><div class="l">${rb(m.item.display)}<span class="mistakeCount">錯 ${m.count} 次</span></div><div class="r">${m.item.hira}</div></div>
       <button data-play="${m.item.id}">🔊</button>
     </div>
   `).join('') : '<div class="emptyState">目前沒有錯題紀錄，去測驗頁練習看看！</div>';
