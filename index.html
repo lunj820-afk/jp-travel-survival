@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>日本旅遊數字生存教材</title>
+<title>🇯🇵 日本我準備好了！</title>
 <style>
 :root{
   --bg:#fdf6ec; --card:#ffffff; --text:#2b2620; --sub:#7a7266;
@@ -118,7 +118,7 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 <body>
 <header>
   <div>
-    <h1>🇯🇵 日本旅遊數字生存教材</h1>
+    <h1>🇯🇵 日本我準備好了！</h1>
     <div class="sub">聽得懂、念得出、答得出</div>
   </div>
   <button id="themeBtn">🌙</button>
@@ -134,6 +134,9 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 
     <h2 class="sect">📚 依主題學習</h2>
     <div class="grid" id="categoryGrid"></div>
+
+    <h2 class="sect">🗣️ 常用短句</h2>
+    <div class="grid" id="phraseGrid"></div>
   </section>
 
   <!-- 學習分類 -->
@@ -517,6 +520,105 @@ const OTHER_DATE_VOCAB = [
   ['毎年','まいとし／まいねん','maitoshi / mainen','每年'],['一日中','いちにちじゅう','ichinichijū','一整天'],
   ['昼間','ひるま','hiruma','白天'],['夜','よる','yoru','夜晚'],['深夜','しんや','shinya','深夜'],
 ];
+/* 句型文法教室（來自「旅遊日文小抄 Version 5」分頁03）*/
+const GRAMMAR_LESSONS = [
+  { jp:'お願いします', romaji:'Onegaishimasu', level:'N5', meaning:'拜託了、麻煩了、請',
+    explain:'「お願いします」是日文動詞「願う」(ねがう,祈求、拜託的意思)的禮貌形。用來請求別人幫忙、點餐,或是在信件結尾表達「就拜託你了」的託付語氣,是日文裡使用頻率最高的句子之一,幾乎每天都會用到。',
+    pattern:'名詞 ＋（を）＋ お願いします', patternNote:'「を」是助詞,標記前面的名詞是「拜託、要求的對象」,口語對話中常常直接省略,例如點餐時服務生也聽得懂「ラーメンお願いします」。',
+    examples:[
+      {cn:'我要三張票', jp:'三枚お願いします', romaji:'San-mai onegaishimasu', en:'Three tickets, please'},
+      {cn:'我要拉麵', jp:'ラーメンをお願いします。', romaji:'Rāmen o onegaishimasu.', en:'I’d like ramen, please'},
+      {cn:'可以幫我們拍照嗎？', jp:'写真お願いします', romaji:'Shashin onegaishimasu', en:'A photo, please'},
+    ],
+    dialogue:[
+      {speaker:'你', jp:'すみません、これお願いします。', romaji:'Sumimasen, kore onegaishimasu.', cn:'不好意思，這個麻煩你了。'},
+      {speaker:'店員', jp:'かしこまりました。', romaji:'Kashikomarimashita.', cn:'好的，知道了（比「わかりました」更禮貌的說法）。'},
+    ]},
+  { jp:'できますか', romaji:'Dekimasu ka?', level:'N5', meaning:'可以嗎？會嗎？能做到嗎？',
+    explain:'這是動詞「できる」(dekiru,能夠、會、辦得到)加上疑問助詞「か」構成的禮貌問句,主要用來確認某人的能力,或詢問某件事是否可行、是否被允許,例如試穿、退稅、付款方式等。',
+    pattern:'名詞 ＋ できますか？', patternNote:'把想確認的事情放在最前面就好,是很萬用的句型,幾乎任何「可不可以⋯」的情境都能套用。',
+    tip:'「できる」屬於「可能動詞」的一種。之後學到動詞變化時,還會遇到「〜られます」這種由一般動詞變化來的可能形(例如「食べられます」＝可以吃),意思相近但構成方式不同,現在先熟悉「できますか」這個最好用的萬用問法就很夠了。',
+    examples:[
+      {cn:'可以試穿嗎？', jp:'試着できますか？', romaji:'Shichaku dekimasu ka?', en:'Can I try this on?'},
+      {cn:'可以退稅嗎？', jp:'免税できますか？', romaji:'Menzei dekimasu ka?', en:'Can I get a tax refund?'},
+      {cn:'這可以儲值嗎？', jp:'チャージできますか？', romaji:'Chaaji dekimasu ka?', en:'Can I top up here?'},
+    ],
+    dialogue:[
+      {speaker:'你', jp:'予約できますか？', romaji:'Yoyaku dekimasu ka?', cn:'請問可以預約嗎？'},
+      {speaker:'店員', jp:'はい、大丈夫です。', romaji:'Hai, daijoubu desu.', cn:'可以的，沒問題。'},
+    ]},
+  { jp:'ありますか', romaji:'Arimasu ka?', level:'N5', meaning:'有嗎？在嗎？',
+    explain:'這是動詞「ある」(aru,表示「有、存在」)加上疑問助詞「か」構成的禮貌問句,專門用來詢問「植物、沒有生命的物品、抽象概念或活動」是否存在,例如尺寸、菜單、活動場次等。',
+    pattern:'名詞 ＋ は/が ＋ ありますか？', patternNote:'「は」用來特別提出、強調前面的名詞；「が」則比較單純地陳述「有沒有這個東西」,日常對話中兩者常可以互換,不用想太多。',
+    tip:'重要區分：「ある」只能用在沒有生命的東西、植物、抽象概念(例如活動、時間、預約)上；有生命的人或動物要改用「いる」/「いますか」,例如問「有貓嗎？」要說「猫はいますか？」而不是「猫はありますか？」。這是初學者最容易搞混的文法點之一,先有印象,之後會反覆遇到。',
+    examples:[
+      {cn:'有大一點的尺寸嗎？', jp:'もう少し大きいサイズありますか？', romaji:'Mou sukoshi ookii saizu arimasu ka?', en:'Do you have a bigger size?'},
+      {cn:'有兒童尺寸嗎？', jp:'子供のサイズはありますか？', romaji:'Kodomo no saizu wa arimasu ka?', en:'Do you have kids’ sizes?'},
+      {cn:'有中文菜單嗎？', jp:'中国語のメニューはありますか？', romaji:'Chuugokugo no menyuu wa arimasu ka?', en:'Do you have a Chinese menu?'},
+    ],
+    dialogue:[
+      {speaker:'你', jp:'すみません、中国語のメニューはありますか？', romaji:'Sumimasen, chuugokugo no menyuu wa arimasu ka?', cn:'不好意思，請問有中文菜單嗎？'},
+      {speaker:'店員', jp:'少々お待ちください。', romaji:'Shoushou omachi kudasai.', cn:'請稍等一下。'},
+    ]},
+  { jp:'〜はどこですか', romaji:'~ wa doko desu ka?', level:'N5', meaning:'請問…在哪裡？',
+    explain:'「どこ」是疑問詞「哪裡」,「です」是禮貌的「是」,整句直譯是「~是哪裡?」,是問路、找地點時最基本也最好用的句型。前面加上「すみません」(不好意思)開頭會更有禮貌。',
+    pattern:'場所 ＋ はどこですか？', patternNote:'「場所」可以換成任何地點名詞,例如廁所、車站、月台、某個景點名稱,直接套用就能問路。',
+    tip:'對方回答時通常會用簡單的方向詞,不一定聽得懂全部也沒關係,先認得下面這幾個關鍵詞,搭配對方的手勢通常就能理解大概方向。',
+    examples:[
+      {cn:'廁所在哪？', jp:'トイレはどこですか？', romaji:'Toire wa doko desu ka?', en:'Where is the restroom?'},
+      {cn:'大阪城怎麼走？', jp:'大阪城はどこですか？', romaji:'Ōsakajō wa doko desu ka?', en:'How do I get to Osaka Castle?'},
+    ],
+    replies:[
+      {cn:'直走', jp:'まっすぐです', romaji:'Massugu desu', en:'Go straight'},
+      {cn:'請右轉', jp:'右に曲がってください', romaji:'Migi ni magatte kudasai', en:'Turn right, please'},
+      {cn:'請左轉', jp:'左に曲がってください', romaji:'Hidari ni magatte kudasai', en:'Turn left, please'},
+      {cn:'就在那裡', jp:'あそこです', romaji:'Asoko desu', en:'It’s over there'},
+      {cn:'就在這裡', jp:'ここです', romaji:'Koko desu', en:'It’s right here'},
+      {cn:'在前面', jp:'この先です', romaji:'Kono saki desu', en:'It’s just ahead'},
+    ],
+    dialogue:[
+      {speaker:'你', jp:'すみません、トイレはどこですか？', romaji:'Sumimasen, toire wa doko desu ka?', cn:'不好意思，請問廁所在哪裡？'},
+      {speaker:'路人', jp:'まっすぐ行って、右に曲がってください。', romaji:'Massugu itte, migi ni magatte kudasai.', cn:'直走然後右轉。'},
+      {speaker:'你', jp:'ありがとうございます。', romaji:'Arigatou gozaimasu.', cn:'謝謝你。'},
+    ]},
+  { jp:'〜から来ました', romaji:'~ kara kimashita', level:'N5', meaning:'我從…來的',
+    explain:'「から」是助詞,表示「從」；「来ました」是動詞「来る」(くる,來)的過去禮貌形。這是自我介紹時很常用的句型,用來說明自己的出身地或來自哪個國家。',
+    pattern:'國家/地方 ＋ から来ました', patternNote:'如果想更簡短,也可以直接說「台湾人です」(我是台灣人),意思一樣,看情境挑一種用就好。',
+    examples:[
+      {cn:'我來自台灣', jp:'台湾から来ました', romaji:'Taiwan kara kimashita', en:'I’m from Taiwan'},
+      {cn:'我是台灣人', jp:'台湾人です', romaji:'Taiwanjin desu', en:'I am Taiwanese'},
+    ],
+    dialogue:[
+      {speaker:'店員', jp:'どちらから来ましたか？', romaji:'Dochira kara kimashita ka?', cn:'請問您從哪裡來的呢？'},
+      {speaker:'你', jp:'台湾から来ました。', romaji:'Taiwan kara kimashita.', cn:'我從台灣來的。'},
+    ]},
+  { jp:'サイズ（大きい・小さい）', romaji:'Saizu (ookii / chiisai)', level:'N5', meaning:'尺寸的大小怎麼問',
+    explain:'「大きい」是「大的」,「小さい」是「小的」,都是形容詞。「もう少し」是「再稍微」的意思。把這兩個字套進前面學過的「ありますか」句型裡,就是購物時最實用的問句。',
+    pattern:'これ、もう少し＋大きい／小さい＋サイズはありますか？', patternNote:'這句直接結合了兩個文法點：形容詞(大きい/小さい)＋ ありますか,學會之後可以自己替換成其他形容詞,例如「安い」(便宜的)、「明るい」(顏色亮的)等。',
+    examples:[
+      {cn:'這個有大一點的尺寸嗎？', jp:'これ、もう少し大きいサイズはありますか？', romaji:'Kore, mou sukoshi ookii saizu wa arimasu ka?', en:'Do you have this in a bigger size?'},
+      {cn:'這個有小一點的尺寸嗎？', jp:'これ、もう少し小さいサイズはありますか？', romaji:'Kore, mou sukoshi chiisai saizu wa arimasu ka?', en:'Do you have this in a smaller size?'},
+    ],
+    dialogue:[
+      {speaker:'你', jp:'これ、もう少し大きいサイズはありますか？', romaji:'Kore, mou sukoshi ookii saizu wa arimasu ka?', cn:'這件有大一點的尺寸嗎？'},
+      {speaker:'店員', jp:'Mサイズならございます。', romaji:'M saizu nara gozaimasu.', cn:'M尺寸的話有喔。'},
+    ]},
+  { jp:'人数（〜人です）', romaji:'~ nin desu', level:'N5', meaning:'一共幾位的說法',
+    explain:'進餐廳時服務生通常會先問「何名様ですか？」(請問幾位?),妳只要回答數字加上「人です」就好。',
+    pattern:'數字 ＋ 人です', patternNote:null,
+    tip:'「一人」念作ひとり(hitori)、「二人」念作ふたり(futari),這兩個是特殊念法一定要背；從「三人」(さんにん)、「四人」(よにん)開始才照規則念,下面例句已經幫妳標好羅馬拼音了。',
+    examples:[
+      {cn:'一位', jp:'一人です', romaji:'Hitori desu', en:'One person'},
+      {cn:'一共2位', jp:'二人です', romaji:'Futari desu', en:'Two people'},
+      {cn:'一共3位', jp:'三人です', romaji:'San-nin desu', en:'Three people'},
+      {cn:'四位', jp:'四人です', romaji:'Yo-nin desu', en:'Four people'},
+    ],
+    dialogue:[
+      {speaker:'店員', jp:'何名様ですか？', romaji:'Nanmei-sama desu ka?', cn:'請問幾位？'},
+      {speaker:'你', jp:'三人です。', romaji:'San-nin desu.', cn:'三位。'},
+    ]},
+];
+
 const PARTICLE_PATTERNS = [
   [['幾點起床','に']],
   [['關什麼','を']],
@@ -548,6 +650,240 @@ const PARTICLE_PATTERNS = [
   [['回哪裡','へ'],['搭什麼回','で'],['跟誰回','と']],
   [['忘記什麼','を'],['忘在哪裡','に']],
   [['丟失什麼','を'],['在哪裡丟','で']],
+];
+
+
+/* ============ 旅遊短句／行程專屬（來自「旅遊日文小抄 Version 5」）============ */
+const PHRASE_CATEGORIES = [
+  { title: "① 萬用開場", note: "這三句一定要會", items: [
+    { id:"phrase_0_0", cn:"不好意思", note:"請問、不好意思、借過、打擾一下都能用", jp:"すみません", romaji:"Su-mi-ma-sen", en:"Excuse me" },
+    { id:"phrase_0_1", cn:"謝謝", note:null, jp:"ありがとうございます", romaji:"A-ri-ga-tou go-za-i-ma-su", en:"Thank you very much" },
+    { id:"phrase_0_2", cn:"謝謝(簡單一點)", note:null, jp:"ありがとう", romaji:"A-ri-ga-tou", en:"Thanks" },
+    { id:"phrase_0_3", cn:"不好意思,我不會日文", note:null, jp:"日本語が話せません", romaji:"Nihongo ga hanasemasen", en:"I can't speak Japanese" },
+    { id:"phrase_0_4", cn:"可以說一點英文嗎?", note:null, jp:"少しだけ英語できますか?", romaji:"Sukoshi dake eigo dekimasu ka?", en:"Can you speak a little English?" },
+  ]},
+  { title: "② 機場", note: null, items: [
+    { id:"phrase_1_0", cn:"機場在哪裡?", note:null, jp:"空港はどこですか?", romaji:"Kūkō wa doko desu ka?", en:"Where is the airport?" },
+    { id:"phrase_1_1", cn:"我要去這裡", note:"直接把 Google Maps 給對方看", jp:"ここへ行きたいです", romaji:"Koko e ikitai desu", en:"I want to go here" },
+    { id:"phrase_1_2", cn:"廁所在哪?", note:null, jp:"トイレはどこですか?", romaji:"Toire wa doko desu ka?", en:"Where is the restroom?" },
+    { id:"phrase_1_3", cn:"是哪一個月台?", note:null, jp:"何番ホームですか?", romaji:"Nanban hōmu desu ka?", en:"Which platform is it?" },
+  ]},
+  { title: "③ 電車與車站", note: "搭車句子＋車站內常見標示,一次學會(原本分開的「車站標示」併進來了)", items: [
+    { id:"phrase_2_0", cn:"這台車有到難波嗎?", note:null, jp:"この電車は難波へ行きますか?", romaji:"Kono densha wa Namba e ikimasu ka?", en:"Does this train go to Namba?" },
+    { id:"phrase_2_1", cn:"我要三張票", note:null, jp:"三枚お願いします", romaji:"San-mai onegaishimasu", en:"Three tickets, please" },
+    { id:"phrase_2_2", cn:"可以刷卡嗎?", note:null, jp:"カード使えますか?", romaji:"Kaado tsukaemasu ka?", en:"Can I pay by card?" },
+    { id:"phrase_2_3", cn:"出口", note:null, jp:"出口", romaji:"Deguchi", en:"Exit" },
+    { id:"phrase_2_4", cn:"入口", note:null, jp:"入口", romaji:"Iriguchi", en:"Entrance" },
+    { id:"phrase_2_5", cn:"月台", note:null, jp:"ホーム", romaji:"Hōmu", en:"Platform" },
+    { id:"phrase_2_6", cn:"電梯", note:null, jp:"エレベーター", romaji:"Erebētā", en:"Elevator" },
+    { id:"phrase_2_7", cn:"手扶梯", note:null, jp:"エスカレーター", romaji:"Esukarētā", en:"Escalator" },
+    { id:"phrase_2_8", cn:"樓梯", note:null, jp:"階段", romaji:"Kaidan", en:"Stairs" },
+    { id:"phrase_2_9", cn:"寄物櫃", note:null, jp:"コインロッカー", romaji:"Koin rokkā", en:"Coin locker" },
+    { id:"phrase_2_10", cn:"售票機", note:null, jp:"券売機", romaji:"Kenbaiki", en:"Ticket machine" },
+    { id:"phrase_2_11", cn:"剪票口", note:null, jp:"改札口", romaji:"Kaisatsuguchi", en:"Ticket gate" },
+    { id:"phrase_2_12", cn:"轉乘", note:null, jp:"乗り換え", romaji:"Norikae", en:"Transfer" },
+    { id:"phrase_2_13", cn:"頭班車", note:null, jp:"始発", romaji:"Shihatsu", en:"First train" },
+    { id:"phrase_2_14", cn:"末班車", note:null, jp:"終電", romaji:"Shūden", en:"Last train" },
+    { id:"phrase_2_15", cn:"誤點", note:null, jp:"遅延", romaji:"Chien", en:"Delay" },
+    { id:"phrase_2_16", cn:"停駛", note:null, jp:"運休", romaji:"Unkyū", en:"Service suspended" },
+    { id:"phrase_2_17", cn:"補票機", note:null, jp:"精算機", romaji:"Seisanki", en:"Fare adjustment machine" },
+    { id:"phrase_2_18", cn:"兌換處", note:null, jp:"両替", romaji:"Ryōgae", en:"Currency exchange" },
+    { id:"phrase_2_19", cn:"自動販賣機", note:null, jp:"自動販売機", romaji:"Jidōhanbaiki", en:"Vending machine" },
+    { id:"phrase_2_20", cn:"博愛座", note:null, jp:"優先席", romaji:"Yūsenseki", en:"Priority seat" },
+    { id:"phrase_2_21", cn:"女性專用車廂", note:null, jp:"女性専用車両", romaji:"Josei sen’yō sharyō", en:"Women-only car" },
+  ]},
+  { title: "④ 飯店 Check-in", note: null, items: [
+    { id:"phrase_3_0", cn:"我要辦入住", note:null, jp:"チェックインお願いします", romaji:"Chekku in onegaishimasu", en:"I'd like to check in, please" },
+    { id:"phrase_3_1", cn:"有訂房", note:null, jp:"予約しています", romaji:"Yoyaku shiteimasu", en:"I have a reservation" },
+    { id:"phrase_3_2", cn:"名字是呂恩潔", note:"其實直接拿護照即可", jp:"呂恩潔です", romaji:"…desu", en:"My name is Lu En-Jie" },
+    { id:"phrase_3_3", cn:"客滿(房間)", note:null, jp:"満室", romaji:"Manshitsu", en:"Fully booked (rooms)" },
+    { id:"phrase_3_4", cn:"空房", note:null, jp:"空室", romaji:"Kūshitsu", en:"Vacancy" },
+  ]},
+  { title: "⑤ 餐廳", note: "最常用的一類", items: [
+    { id:"phrase_4_0", cn:"三位", note:null, jp:"三人です", romaji:"San-nin desu", en:"Three people" },
+    { id:"phrase_4_1", cn:"有訂位", note:null, jp:"予約しています", romaji:"Yoyaku shiteimasu", en:"I have a reservation" },
+    { id:"phrase_4_2", cn:"沒有訂位", note:null, jp:"予約していません", romaji:"Yoyaku shiteimasen", en:"I don't have a reservation" },
+    { id:"phrase_4_3", cn:"這個(指菜單)", note:"日本人超常聽到這句", jp:"これください", romaji:"Kore kudasai", en:"This one, please" },
+    { id:"phrase_4_4", cn:"可以點餐嗎?", note:null, jp:"注文お願いします", romaji:"Chūmon onegaishimasu", en:"I'd like to order, please" },
+    { id:"phrase_4_5", cn:"不要香菜", note:null, jp:"パクチーなしでお願いします", romaji:"Pakuchii nashi de onegaishimasu", en:"No cilantro, please" },
+    { id:"phrase_4_6", cn:"不要辣", note:null, jp:"辛くないものお願いします", romaji:"Karakunai mono onegaishimasu", en:"Something not spicy, please" },
+    { id:"phrase_4_7", cn:"可以打包嗎?", note:null, jp:"持ち帰りできますか?", romaji:"Mochikaeri dekimasu ka?", en:"Can I get this to go?" },
+    { id:"phrase_4_8", cn:"客滿(座位)", note:null, jp:"満席", romaji:"Manseki", en:"Fully booked (seats)" },
+  ]},
+  { title: "⑥ 便利商店", note: null, items: [
+    { id:"phrase_5_0", cn:"要袋子", note:null, jp:"袋お願いします", romaji:"Fukuro onegaishimasu", en:"A bag, please" },
+    { id:"phrase_5_1", cn:"不用袋子", note:null, jp:"袋はいりません", romaji:"Fukuro wa irimasen", en:"No bag needed, thanks" },
+    { id:"phrase_5_2", cn:"可以微波嗎?", note:null, jp:"温めてください", romaji:"Atatamete kudasai", en:"Please warm this up" },
+    { id:"phrase_5_3", cn:"免洗筷", note:null, jp:"割り箸", romaji:"Waribashi", en:"Disposable chopsticks" },
+  ]},
+  { title: "⑦ 購物", note: null, items: [
+    { id:"phrase_6_0", cn:"可以試穿嗎?", note:null, jp:"試着できますか?", romaji:"Shichaku dekimasu ka?", en:"Can I try this on?" },
+    { id:"phrase_6_1", cn:"有大一點的尺寸嗎?", note:null, jp:"もう少し大きいサイズありますか?", romaji:"Mou sukoshi ookii saizu arimasu ka?", en:"Do you have a bigger size?" },
+    { id:"phrase_6_2", cn:"可以退稅嗎?", note:null, jp:"免税できますか?", romaji:"Menzei dekimasu ka?", en:"Can I get a tax refund?" },
+    { id:"phrase_6_3", cn:"免稅", note:null, jp:"免税", romaji:"Menzei", en:"Tax-free" },
+    { id:"phrase_6_4", cn:"現金", note:null, jp:"現金", romaji:"Genkin", en:"Cash" },
+    { id:"phrase_6_5", cn:"刷卡", note:null, jp:"カード", romaji:"Kādo", en:"Card payment" },
+    { id:"phrase_6_6", cn:"營業中", note:null, jp:"営業中", romaji:"Eigyō-chū", en:"Open" },
+    { id:"phrase_6_7", cn:"準備中(尚未營業)", note:null, jp:"準備中", romaji:"Junbi-chū", en:"Preparing (not open yet)" },
+    { id:"phrase_6_8", cn:"收銀台", note:null, jp:"レジ", romaji:"Reji", en:"Cashier" },
+    { id:"phrase_6_9", cn:"伴手禮/名產", note:null, jp:"お土産", romaji:"Omiyage", en:"Souvenir" },
+  ]},
+  { title: "⑧ 景點", note: null, items: [
+    { id:"phrase_7_0", cn:"可以幫我們拍照嗎?", note:null, jp:"写真お願いします", romaji:"Shashin onegaishimasu", en:"A photo, please" },
+    { id:"phrase_7_1", cn:"可以幫我們拍照嗎?(更完整)", note:null, jp:"写真を撮っていただけますか?", romaji:"Shashin o totte itadakemasu ka?", en:"Could you take a photo for us?" },
+    { id:"phrase_7_2", cn:"當日券", note:null, jp:"当日券", romaji:"Tōjitsuken", en:"Same-day ticket" },
+    { id:"phrase_7_3", cn:"預售票", note:null, jp:"前売り券", romaji:"Maeuriken", en:"Advance ticket" },
+    { id:"phrase_7_4", cn:"案內處", note:null, jp:"案内所", romaji:"Annaijo", en:"Information desk" },
+    { id:"phrase_7_5", cn:"觀光服務處", note:null, jp:"観光案内所", romaji:"Kankō annaijo", en:"Tourist information center" },
+    { id:"phrase_7_6", cn:"禁止拍照", note:null, jp:"撮影禁止", romaji:"Satsuei kinshi", en:"No photography" },
+  ]},
+  { title: "⑨ 發生問題", note: null, items: [
+    { id:"phrase_8_0", cn:"迷路了", note:null, jp:"道に迷いました", romaji:"Michi ni mayoimashita", en:"I'm lost" },
+    { id:"phrase_8_1", cn:"可以幫我嗎?", note:null, jp:"手伝ってください", romaji:"Tetsudatte kudasai", en:"Please help me" },
+    { id:"phrase_8_2", cn:"我不懂", note:null, jp:"わかりません", romaji:"Wakarimasen", en:"I don't understand" },
+    { id:"phrase_8_3", cn:"遺失物", note:null, jp:"忘れ物", romaji:"Wasuremono", en:"Lost item" },
+    { id:"phrase_8_4", cn:"故障中", note:null, jp:"故障中", romaji:"Koshō-chū", en:"Out of order" },
+  ]},
+  { title: "⑩ 餐廳點餐(我要+食物)", note: "學會「我要＋食物」跟「我要去＋景點」這兩個句型就超夠用了", items: [
+    { id:"phrase_9_0", cn:"我要拉麵", note:null, jp:"ラーメンをお願いします。", romaji:"Rāmen o onegaishimasu.", en:"I'd like ramen, please" },
+    { id:"phrase_9_1", cn:"我要燒肉", note:null, jp:"焼肉をお願いします。", romaji:"Yakiniku o onegaishimasu.", en:"I'd like yakiniku, please" },
+    { id:"phrase_9_2", cn:"我要大阪燒", note:null, jp:"お好み焼きをお願いします。", romaji:"Okonomiyaki o onegaishimasu.", en:"I'd like okonomiyaki, please" },
+    { id:"phrase_9_3", cn:"我要章魚燒", note:null, jp:"たこ焼きをお願いします。", romaji:"Takoyaki o onegaishimasu.", en:"I'd like takoyaki, please" },
+    { id:"phrase_9_4", cn:"我要炸串", note:null, jp:"串カツをお願いします。", romaji:"Kushikatsu o onegaishimasu.", en:"I'd like kushikatsu, please" },
+    { id:"phrase_9_5", cn:"我要壽司", note:null, jp:"お寿司をお願いします。", romaji:"Osushi o onegaishimasu.", en:"I'd like sushi, please" },
+    { id:"phrase_9_6", cn:"我要生魚片", note:null, jp:"刺身をお願いします。", romaji:"Sashimi o onegaishimasu.", en:"I'd like sashimi, please" },
+    { id:"phrase_9_7", cn:"我要烏龍麵", note:null, jp:"うどんをお願いします。", romaji:"Udon o onegaishimasu.", en:"I'd like udon, please" },
+    { id:"phrase_9_8", cn:"我要蕎麥麵", note:null, jp:"そばをお願いします。", romaji:"Soba o onegaishimasu.", en:"I'd like soba, please" },
+    { id:"phrase_9_9", cn:"我要咖哩飯", note:null, jp:"カレーライスをお願いします。", romaji:"Karē raisu o onegaishimasu.", en:"I'd like curry rice, please" },
+    { id:"phrase_9_10", cn:"我要丼飯", note:"例如牛丼、豬排丼、親子丼,見下面三句", jp:"丼をお願いします。", romaji:"Donburi o onegaishimasu.", en:"I'd like a rice bowl, please" },
+    { id:"phrase_9_11", cn:"我要牛丼", note:null, jp:"牛丼をお願いします。", romaji:"Gyūdon", en:"I'd like gyudon (beef bowl), please" },
+    { id:"phrase_9_12", cn:"我要豬排丼", note:null, jp:"カツ丼をお願いします。", romaji:"Katsudon", en:"I'd like katsudon (pork cutlet bowl), please" },
+    { id:"phrase_9_13", cn:"我要親子丼", note:null, jp:"親子丼をお願いします。", romaji:"Oyakodon", en:"I'd like oyakodon (chicken & egg bowl), please" },
+  ]},
+  { title: "⑪ 甜點", note: null, items: [
+    { id:"phrase_10_0", cn:"我要抹茶冰淇淋", note:null, jp:"抹茶ソフトをお願いします。", romaji:"Matcha sofuto", en:"I'd like matcha soft serve, please" },
+    { id:"phrase_10_1", cn:"我要抹茶", note:null, jp:"抹茶をお願いします。", romaji:"Matcha", en:"I'd like matcha, please" },
+    { id:"phrase_10_2", cn:"我要糰子", note:null, jp:"団子をお願いします。", romaji:"Dango", en:"I'd like dango, please" },
+    { id:"phrase_10_3", cn:"我要大福", note:null, jp:"大福をお願いします。", romaji:"Daifuku", en:"I'd like daifuku, please" },
+    { id:"phrase_10_4", cn:"我要鯛魚燒", note:null, jp:"たい焼きをお願いします。", romaji:"Taiyaki", en:"I'd like taiyaki, please" },
+    { id:"phrase_10_5", cn:"我要可麗餅", note:null, jp:"クレープをお願いします。", romaji:"Kurēpu", en:"I'd like a crepe, please" },
+  ]},
+  { title: "⑫ 飲料", note: null, items: [
+    { id:"phrase_11_0", cn:"我要水", note:null, jp:"お水をお願いします。", romaji:"Omizu", en:"Water, please" },
+    { id:"phrase_11_1", cn:"我要可樂", note:null, jp:"コーラをお願いします。", romaji:"Kōra", en:"Coke, please" },
+    { id:"phrase_11_2", cn:"我要咖啡", note:null, jp:"コーヒーをお願いします。", romaji:"Kōhī", en:"Coffee, please" },
+    { id:"phrase_11_3", cn:"我要熱茶", note:null, jp:"お茶をお願いします。", romaji:"Ocha", en:"Tea, please" },
+  ]},
+  { title: "⑬ 點餐最萬用", note: null, items: [
+    { id:"phrase_12_0", cn:"這個", note:"直接指菜單", jp:"これをお願いします。", romaji:"Kore o onegaishimasu.", en:"This one, please" },
+    { id:"phrase_12_1", cn:"這兩個", note:null, jp:"この二つお願いします。", romaji:"Kono futatsu onegaishimasu.", en:"These two, please" },
+    { id:"phrase_12_2", cn:"三個", note:null, jp:"三つお願いします。", romaji:"Mittsu onegaishimasu.", en:"Three, please" },
+  ]},
+  { title: "⑭ 景點(我要去+地方)", note: null, items: [
+    { id:"phrase_13_0", cn:"我要去神社", note:null, jp:"神社へ行きたいです。", romaji:"Jinja e ikitai desu.", en:"I want to go to a shrine" },
+    { id:"phrase_13_1", cn:"我要去寺廟", note:null, jp:"お寺へ行きたいです。", romaji:"Otera e ikitai desu.", en:"I want to go to a temple" },
+    { id:"phrase_13_2", cn:"我要去大阪城", note:null, jp:"大阪城へ行きたいです。", romaji:"Ōsakajō e ikitai desu.", en:"I want to go to Osaka Castle" },
+    { id:"phrase_13_3", cn:"我要去道頓堀", note:null, jp:"道頓堀へ行きたいです。", romaji:"Dōtonbori e ikitai desu.", en:"I want to go to Dotonbori" },
+    { id:"phrase_13_4", cn:"我要去心齋橋", note:null, jp:"心斎橋へ行きたいです。", romaji:"Shinsaibashi e ikitai desu.", en:"I want to go to Shinsaibashi" },
+    { id:"phrase_13_5", cn:"我要去黑門市場", note:null, jp:"黒門市場へ行きたいです。", romaji:"Kuromon Ichiba e ikitai desu.", en:"I want to go to Kuromon Market" },
+    { id:"phrase_13_6", cn:"我要去通天閣", note:null, jp:"通天閣へ行きたいです。", romaji:"Tsūtenkaku e ikitai desu.", en:"I want to go to Tsutenkaku Tower" },
+    { id:"phrase_13_7", cn:"我要去梅田", note:null, jp:"梅田へ行きたいです。", romaji:"Umeda e ikitai desu.", en:"I want to go to Umeda" },
+    { id:"phrase_13_8", cn:"我要去難波", note:null, jp:"難波へ行きたいです。", romaji:"Namba e ikitai desu.", en:"I want to go to Namba" },
+    { id:"phrase_13_9", cn:"我要去環球影城", note:"日本人常直接說「ユニバ」(Yuniba)", jp:"ユニバーサル・スタジオ・ジャパンへ行きたいです。", romaji:"Yunibāsaru Sutajio Japan e ikitai desu.", en:"I want to go to Universal Studios Japan" },
+  ]},
+  { title: "⑮ 問路與現場標示", note: "問路句型＋一般設施常見標示", items: [
+    { id:"phrase_14_0", cn:"大阪城怎麼走?", note:null, jp:"大阪城はどこですか?", romaji:"Ōsakajō wa doko desu ka?", en:"How do I get to Osaka Castle?" },
+    { id:"phrase_14_1", cn:"現在位置", note:null, jp:"現在地", romaji:"Genzaichi", en:"Current location" },
+    { id:"phrase_14_2", cn:"禁止進入", note:null, jp:"立入禁止", romaji:"Tachiiri kinshi", en:"No entry" },
+    { id:"phrase_14_3", cn:"緊急出口", note:null, jp:"非常口", romaji:"Hijōguchi", en:"Emergency exit" },
+  ]},
+  { title: "⑯ 現場規則與廁所標示", note: "這些是拿來「認」的標示單字,不一定要會唸,但看得懂很重要", items: [
+    { id:"phrase_15_0", cn:"男廁", note:null, jp:"男性用", romaji:"Dansei-yō", en:"Men's restroom" },
+    { id:"phrase_15_1", cn:"女廁", note:null, jp:"女性用", romaji:"Josei-yō", en:"Women's restroom" },
+    { id:"phrase_15_2", cn:"廁所", note:null, jp:"お手洗い", romaji:"Otearai", en:"Restroom" },
+    { id:"phrase_15_3", cn:"禁止飲食", note:null, jp:"飲食禁止", romaji:"Inshoku kinshi", en:"No eating or drinking" },
+    { id:"phrase_15_4", cn:"吸菸區", note:null, jp:"喫煙所", romaji:"Kitsuenjo", en:"Smoking area" },
+    { id:"phrase_15_5", cn:"禁菸", note:null, jp:"禁煙", romaji:"Kin'en", en:"No smoking" },
+    { id:"phrase_15_6", cn:"禁止使用", note:null, jp:"使用禁止", romaji:"Shiyō kinshi", en:"Do not use" },
+    { id:"phrase_15_7", cn:"排隊", note:null, jp:"列に並ぶ", romaji:"Retsu ni narabu", en:"Line up / Queue" },
+    { id:"phrase_15_8", cn:"拉(門)", note:null, jp:"引く", romaji:"Hiku", en:"Pull" },
+    { id:"phrase_15_9", cn:"推(門)", note:null, jp:"押す", romaji:"Osu", en:"Push" },
+  ]},
+];
+
+const TRIP_CATEGORIES = [
+  { title: "環球影城 USJ(門票/置物櫃)", note: null, items: [
+    { id:"trip_0_0", cn:"大人一張、小孩一張", note:null, jp:"大人一枚、子供一枚", romaji:"Otona ichimai, kodomo ichimai", en:"One adult, one child ticket, please" },
+    { id:"trip_0_1", cn:"兒童票是到幾歲?", note:null, jp:"子供料金は何歳までですか?", romaji:"Kodomo ryoukin wa nansai made desu ka?", en:"Up to what age is the child price?" },
+    { id:"trip_0_2", cn:"置物櫃在哪裡?", note:null, jp:"コインロッカーはどこですか?", romaji:"Koin rokkaa wa doko desu ka?", en:"Where are the coin lockers?" },
+  ]},
+  { title: "🧙 USJ 人氣商店與角色", note: "逛街看到招牌可以對照,不一定要會唸,先認得住字就好", items: [
+    { id:"trip_1_0", cn:"哈利波特魔法世界", note:null, jp:"ウィザーディング・ワールド・オブ・ハリー・ポッター", romaji:"Wizādingu Wārudo obu Harī Pottā", en:"The Wizarding World of Harry Potter" },
+    { id:"trip_1_1", cn:"小小兵樂園", note:null, jp:"ミニオン・パーク", romaji:"Minion Pāku", en:"Minion Park" },
+    { id:"trip_1_2", cn:"小小兵(角色)", note:null, jp:"ミニオン", romaji:"Minion", en:"Minions" },
+    { id:"trip_1_3", cn:"Hello Kitty", note:null, jp:"ハローキティ", romaji:"Harō Kiti", en:"Hello Kitty" },
+    { id:"trip_1_4", cn:"魔杖(哈利波特周邊)", note:null, jp:"魔法の杖", romaji:"Mahō no tsue", en:"Magic wand" },
+    { id:"trip_1_5", cn:"魔法袍(哈利波特周邊)", note:null, jp:"ローブ", romaji:"Rōbu", en:"Robe" },
+    { id:"trip_1_6", cn:"絨毛娃娃", note:null, jp:"ぬいぐるみ", romaji:"Nuigurumi", en:"Plush toy" },
+    { id:"trip_1_7", cn:"鑰匙圈", note:null, jp:"キーホルダー", romaji:"Kīhorudā", en:"Keychain" },
+    { id:"trip_1_8", cn:"園區限定商品", note:null, jp:"ユニバ限定", romaji:"Yuniba gentei", en:"USJ-exclusive item" },
+  ]},
+  { title: "海遊館", note: null, items: [
+    { id:"trip_2_0", cn:"大人兩張、小孩一張", note:null, jp:"大人二枚、子供一枚", romaji:"Otona nimai, kodomo ichimai", en:"Two adults, one child, please" },
+  ]},
+  { title: "摩耶纜車", note: null, items: [
+    { id:"trip_3_0", cn:"我要兩張來回票", note:null, jp:"往復二枚お願いします", romaji:"Oufuku nimai onegaishimasu", en:"Two round-trip tickets, please" },
+    { id:"trip_3_1", cn:"最後一班是幾點?", note:null, jp:"最終便は何時ですか?", romaji:"Saishuubin wa nanji desu ka?", en:"What time is the last one?" },
+  ]},
+  { title: "大阪周遊卡", note: null, items: [
+    { id:"trip_4_0", cn:"這個(卡)可以用嗎?", note:null, jp:"これは使えますか?", romaji:"Kore wa tsukaemasu ka?", en:"Can I use this?" },
+  ]},
+  { title: "和服體驗", note: null, items: [
+    { id:"trip_5_0", cn:"我要租和服", note:null, jp:"着物のレンタルをお願いします", romaji:"Kimono no rentaru o onegaishimasu", en:"I'd like to rent a kimono, please" },
+    { id:"trip_5_1", cn:"幾點要歸還?", note:null, jp:"何時に返却ですか?", romaji:"Nanji ni henkyaku desu ka?", en:"What time do I need to return it?" },
+    { id:"trip_5_2", cn:"有兒童尺寸嗎?", note:null, jp:"子供のサイズはありますか?", romaji:"Kodomo no saizu wa arimasu ka?", en:"Do you have kids' sizes?" },
+  ]},
+  { title: "🎨 難波角色店:吉卜力 / 米菲兔", note: "宮崎駿動畫和米菲兔在日本很受歡迎,難波、心齋橋一帶常會看到周邊商店,先認得角色名字", items: [
+    { id:"trip_6_0", cn:"吉卜力工作室", note:null, jp:"スタジオジブリ", romaji:"Sutajio Jiburi", en:"Studio Ghibli" },
+    { id:"trip_6_1", cn:"宮崎駿(導演)", note:null, jp:"宮崎駿", romaji:"Miyazaki Hayao", en:"Hayao Miyazaki" },
+    { id:"trip_6_2", cn:"龍貓", note:null, jp:"トトロ", romaji:"Totoro", en:"Totoro" },
+    { id:"trip_6_3", cn:"波妞", note:null, jp:"ポニョ", romaji:"Ponyo", en:"Ponyo" },
+    { id:"trip_6_4", cn:"無臉男", note:null, jp:"カオナシ", romaji:"Kaonashi", en:"No-Face" },
+    { id:"trip_6_5", cn:"貓巴士", note:null, jp:"ネコバス", romaji:"Nekobasu", en:"Catbus" },
+    { id:"trip_6_6", cn:"魔女宅急便的琪琪", note:null, jp:"キキ", romaji:"Kiki", en:"Kiki (Kiki's Delivery Service)" },
+    { id:"trip_6_7", cn:"神隱少女的千尋", note:null, jp:"千尋", romaji:"Chihiro", en:"Chihiro (Spirited Away)" },
+    { id:"trip_6_8", cn:"天空之城", note:null, jp:"天空の城ラピュタ", romaji:"Tenkū no Shiro Rapyuta", en:"Castle in the Sky" },
+    { id:"trip_6_9", cn:"魔法公主", note:null, jp:"もののけ姫", romaji:"Mononoke Hime", en:"Princess Mononoke" },
+    { id:"trip_6_10", cn:"米菲兔", note:null, jp:"ミッフィー", romaji:"Miffy", en:"Miffy" },
+  ]},
+  { title: "Maccha House 抹茶店", note: null, items: [
+    { id:"trip_7_0", cn:"內用,謝謝", note:null, jp:"店内でお願いします", romaji:"Tennai de onegaishimasu", en:"For here, please" },
+    { id:"trip_7_1", cn:"推薦哪一個?", note:null, jp:"おすすめはどれですか?", romaji:"Osusume wa dore desu ka?", en:"Which one do you recommend?" },
+  ]},
+  { title: "燒肉力丸", note: null, items: [
+    { id:"trip_8_0", cn:"三位,要吃到飽", note:null, jp:"三人、食べ放題でお願いします", romaji:"San-nin, tabehoudai de onegaishimasu", en:"Table for three, all-you-can-eat please" },
+    { id:"trip_8_1", cn:"這是幾分鐘制?", note:null, jp:"何分制ですか?", romaji:"Nanpun-sei desu ka?", en:"How many minutes is this course?" },
+    { id:"trip_8_2", cn:"這是兒童價嗎?", note:null, jp:"これは子供料金ですか?", romaji:"Kore wa kodomo ryoukin desu ka?", en:"Is this the children's price?" },
+  ]},
+  { title: "南海電鐵 / JR / 置物櫃", note: null, items: [
+    { id:"trip_9_0", cn:"這可以儲值嗎?", note:null, jp:"チャージできますか?", romaji:"Chaaji dekimasu ka?", en:"Can I top up here?" },
+    { id:"trip_9_1", cn:"置物櫃在哪裡?", note:null, jp:"コインロッカーはどこですか?", romaji:"Koin rokkaa wa doko desu ka?", en:"Where are the coin lockers?" },
+  ]},
+  { title: "飯店", note: null, items: [
+    { id:"trip_10_0", cn:"Wifi密碼是什麼?", note:null, jp:"Wi-Fiのパスワードは何ですか?", romaji:"Wi-Fi no pasuwaado wa nan desu ka?", en:"What is the wifi password?" },
+    { id:"trip_10_1", cn:"可以先寄放行李嗎?", note:null, jp:"荷物を預けてもいいですか?", romaji:"Nimotsu o azukete mo ii desu ka?", en:"Can I store my luggage here?" },
+  ]},
+  { title: "📍 這趟行程會去的地方", note: "直接對應我們6天行程表上的地名,講不出來時也可以指給對方看", items: [
+    { id:"trip_11_0", cn:"我要去關西機場", note:null, jp:"関西国際空港へ行きたいです。", romaji:"Kansai Kokusai Kūkō e ikitai desu.", en:"I want to go to Kansai International Airport" },
+    { id:"trip_11_1", cn:"我要去新今宮", note:null, jp:"新今宮へ行きたいです。", romaji:"Shin-Imamiya e ikitai desu.", en:"I want to go to Shin-Imamiya" },
+    { id:"trip_11_2", cn:"我要去海遊館", note:null, jp:"海遊館へ行きたいです。", romaji:"Kaiyūkan e ikitai desu.", en:"I want to go to Kaiyukan Aquarium" },
+    { id:"trip_11_3", cn:"我要去摩耶山", note:null, jp:"摩耶山へ行きたいです。", romaji:"Mayasan e ikitai desu.", en:"I want to go to Mt. Maya" },
+    { id:"trip_11_4", cn:"我要去大阪城天守閣", note:null, jp:"大阪城天守閣へ行きたいです。", romaji:"Ōsakajō Tenshukaku e ikitai desu.", en:"I want to go to Osaka Castle main tower" },
+    { id:"trip_11_5", cn:"我要去大阪生活今昔館", note:null, jp:"大阪生活今昔館へ行きたいです。", romaji:"Ōsaka Seikatsu Konjyakukan e ikitai desu.", en:"I want to go to the Osaka Museum of Housing and Living" },
+    { id:"trip_11_6", cn:"我要去天王寺動物園", note:null, jp:"天王寺動物園へ行きたいです。", romaji:"Tennōji Dōbutsuen e ikitai desu.", en:"I want to go to Tennoji Zoo" },
+    { id:"trip_11_7", cn:"我要去新世界", note:null, jp:"新世界へ行きたいです。", romaji:"Shinsekai e ikitai desu.", en:"I want to go to Shinsekai" },
+    { id:"trip_11_8", cn:"我要去天神橋筋商店街", note:null, jp:"天神橋筋商店街へ行きたいです。", romaji:"Tenjinbashi-suji Shōtengai e ikitai desu.", en:"I want to go to Tenjinbashi-suji Shopping Street" },
+  ]},
 ];
 
 const CATEGORIES = {
@@ -723,6 +1059,19 @@ function renderHome(){
   catGrid.querySelectorAll('[data-special]').forEach(el=>{
     el.addEventListener('click', ()=>openGrammarNotes());
   });
+
+  const phraseGrid = document.getElementById('phraseGrid');
+  if(phraseGrid){
+    phraseGrid.innerHTML =
+      `<div class="scenecard" data-phrase="general"><div class="emoji">🗣️</div><div class="label">旅遊短句</div></div>` +
+      `<div class="scenecard" data-phrase="trip"><div class="emoji">📍</div><div class="label">這趟行程專屬</div></div>`;
+    phraseGrid.querySelectorAll('[data-phrase]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        if(el.dataset.phrase==='general') openPhraseBrowser(PHRASE_CATEGORIES, '🗣️ 旅遊短句');
+        else openPhraseBrowser(TRIP_CATEGORIES, '📍 這趟行程專屬');
+      });
+    });
+  }
 }
 
 /* ---- 情境頁：購物／點餐例句，數量可即時修改 ---- */
@@ -782,6 +1131,59 @@ function renderSceneItems(sceneId){
       const i = btn.dataset.say;
       const full = list.querySelector(`[data-out="${i}"]`).dataset.full;
       speak(full, Number(btn.dataset.rate));
+    });
+  });
+}
+
+/* ---- 常用短句／行程專屬瀏覽 ---- */
+function openPhraseBrowser(categories, title){
+  switchView('learn');
+  document.getElementById('learnTitle').textContent = title;
+  document.getElementById('learnIntro').textContent = '點分類切換，點卡片下方按鈕直接發音（片假名上方會自動標注音）。';
+  document.getElementById('phoneToolWrap').innerHTML = '';
+  document.getElementById('phoneToolWrap').style.display = 'none';
+  document.getElementById('topicQuizArea').innerHTML = '';
+  const list = document.getElementById('learnList');
+  list.innerHTML = `<div class="catchips" id="phraseChips">
+      <div class="chip active" data-idx="-1">全部</div>
+      ${categories.map((c,i)=>`<div class="chip" data-idx="${i}">${c.title.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯]\s*/,'')}</div>`).join('')}
+    </div>
+    <div id="phraseListInner"></div>`;
+
+  function renderList(idx){
+    const inner = document.getElementById('phraseListInner');
+    const cats = idx===-1 ? categories : [categories[idx]];
+    inner.innerHTML = cats.map(c=>`
+      <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${c.title}</h3>
+      ${c.note?`<div class="section-intro">${c.note}</div>`:''}
+      ${c.items.map(it=>`
+        <div class="card">
+          <div class="jp">${rb(it.jp)}</div>
+          <div class="hira">${it.romaji}</div>
+          <div class="cn">${it.cn}${it.note?' · '+it.note:''}</div>
+          <div class="cn" style="color:var(--sub);">${it.en}</div>
+          <div class="actions">
+            <button data-rate="0.5" data-say="${it.id}">🐢 慢速 0.5x</button>
+            <button data-rate="0.65" data-say="${it.id}">🐢 慢速 0.65x</button>
+            <button data-rate="1.0" data-say="${it.id}">▶️ 正常</button>
+          </div>
+        </div>
+      `).join('')}
+    `).join('');
+    const flatItems = cats.flatMap(c=>c.items);
+    inner.querySelectorAll('[data-say]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const it = flatItems.find(x=>x.id===btn.dataset.say);
+        speak(it.jp, Number(btn.dataset.rate));
+      });
+    });
+  }
+  renderList(-1);
+  document.getElementById('phraseChips').querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.querySelectorAll('#phraseChips .chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      renderList(Number(chip.dataset.idx));
     });
   });
 }
@@ -892,6 +1294,48 @@ function openGrammarNotes(){
   document.getElementById('topicQuizArea').innerHTML = '';
   const list = document.getElementById('learnList');
   list.innerHTML = `
+    <h3 style="font-size:14px;color:var(--sub);margin:4px 0 8px;">句型文法教室</h3>
+    <div class="section-intro">把常出現的句型拆開講：文法規則＋例句＋小對話，幫助建立文法感覺。</div>
+    ${GRAMMAR_LESSONS.map((g,gi)=>`
+      <div class="patternCard" style="margin-bottom:16px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <div class="jp" style="font-size:20px;cursor:pointer;" data-glesson="${gi}">${rb(g.jp)}</div>
+          <span class="warnTag">${g.level}</span>
+        </div>
+        <div class="hira">${g.romaji}</div>
+        <div class="cn" style="font-weight:700;">${g.meaning}</div>
+        <div class="section-intro" style="margin-top:8px;">${g.explain}</div>
+        <div class="segbox" style="margin-top:10px;">
+          <div class="segtitle">句型</div>
+          <div class="jp" style="font-size:16px;">${g.pattern}</div>
+          ${g.patternNote?`<div class="section-intro" style="margin-top:6px;">${g.patternNote}</div>`:''}
+        </div>
+        ${g.tip?`<div class="tipRow" style="margin-top:10px;"><span class="mark">💡</span><div>${g.tip}</div></div>`:''}
+        <div style="margin-top:10px;font-size:12px;color:var(--sub);">例句</div>
+        ${g.examples.map((ex,ei)=>`
+          <div class="card" style="margin-top:6px;cursor:pointer;" data-glex="${gi}_${ei}">
+            <div class="jp">${rb(ex.jp)}</div>
+            <div class="hira">${ex.romaji}</div>
+            <div class="cn">${ex.cn}</div>
+          </div>
+        `).join('')}
+        ${g.replies?`
+          <div style="margin-top:10px;font-size:12px;color:var(--sub);">常見的回覆（方向指引）</div>
+          <div class="vocabGrid">
+            ${g.replies.map((r,ri)=>`<div class="vocabCell" data-glreply="${gi}_${ri}"><div class="jp">${rb(r.jp)}</div><div class="rj">${r.romaji}</div><div class="cn">${r.cn}</div></div>`).join('')}
+          </div>
+        `:''}
+        <div style="margin-top:10px;font-size:12px;color:var(--sub);">小對話</div>
+        ${g.dialogue.map((d,di)=>`
+          <div class="dialogueLine" style="margin-bottom:8px;">
+            <div class="speaker">${d.speaker}</div>
+            <div class="sent" style="font-size:16px;cursor:pointer;" data-gldlg="${gi}_${di}">${rb(d.jp)}</div>
+            <div class="cn">${d.cn}</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('')}
+
     <h3 style="font-size:14px;color:var(--sub);margin:4px 0 8px;">五、時間表現（時間點／日期／期間／頻率）</h3>
     <div class="vocabGrid">
       ${GRAMMAR_TIME_PATTERNS.map((p,i)=>`
@@ -950,6 +1394,27 @@ function openGrammarNotes(){
   });
   list.querySelectorAll('[data-speak]').forEach(el=>{
     el.addEventListener('click', ()=>speak(el.dataset.speak, 0.9));
+  });
+  list.querySelectorAll('[data-glesson]').forEach(el=>{
+    el.addEventListener('click', ()=>speak(GRAMMAR_LESSONS[Number(el.dataset.glesson)].jp, 0.85));
+  });
+  list.querySelectorAll('[data-glex]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const [gi,ei] = el.dataset.glex.split('_').map(Number);
+      speak(GRAMMAR_LESSONS[gi].examples[ei].jp, 0.85);
+    });
+  });
+  list.querySelectorAll('[data-glreply]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const [gi,ri] = el.dataset.glreply.split('_').map(Number);
+      speak(GRAMMAR_LESSONS[gi].replies[ri].jp, 0.85);
+    });
+  });
+  list.querySelectorAll('[data-gldlg]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const [gi,di] = el.dataset.gldlg.split('_').map(Number);
+      speak(GRAMMAR_LESSONS[gi].dialogue[di].jp, 0.85);
+    });
   });
   list.querySelectorAll('.particleChip').forEach(el=>{
     el.addEventListener('click', (e)=>{
