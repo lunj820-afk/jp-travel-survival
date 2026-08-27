@@ -454,23 +454,43 @@ function peopleReading(n){
 /* 自動偵測句子裡的「漢數字＋量詞」，讓短句裡的數字可以改 */
 const KANJI_NUM_MAP = {'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10};
 const COUNTER_CHAR_TYPE = {'枚':'mai','人':'nin','つ':'tsu'};
+function readingForCounter(counterType, n){
+  switch(counterType){
+    case 'nin': return peopleReading(n);
+    case 'mai': case 'tsu': case 'hai': case 'ko': case 'satsu': case 'soku': return counterReading(counterType, n);
+    case 'yen': return numberToJapanese(n).reading + 'えん';
+    case 'goushitsu': return numberToJapanese(n).reading + 'ごうしつ';
+    case 'bansen': return numberToJapanese(n).reading + 'ばんせん';
+    case 'hour': return hourReading(n);
+    default: return String(n);
+  }
+}
 function findCounters(jp){
-  const re = /([一二三四五六七八九十]+)(枚|人|つ)/g;
   const matches = [];
+  // 漢數字＋枚/人/つ（既有：金額卡片等小數量）
+  const reKanji = /([一二三四五六七八九十]+)(枚|人|つ)/g;
   let m;
-  while((m = re.exec(jp))){
+  while((m = reKanji.exec(jp))){
     const n = KANJI_NUM_MAP[m[1]];
     if(!n) continue;
     matches.push({start:m.index, end:m.index+m[0].length, n, counterType:COUNTER_CHAR_TYPE[m[2]]});
   }
+  // 阿拉伯數字（含千分位逗號）＋円/号室/番線/時（情境問答常見寫法）
+  const ARABIC_SUFFIX_TYPE = {'円':'yen','号室':'goushitsu','番線':'bansen','時':'hour','人':'nin','枚':'mai'};
+  const reArabic = /([0-9][0-9,]*)(円|号室|番線|時|人|枚)/g;
+  while((m = reArabic.exec(jp))){
+    const n = parseInt(m[1].replace(/,/g,''), 10);
+    if(!n && n!==0) continue;
+    matches.push({start:m.index, end:m.index+m[0].length, n, counterType:ARABIC_SUFFIX_TYPE[m[2]]});
+  }
+  matches.sort((a,b)=>a.start-b.start);
   return matches;
 }
 function rebuildPhraseWithCounters(jp, matches, values){
   let result = '', cursor = 0;
   matches.forEach((m,idx)=>{
     result += jp.slice(cursor, m.start);
-    const n = values[idx];
-    result += m.counterType==='nin' ? peopleReading(n) : counterReading(m.counterType, n);
+    result += readingForCounter(m.counterType, values[idx]);
     cursor = m.end;
   });
   result += jp.slice(cursor);
@@ -959,6 +979,51 @@ const TRIP_CATEGORIES = [
   ]},
 ];
 
+/* 情境問答：日本旅遊最常遇到數字／金額的7個場合，每句店員問／顧客答都可以點擊發音、數字可調整 */
+const SCENARIO_QA = [
+  { title:'🏪 便利商店（コンビニ）', note:'結帳、袋子與加熱服務', items:[
+    { id:"qa_store_0", cn:"店員問：要加購袋子嗎？", note:null, jp:"袋はご利用ですか？", romaji:"Fukuro wa goriyō desu ka?", en:"Would you like a bag?" },
+    { id:"qa_store_1", cn:"顧客答：好，麻煩了", note:null, jp:"はい、お願いします", romaji:"Hai, onegai shimasu", en:"Yes, please" },
+    { id:"qa_store_2", cn:"顧客答：不用，沒關係", note:null, jp:"いいえ、大丈夫です", romaji:"Iie, daijōbu desu", en:"No, that's okay" },
+    { id:"qa_store_3", cn:"店員問：要微波加熱嗎？", note:null, jp:"温めますか？", romaji:"Atatamemasu ka?", en:"Would you like this warmed up?" },
+    { id:"qa_store_4", cn:"顧客答：請幫我加熱", note:null, jp:"お願いします", romaji:"Onegai shimasu", en:"Yes, please" },
+  ]},
+  { title:'🛍️ 藥妝店（ドラッグストア）', note:'詢問價格、數量限制與退稅', items:[
+    { id:"qa_drug_0", cn:"顧客問：這個多少錢？", note:null, jp:"これはいくらですか？", romaji:"Kore wa ikura desu ka?", en:"How much is this?" },
+    { id:"qa_drug_1", cn:"店員答：1,500日圓", note:null, jp:"1500円です", romaji:"Sen go-hyaku-en desu", en:"It's 1,500 yen" },
+    { id:"qa_drug_2", cn:"顧客問：可以退稅嗎？", note:null, jp:"免税できますか？", romaji:"Menzei dekimasu ka?", en:"Can I get a tax refund?" },
+    { id:"qa_drug_3", cn:"店員答：可以，滿5,000日圓以上即可", note:null, jp:"はい、5000円以上で可能です", romaji:"Hai, go-sen-en ijō de kanō desu", en:"Yes, if it's over 5,000 yen" },
+  ]},
+  { title:'🍜 拉麵店（ラーメン屋）', note:'確認人數與麵條硬度', items:[
+    { id:"qa_ramen_0", cn:"店員問：請問幾位？", note:null, jp:"何名様ですか？", romaji:"Nan-mei-sama desu ka?", en:"How many people?" },
+    { id:"qa_ramen_1", cn:"顧客答：兩位", note:null, jp:"2人です", romaji:"Futari desu", en:"Two people" },
+    { id:"qa_ramen_2", cn:"店員問：麵條硬度要如何調整？", note:null, jp:"麺のかたさはどうしますか？", romaji:"Men no katasa wa dō shimasu ka?", en:"How would you like your noodles?" },
+    { id:"qa_ramen_3", cn:"顧客答：請幫我做偏硬", note:null, jp:"かためでお願いします", romaji:"Katame de onegai shimasu", en:"Firm, please" },
+  ]},
+  { title:'🥤 自動販賣機（自動販売機）', note:'確認投幣數字與退幣', items:[
+    { id:"qa_vending_0", cn:"標示：150日圓", note:null, jp:"150円", romaji:"Hyaku go-jū-en", en:"150 yen" },
+    { id:"qa_vending_1", cn:"投入200日圓、找零50日圓", note:null, jp:"200円を入れて、50円のおつりです", romaji:"Ni-hyaku-en o irete, go-jū-en no otsuri desu", en:"Insert 200 yen, 50 yen change" },
+  ]},
+  { title:'🍣 餐廳（レストラン）', note:'點餐與分開結帳', items:[
+    { id:"qa_restaurant_0", cn:"顧客問：推薦的餐點是什麼？", note:null, jp:"おすすめは何ですか？", romaji:"Osusume wa nan desu ka?", en:"What do you recommend?" },
+    { id:"qa_restaurant_1", cn:"店員答：A套餐很受歡迎，880日圓", note:null, jp:"Aセットが人気です。880円です", romaji:"Ē-setto ga ninki desu. Happyaku hachi-jū-en desu", en:"The A set is popular. It's 880 yen" },
+    { id:"qa_restaurant_2", cn:"顧客問：可以分開付款嗎？", note:null, jp:"別々に払えますか？", romaji:"Betsubetsu ni haraemasu ka?", en:"Can we pay separately?" },
+    { id:"qa_restaurant_3", cn:"店員答：好的，沒問題", note:null, jp:"はい、大丈夫です", romaji:"Hai, daijōbu desu", en:"Yes, no problem" },
+  ]},
+  { title:'🏨 飯店（ホテル）', note:'辦理入住、房號與早餐時間（302号室已修正為一般數字念法さんびゃくに，不是逐字念さんぜろに）', items:[
+    { id:"qa_hotel_0", cn:"顧客：我要辦理入住", note:null, jp:"チェックインをお願いします", romaji:"Chekku-in o onegai shimasu", en:"I'd like to check in" },
+    { id:"qa_hotel_1", cn:"店員答：您的房間是302號房", note:null, jp:"お部屋は302号室です", romaji:"O-heya wa san-byaku-ni gō-shitsu desu", en:"Your room is 302" },
+    { id:"qa_hotel_2", cn:"顧客問：早餐幾點開始？", note:null, jp:"朝食は何時からですか？", romaji:"Chōshoku wa nan-ji kara desu ka?", en:"What time does breakfast start?" },
+    { id:"qa_hotel_3", cn:"店員答：早上7點開始", note:null, jp:"朝7時からです", romaji:"Asa shichi-ji kara desu", en:"It starts at 7am" },
+  ]},
+  { title:'🚃 車站（駅）', note:'問路、月台與票價', items:[
+    { id:"qa_station_0", cn:"顧客問：到東京站要多少錢？", note:null, jp:"東京駅までいくらですか？", romaji:"Tōkyō-eki made ikura desu ka?", en:"How much to Tokyo Station?" },
+    { id:"qa_station_1", cn:"店員答：220日圓", note:null, jp:"220円です", romaji:"Ni-hyaku ni-jū-en desu", en:"It's 220 yen" },
+    { id:"qa_station_2", cn:"顧客問：在幾號月台？", note:null, jp:"何番線ですか？", romaji:"Nan-ban-sen desu ka?", en:"Which platform?" },
+    { id:"qa_station_3", cn:"店員答：3號月台", note:null, jp:"3番線です", romaji:"San-ban-sen desu", en:"Platform 3" },
+  ]},
+];
+
 const CATEGORIES = {
   money:{title:'金額 Money',icon:'💰',items:MONEY_LIST,intro:'日本現場最常聽到的價格，點卡片看拆解、練發音。'},
   time:{title:'時間 Time',icon:'🕒',items:TIME_LIST,intro:'幾點、幾分、約時間都在這裡。'},
@@ -1136,11 +1201,13 @@ function renderHome(){
   if(phraseGrid){
     phraseGrid.innerHTML =
       `<div class="scenecard" data-phrase="general"><div class="emoji">🗣️</div><div class="label">旅遊短句</div></div>` +
-      `<div class="scenecard" data-phrase="trip"><div class="emoji">📍</div><div class="label">這趟行程專屬</div></div>`;
+      `<div class="scenecard" data-phrase="trip"><div class="emoji">📍</div><div class="label">這趟行程專屬</div></div>` +
+      `<div class="scenecard" data-phrase="qa"><div class="emoji">🗨️</div><div class="label">情境問答</div></div>`;
     phraseGrid.querySelectorAll('[data-phrase]').forEach(el=>{
       el.addEventListener('click', ()=>{
         if(el.dataset.phrase==='general') openPhraseBrowser(PHRASE_CATEGORIES, '🗣️ 旅遊短句');
-        else openPhraseBrowser(TRIP_CATEGORIES, '📍 這趟行程專屬');
+        else if(el.dataset.phrase==='trip') openPhraseBrowser(TRIP_CATEGORIES, '📍 這趟行程專屬');
+        else openPhraseBrowser(SCENARIO_QA, '🗨️ 情境問答');
       });
     });
   }
