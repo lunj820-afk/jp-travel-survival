@@ -1238,7 +1238,7 @@ function openPhraseBrowser(categories, title){
           <div class="cn">${it.cn}${it.note?' · '+it.note:''}</div>
           <div class="cn" style="color:var(--sub);">${it.en}</div>
           ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-cnt="${it.id}_${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
+            ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-itemid="${it.id}" data-ci="${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
           </div>` : ''}
           <div class="actions">
             <button data-rate="0.5" data-say="${it.id}">🐢 慢速 0.5x</button>
@@ -1251,13 +1251,13 @@ function openPhraseBrowser(categories, title){
     const flatItems = cats.flatMap(c=>c.items);
     const currentJp = {};
     flatItems.forEach(it=>{ currentJp[it.id] = it.jp; });
-    inner.querySelectorAll('[data-cnt]').forEach(inp=>{
+    inner.querySelectorAll('[data-itemid]').forEach(inp=>{
       inp.addEventListener('input', ()=>{
-        const [itemId] = inp.dataset.cnt.split('_');
+        const itemId = inp.dataset.itemid;
         const it = flatItems.find(x=>x.id===itemId);
         const counters = findCounters(it.jp);
         const values = counters.map((m,ci)=>{
-          const el = inner.querySelector(`[data-cnt="${itemId}_${ci}"]`);
+          const el = inner.querySelector(`[data-itemid="${itemId}"][data-ci="${ci}"]`);
           return Number(el.value) || m.n;
         });
         const newJp = rebuildPhraseWithCounters(it.jp, counters, values);
@@ -1407,13 +1407,18 @@ function openGrammarNotes(){
         </div>
         ${g.tip?`<div class="tipRow" style="margin-top:10px;"><span class="mark">💡</span><div>${g.tip}</div></div>`:''}
         <div style="margin-top:10px;font-size:12px;color:var(--sub);">例句</div>
-        ${g.examples.map((ex,ei)=>`
-          <div class="card" style="margin-top:6px;cursor:pointer;" data-glex="${gi}_${ei}">
-            <div class="jp">${rb(ex.jp)}</div>
+        ${g.examples.map((ex,ei)=>{
+          const counters = findCounters(ex.jp);
+          return `
+          <div class="card" style="margin-top:6px;">
+            <div class="jp" style="cursor:pointer;" data-glex="${gi}_${ei}" data-glexline="${gi}_${ei}">${rb(ex.jp)}</div>
             <div class="hira">${ex.romaji}</div>
             <div class="cn">${ex.cn}</div>
+            ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;">
+              ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-glcnt-gi="${gi}" data-glcnt-ei="${ei}" data-glcnt-ci="${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
+            </div>` : ''}
           </div>
-        `).join('')}
+        `;}).join('')}
         ${g.replies?`
           <div style="margin-top:10px;font-size:12px;color:var(--sub);">常見的回覆（方向指引）</div>
           <div class="vocabGrid">
@@ -1493,10 +1498,27 @@ function openGrammarNotes(){
   list.querySelectorAll('[data-glesson]').forEach(el=>{
     el.addEventListener('click', ()=>speak(GRAMMAR_LESSONS[Number(el.dataset.glesson)].jp, 0.85));
   });
+  const glCurrentJp = {};
+  GRAMMAR_LESSONS.forEach((g,gi)=>g.examples.forEach((ex,ei)=>{ glCurrentJp[gi+'_'+ei] = ex.jp; }));
   list.querySelectorAll('[data-glex]').forEach(el=>{
     el.addEventListener('click', ()=>{
-      const [gi,ei] = el.dataset.glex.split('_').map(Number);
-      speak(GRAMMAR_LESSONS[gi].examples[ei].jp, 0.85);
+      speak(glCurrentJp[el.dataset.glex], 0.85);
+    });
+  });
+  list.querySelectorAll('[data-glcnt-gi]').forEach(inp=>{
+    inp.addEventListener('input', (e)=>{
+      e.stopPropagation();
+      const gi = inp.dataset.glcntGi, ei = inp.dataset.glcntEi;
+      const key = gi+'_'+ei;
+      const ex = GRAMMAR_LESSONS[Number(gi)].examples[Number(ei)];
+      const counters = findCounters(ex.jp);
+      const values = counters.map((m,ci)=>{
+        const el = list.querySelector(`[data-glcnt-gi="${gi}"][data-glcnt-ei="${ei}"][data-glcnt-ci="${ci}"]`);
+        return Number(el.value) || m.n;
+      });
+      const newJp = rebuildPhraseWithCounters(ex.jp, counters, values);
+      glCurrentJp[key] = newJp;
+      list.querySelector(`[data-glexline="${key}"]`).innerHTML = rb(newJp);
     });
   });
   list.querySelectorAll('[data-glreply]').forEach(el=>{
