@@ -731,6 +731,7 @@ function openScene(sceneId){
   const scene = SCENES.find(s=>s.id===sceneId);
   document.getElementById('learnTitle').textContent = scene.emoji+' '+scene.title+' 情境例句';
   document.getElementById('learnIntro').textContent = '輸入數量，句子會自動改變讀音（日文的「個/本/枚/杯」量詞念法都不一樣）。';
+  document.getElementById('topicQuizArea').innerHTML = '';
   const toolWrap = document.getElementById('phoneToolWrap');
   toolWrap.innerHTML = '';
   if(scene.tool==='room'){ toolWrap.style.display='block'; renderRoomLookupTool(); }
@@ -888,6 +889,7 @@ function openGrammarNotes(){
   document.getElementById('learnIntro').textContent = '點卡片／按鈕直接聽發音，不用自己讀一堆日文。';
   document.getElementById('phoneToolWrap').innerHTML='';
   document.getElementById('phoneToolWrap').style.display='none';
+  document.getElementById('topicQuizArea').innerHTML = '';
   const list = document.getElementById('learnList');
   list.innerHTML = `
     <h3 style="font-size:14px;color:var(--sub);margin:4px 0 8px;">五、時間表現（時間點／日期／期間／頻率）</h3>
@@ -946,7 +948,7 @@ function openGrammarNotes(){
   list.querySelectorAll('[data-tip]').forEach(el=>{
     el.addEventListener('click', ()=>speak(GRAMMAR_ORDER_TIPS[Number(el.dataset.tip)].jp, 0.85));
   });
-  list.querySelectorAll('.vocabCell').forEach(el=>{
+  list.querySelectorAll('[data-speak]').forEach(el=>{
     el.addEventListener('click', ()=>speak(el.dataset.speak, 0.9));
   });
   list.querySelectorAll('.particleChip').forEach(el=>{
