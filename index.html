@@ -240,8 +240,8 @@ function numberToJapanese(num){
 })();
 
 /* ============ 片假名自動加註平假名（ruby furigana）============ */
-const KANJI_SIMPLE = {"円": "えん", "本": "ほん", "会": "かい", "先": "せん", "列": "れつ", "寺": "てら", "缶": "かん", "肉": "にく", "串": "くし", "何": "なん", "忘": "わす", "杖": "つえ", "来": "らい", "見": "み", "並": "なら", "使": "つか", "券": "けん", "押": "お", "枕": "まくら", "枚": "まい", "玉": "だま", "物": "もの", "乗": "の", "城": "じょう", "姫": "ひめ", "待": "ま", "持": "も", "食": "た", "帰": "かえ", "時": "じ", "粉": "こ", "紙": "かみ", "茶": "ちゃ", "起": "お", "袋": "ふくろ", "傘": "かさ", "割": "わ", "換": "か", "替": "か", "歯": "は", "温": "あたた", "焼": "や", "猫": "ねこ", "買": "か", "階": "かい", "飲": "の", "話": "はな", "道": "みち", "預": "あず", "箸": "はし", "撮": "さつ", "麺": "めん", "願": "ねが", "止": "ど", "匹": "ひき", "一人": "ひとり", "二人": "ふたり", "三人": "さんにん", "四人": "よにん", "人数": "にんずう", "入口": "いりぐち", "三枚": "さんまい", "二枚": "にまい", "千尋": "ちひろ", "土産": "みやげ", "大福": "だいふく", "子供": "こども", "予約": "よやく", "天空": "てんくう", "少々": "しょうしょう", "日本": "にほん", "日焼": "ひや", "毛布": "もうふ", "牛丼": "ぎゅうどん", "写真": "しゃしん", "出口": "でぐち", "台湾": "たいわん", "号室": "ごうしつ", "弁当": "べんとう", "目薬": "めぐすり", "両替": "りょうがえ", "会計": "かいけい", "名詞": "めいし", "団子": "だんご", "地方": "ちほう", "何時": "なんじ", "何番": "なんばん", "何歳": "なんさい", "免税": "めんぜい", "寿司": "すし", "乳液": "にゅうえき", "刺身": "さしみ", "始発": "しはつ", "学校": "がっこう", "定食": "ていしょく", "店内": "てんない", "抹茶": "まっちゃ", "放題": "ほうだい", "注文": "ちゅうもん", "空室": "くうしつ", "空港": "くうこう", "返却": "へんきゃく", "前売": "まえうり", "英語": "えいご", "限定": "げんてい", "神社": "じんじゃ", "茶漬": "ちゃづけ", "國家": "こっか", "梅田": "うめだ", "現金": "げんきん", "着物": "きもの", "終電": "しゅうでん", "荷物": "にもつ", "部屋": "へや", "場所": "ばしょ", "歯磨": "はみが", "温泉": "おんせん", "満室": "まんしつ", "満席": "まんせき", "焼肉": "やきにく", "番線": "ばんせん", "菓子": "かし", "週間": "しゅうかん", "階段": "かいだん", "禁煙": "きんえん", "試着": "しちゃく", "遅延": "ちえん", "運休": "うんきゅう", "電車": "でんしゃ", "綿棒": "めんぼう", "雑誌": "ざっし", "餃子": "ぎょうざ", "駅弁": "えきべん", "數字": "すうじ", "難波": "なんば", "魔法": "まほう", "入浴剤": "にゅうよくざい", "土曜日": "どようび", "大丈夫": "だいじょうぶ", "大阪城": "おおさかじょう", "大阪駅": "おおさかえき", "女性用": "じょせいよう", "中国語": "ちゅうごくご", "化粧水": "けしょうすい", "心斎橋": "しんさいばし", "日本語": "にほんご", "日曜日": "にちようび", "月曜日": "げつようび", "木曜日": "もくようび", "水曜日": "すいようび", "火曜日": "かようび", "半熟卵": "はんじゅくたまご", "台湾人": "たいわんじん", "生理用": "せいりよう", "回練習": "かいれんしゅう", "当日券": "とうじつけん", "何分制": "なんぷんせい", "何名様": "なんめいさま", "何番線": "なんばんせん", "呂恩潔": "ロエンジエ", "改札口": "かいさつぐち", "男性用": "だんせいよう", "券売機": "けんばいき", "東京行": "とうきょうゆき", "金曜日": "きんようび", "非常口": "ひじょうぐち", "故障中": "こしょうちゅう", "美容液": "びようえき", "宮崎駿": "みやざきはやお", "案内所": "あんないじょ", "海遊館": "かいゆうかん", "営業中": "えいぎょうちゅう", "現在地": "げんざいち", "絆創膏": "ばんそうこう", "通天閣": "つうてんかく", "最終便": "さいしゅうびん", "喫煙所": "きつえんじょ", "新今宮": "しんいまみや", "新世界": "しんせかい", "準備中": "じゅんびちゅう", "道頓堀": "どうとんぼり", "精算機": "せいさんき", "摩耶山": "まやさん", "親子丼": "おやこどん", "優先席": "ゆうせんせき", "大人一枚": "おとないちまい", "大人二枚": "おとなにまい", "子供一枚": "こどもいちまい", "子供料金": "こどもりょうきん", "立入禁止": "たちいりきんし", "使用禁止": "しようきんし", "往復二枚": "おうふくにまい", "炭酸飲料": "たんさんいんりょう", "時間勉強": "じかんべんきょう", "部屋番号": "へやばんごう", "黒門市場": "くろもんいちば", "飲食禁止": "いんしょくきんし", "電話番号": "でんわばんごう", "撮影禁止": "さつえいきんし", "自動販売機": "じどうはんばいき", "観光案内所": "かんこうあんないじょ", "大阪城天守閣": "おおさかじょうてんしゅかく", "女性専用車両": "じょせいせんようしゃりょう", "天王寺動物園": "てんのうじどうぶつえん", "関西国際空港": "かんさいこくさいくうこう", "大阪生活今昔館": "おおさかせいかつこんじゃくかん", "天神橋筋商店街": "てんじんばしすじしょうてんがい", "個": "こ"};
-const KANJI_CONTEXT = [["二つ", 1, "ふた"], ["三つ", 1, "みっ"], ["大きい", 1, "おお"], ["小さい", 1, "ちい"], ["少し", 1, "すこ"], ["引く", 1, "ひ"], ["撮って", 1, "と"], ["撮っていただけますか", 1, "と"], ["行きたい", 1, "い"], ["行きます", 1, "い"], ["行きますか", 1, "い"], ["行って", 1, "い"], ["来ました", 1, "き"], ["来ましたか", 1, "き"], ["曲がってください", 1, "ま"], ["辛くない", 1, "から"], ["迷い", 1, "まよ"]];
+const KANJI_SIMPLE = {"円": "えん", "本": "ほん", "会": "かい", "先": "せん", "列": "れつ", "寺": "てら", "缶": "かん", "肉": "にく", "串": "くし", "何": "なん", "忘": "わす", "杖": "つえ", "来": "らい", "見": "み", "並": "なら", "使": "つか", "券": "けん", "押": "お", "枕": "まくら", "枚": "まい", "玉": "だま", "物": "もの", "乗": "の", "城": "じょう", "姫": "ひめ", "待": "ま", "持": "も", "食": "た", "帰": "かえ", "時": "じ", "粉": "こ", "紙": "かみ", "茶": "ちゃ", "起": "お", "袋": "ふくろ", "傘": "かさ", "割": "わ", "換": "か", "替": "か", "歯": "は", "温": "あたた", "焼": "や", "猫": "ねこ", "買": "か", "階": "かい", "飲": "の", "話": "はな", "道": "みち", "預": "あず", "箸": "はし", "撮": "さつ", "麺": "めん", "願": "ねが", "止": "ど", "匹": "ひき", "一人": "ひとり", "二人": "ふたり", "三人": "さんにん", "四人": "よにん", "人数": "にんずう", "入口": "いりぐち", "三枚": "さんまい", "二枚": "にまい", "千尋": "ちひろ", "土産": "みやげ", "大福": "だいふく", "子供": "こども", "予約": "よやく", "天空": "てんくう", "少々": "しょうしょう", "日本": "にほん", "日焼": "ひや", "毛布": "もうふ", "牛丼": "ぎゅうどん", "写真": "しゃしん", "出口": "でぐち", "台湾": "たいわん", "号室": "ごうしつ", "弁当": "べんとう", "目薬": "めぐすり", "両替": "りょうがえ", "会計": "かいけい", "名詞": "めいし", "団子": "だんご", "地方": "ちほう", "何時": "なんじ", "何番": "なんばん", "何歳": "なんさい", "免税": "めんぜい", "寿司": "すし", "乳液": "にゅうえき", "刺身": "さしみ", "始発": "しはつ", "学校": "がっこう", "定食": "ていしょく", "店内": "てんない", "抹茶": "まっちゃ", "放題": "ほうだい", "注文": "ちゅうもん", "空室": "くうしつ", "空港": "くうこう", "返却": "へんきゃく", "前売": "まえうり", "英語": "えいご", "限定": "げんてい", "神社": "じんじゃ", "茶漬": "ちゃづけ", "國家": "こっか", "梅田": "うめだ", "現金": "げんきん", "着物": "きもの", "終電": "しゅうでん", "荷物": "にもつ", "部屋": "へや", "場所": "ばしょ", "歯磨": "はみが", "温泉": "おんせん", "満室": "まんしつ", "満席": "まんせき", "焼肉": "やきにく", "番線": "ばんせん", "菓子": "かし", "週間": "しゅうかん", "階段": "かいだん", "禁煙": "きんえん", "試着": "しちゃく", "遅延": "ちえん", "運休": "うんきゅう", "電車": "でんしゃ", "綿棒": "めんぼう", "雑誌": "ざっし", "餃子": "ぎょうざ", "駅弁": "えきべん", "數字": "すうじ", "難波": "なんば", "魔法": "まほう", "入浴剤": "にゅうよくざい", "土曜日": "どようび", "大丈夫": "だいじょうぶ", "大阪城": "おおさかじょう", "大阪駅": "おおさかえき", "女性用": "じょせいよう", "中国語": "ちゅうごくご", "化粧水": "けしょうすい", "心斎橋": "しんさいばし", "日本語": "にほんご", "日曜日": "にちようび", "月曜日": "げつようび", "木曜日": "もくようび", "水曜日": "すいようび", "火曜日": "かようび", "半熟卵": "はんじゅくたまご", "台湾人": "たいわんじん", "生理用": "せいりよう", "回練習": "かいれんしゅう", "当日券": "とうじつけん", "何分制": "なんぷんせい", "何名様": "なんめいさま", "何番線": "なんばんせん", "呂恩潔": "ロエンジエ", "改札口": "かいさつぐち", "男性用": "だんせいよう", "券売機": "けんばいき", "東京行": "とうきょうゆき", "金曜日": "きんようび", "非常口": "ひじょうぐち", "故障中": "こしょうちゅう", "美容液": "びようえき", "宮崎駿": "みやざきはやお", "案内所": "あんないじょ", "海遊館": "かいゆうかん", "営業中": "えいぎょうちゅう", "現在地": "げんざいち", "絆創膏": "ばんそうこう", "通天閣": "つうてんかく", "最終便": "さいしゅうびん", "喫煙所": "きつえんじょ", "新今宮": "しんいまみや", "新世界": "しんせかい", "準備中": "じゅんびちゅう", "道頓堀": "どうとんぼり", "精算機": "せいさんき", "摩耶山": "まやさん", "親子丼": "おやこどん", "優先席": "ゆうせんせき", "大人一枚": "おとないちまい", "大人二枚": "おとなにまい", "子供一枚": "こどもいちまい", "子供料金": "こどもりょうきん", "立入禁止": "たちいりきんし", "使用禁止": "しようきんし", "往復二枚": "おうふくにまい", "炭酸飲料": "たんさんいんりょう", "時間勉強": "じかんべんきょう", "部屋番号": "へやばんごう", "黒門市場": "くろもんいちば", "飲食禁止": "いんしょくきんし", "電話番号": "でんわばんごう", "撮影禁止": "さつえいきんし", "自動販売機": "じどうはんばいき", "観光案内所": "かんこうあんないじょ", "大阪城天守閣": "おおさかじょうてんしゅかく", "女性専用車両": "じょせいせんようしゃりょう", "天王寺動物園": "てんのうじどうぶつえん", "関西国際空港": "かんさいこくさいくうこう", "大阪生活今昔館": "おおさかせいかつこんじゃくかん", "天神橋筋商店街": "てんじんばしすじしょうてんがい", "個": "こ", "号": "ごう", "番": "ばん", "膳": "ぜん", "水": "みず", "普通": "ふつう", "名前": "なまえ", "客様": "きゃくさま", "搭乗口": "とうじょうぐち", "搭乗": "とうじょう", "自由席": "じゆうせき", "食券": "しょっけん", "利用": "りよう", "付": "つ", "可能": "かのう", "人気": "にんき", "別々": "べつべつ", "朝": "あさ", "次": "つぎ", "東京駅": "とうきょうえき", "東京": "とうきょう", "大阪": "おおさか", "何日": "なんにち", "何人": "なんにん", "何階": "なんがい", "何分": "なんぷん", "何個": "なんこ", "何枚": "なんまい", "何色": "なにいろ"};
+const KANJI_CONTEXT = [["二つ", 1, "ふた"], ["三つ", 1, "みっ"], ["大きい", 1, "おお"], ["小さい", 1, "ちい"], ["少し", 1, "すこ"], ["引く", 1, "ひ"], ["撮って", 1, "と"], ["撮っていただけますか", 1, "と"], ["行きたい", 1, "い"], ["行きます", 1, "い"], ["行きますか", 1, "い"], ["行って", 1, "い"], ["来ました", 1, "き"], ["来ましたか", 1, "き"], ["曲がってください", 1, "ま"], ["辛くない", 1, "から"], ["迷い", 1, "まよ"], ["決まり", 1, "き"], ["払えます", 1, "はら"], ["払えますか", 1, "はら"], ["入れます", 1, "い"]];
 const KANJI_MAXLEN = 10;
 function kataToHira(s){
   let out = '';
@@ -437,9 +437,10 @@ const COUNTERS = {
   hai: ['','いっぱい','にはい','さんばい','よんはい','ごはい','ろっぱい','ななはい','はっぱい','きゅうはい','じゅっぱい'],
   satsu:['','いっさつ','にさつ','さんさつ','よんさつ','ごさつ','ろくさつ','ななさつ','はっさつ','きゅうさつ','じゅっさつ'],
   soku:['','いっそく','にそく','さんそく','よんそく','ごそく','ろくそく','ななそく','はっそく','きゅうそく','じゅっそく'],
+  zen:['','いちぜん','にぜん','さんぜん','よんぜん','ごぜん','ろくぜん','ななぜん','はちぜん','きゅうぜん','じゅうぜん'],
 };
-const COUNTER_SUFFIX = {tsu:'',ko:'こ',hon:'ほん',mai:'まい',hai:'はい',satsu:'さつ',soku:'そく'};
-const COUNTER_CN_UNIT = {tsu:'個',ko:'個',hon:'瓶',mai:'張',hai:'杯',satsu:'本',soku:'雙'};
+const COUNTER_SUFFIX = {tsu:'',ko:'こ',hon:'ほん',mai:'まい',hai:'はい',satsu:'さつ',soku:'そく',zen:'ぜん'};
+const COUNTER_CN_UNIT = {tsu:'個',ko:'個',hon:'瓶',mai:'張',hai:'杯',satsu:'本',soku:'雙',zen:'雙'};
 function counterReading(type, n){
   n = Math.max(1, Math.min(99, Math.floor(n||1)));
   if(n<=10) return COUNTERS[type][n];
@@ -453,31 +454,35 @@ function peopleReading(n){
 
 /* 自動偵測句子裡的「漢數字＋量詞」，讓短句裡的數字可以改 */
 const KANJI_NUM_MAP = {'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10};
-const COUNTER_CHAR_TYPE = {'枚':'mai','人':'nin','つ':'tsu'};
+const COUNTER_CHAR_TYPE = {'枚':'mai','人':'nin','つ':'tsu','膳':'zen'};
 function readingForCounter(counterType, n){
   switch(counterType){
     case 'nin': return peopleReading(n);
-    case 'mai': case 'tsu': case 'hai': case 'ko': case 'satsu': case 'soku': return counterReading(counterType, n);
+    case 'mai': case 'tsu': case 'hai': case 'ko': case 'satsu': case 'soku': case 'zen': return counterReading(counterType, n);
     case 'yen': return numberToJapanese(n).reading + 'えん';
     case 'goushitsu': return numberToJapanese(n).reading + 'ごうしつ';
     case 'bansen': return numberToJapanese(n).reading + 'ばんせん';
     case 'hour': return hourReading(n);
+    case 'minute': return minuteReading(n);
+    case 'gou': return numberToJapanese(n).reading + 'ごう';
+    case 'ban': return numberToJapanese(n).reading + 'ばん';
+    case 'guramu': return numberToJapanese(n).reading + 'グラム';
     default: return String(n);
   }
 }
 function findCounters(jp){
   const matches = [];
-  // 漢數字＋枚/人/つ（既有：金額卡片等小數量）
-  const reKanji = /([一二三四五六七八九十]+)(枚|人|つ)/g;
+  // 漢數字＋枚/人/つ/膳（既有：金額卡片等小數量）
+  const reKanji = /([一二三四五六七八九十]+)(枚|人|つ|膳)/g;
   let m;
   while((m = reKanji.exec(jp))){
     const n = KANJI_NUM_MAP[m[1]];
     if(!n) continue;
     matches.push({start:m.index, end:m.index+m[0].length, n, counterType:COUNTER_CHAR_TYPE[m[2]]});
   }
-  // 阿拉伯數字（含千分位逗號）＋円/号室/番線/時（情境問答常見寫法）
-  const ARABIC_SUFFIX_TYPE = {'円':'yen','号室':'goushitsu','番線':'bansen','時':'hour','人':'nin','枚':'mai'};
-  const reArabic = /([0-9][0-9,]*)(円|号室|番線|時|人|枚)/g;
+  // 阿拉伯數字（含千分位逗號）＋円/号室/番線/時/分/号/番/グラム（情境問答常見寫法；較長的詞要排在較短的前面）
+  const ARABIC_SUFFIX_TYPE = {'円':'yen','号室':'goushitsu','番線':'bansen','時':'hour','分':'minute','人':'nin','枚':'mai','グラム':'guramu','号':'gou','番':'ban'};
+  const reArabic = /([0-9][0-9,]*)(号室|番線|グラム|円|時|分|人|枚|号|番)/g;
   while((m = reArabic.exec(jp))){
     const n = parseInt(m[1].replace(/,/g,''), 10);
     if(!n && n!==0) continue;
@@ -710,6 +715,23 @@ const GRAMMAR_LESSONS = [
       {speaker:'店員', jp:'何名様ですか？', romaji:'Nanmei-sama desu ka?', cn:'請問幾位？'},
       {speaker:'你', jp:'三人です。', romaji:'San-nin desu.', cn:'三位。'},
     ]},
+];
+
+/* 「何／いくら」開頭的常見問句速查表 */
+const NANI_X_GLOSSARY = [
+  ['何','なん','什麼／哪一個'],
+  ['いくら','いくら','多少錢'],
+  ['何時','なんじ','幾點'],
+  ['何日','なんにち','幾號'],
+  ['何人','なんにん','幾個人'],
+  ['何名様','なんめいさま','幾位（敬語）'],
+  ['何番','なんばん','幾號'],
+  ['何階','なんがい','幾樓'],
+  ['何番線','なんばんせん','幾號月台'],
+  ['何分','なんぷん','幾分'],
+  ['何個','なんこ','幾個'],
+  ['何枚','なんまい','幾張'],
+  ['何色','なにいろ','什麼顏色'],
 ];
 
 const PARTICLE_PATTERNS = [
@@ -987,40 +1009,110 @@ const SCENARIO_QA = [
     { id:"qa_store_2", cn:"顧客答：不用，沒關係", note:null, jp:"いいえ、大丈夫です", romaji:"Iie, daijōbu desu", en:"No, that's okay" },
     { id:"qa_store_3", cn:"店員問：要微波加熱嗎？", note:null, jp:"温めますか？", romaji:"Atatamemasu ka?", en:"Would you like this warmed up?" },
     { id:"qa_store_4", cn:"顧客答：請幫我加熱", note:null, jp:"お願いします", romaji:"Onegai shimasu", en:"Yes, please" },
+    { id:"qa_store_5", cn:"店員問：有集點卡嗎？", note:null, jp:"ポイントカードはありますか？", romaji:"Pointo kādo wa arimasu ka?", en:"Do you have a point card?" },
+    { id:"qa_store_6", cn:"顧客答：沒有", note:null, jp:"ありません", romaji:"Arimasen", en:"No, I don't" },
+    { id:"qa_store_7", cn:"店員問：需要幾雙筷子？（膳＝筷子的量詞）", note:null, jp:"お箸は何膳お付けしますか？", romaji:"Ohashi wa nan-zen otsuke shimasu ka?", en:"How many pairs of chopsticks?" },
+    { id:"qa_store_8", cn:"顧客答：一雙，麻煩了", note:null, jp:"一膳お願いします。", romaji:"Ichi-zen onegaishimasu.", en:"One pair, please" },
   ]},
-  { title:'🛍️ 藥妝店（ドラッグストア）', note:'詢問價格、數量限制與退稅', items:[
+  { title:'🛍️ 藥妝店（ドラッグストア）', note:'詢問價格、數量限制與退稅（免稅門檻依店家與制度而異，5,000円只是常見範例，不是全國固定規則）', items:[
     { id:"qa_drug_0", cn:"顧客問：這個多少錢？", note:null, jp:"これはいくらですか？", romaji:"Kore wa ikura desu ka?", en:"How much is this?" },
     { id:"qa_drug_1", cn:"店員答：1,500日圓", note:null, jp:"1500円です", romaji:"Sen go-hyaku-en desu", en:"It's 1,500 yen" },
     { id:"qa_drug_2", cn:"顧客問：可以退稅嗎？", note:null, jp:"免税できますか？", romaji:"Menzei dekimasu ka?", en:"Can I get a tax refund?" },
-    { id:"qa_drug_3", cn:"店員答：可以，滿5,000日圓以上即可", note:null, jp:"はい、5000円以上で可能です", romaji:"Hai, go-sen-en ijō de kanō desu", en:"Yes, if it's over 5,000 yen" },
+    { id:"qa_drug_3", cn:"店員答：這家店滿5,000日圓以上可以退稅", note:null, jp:"はい、5000円以上で可能です", romaji:"Hai, go-sen-en ijō de kanō desu", en:"Yes, if it's over 5,000 yen (at this store)" },
+    { id:"qa_drug_4", cn:"顧客：請給我兩個這個", note:null, jp:"これを二つください。", romaji:"Kore o futatsu kudasai.", en:"Two of these, please" },
+    { id:"qa_drug_5", cn:"店員問：要幾個？", note:null, jp:"何個ですか？", romaji:"Nan-ko desu ka?", en:"How many?" },
+    { id:"qa_drug_6", cn:"顧客答：三個，麻煩了", note:null, jp:"三つお願いします。", romaji:"Mittsu onegaishimasu.", en:"Three, please" },
   ]},
-  { title:'🍜 拉麵店（ラーメン屋）', note:'確認人數與麵條硬度', items:[
-    { id:"qa_ramen_0", cn:"店員問：請問幾位？", note:null, jp:"何名様ですか？", romaji:"Nan-mei-sama desu ka?", en:"How many people?" },
-    { id:"qa_ramen_1", cn:"顧客答：兩位", note:null, jp:"2人です", romaji:"Futari desu", en:"Two people" },
-    { id:"qa_ramen_2", cn:"店員問：麵條硬度要如何調整？", note:null, jp:"麺のかたさはどうしますか？", romaji:"Men no katasa wa dō shimasu ka?", en:"How would you like your noodles?" },
-    { id:"qa_ramen_3", cn:"顧客答：請幫我做偏硬", note:null, jp:"かためでお願いします", romaji:"Katame de onegai shimasu", en:"Firm, please" },
+  { title:'🍜 拉麵店（ラーメン屋）', note:'確認人數、餐券機與麵條硬度', items:[
+    { id:"qa_ramen_0", cn:"顧客問：餐券機在哪裡？", note:null, jp:"食券はどこですか？", romaji:"Shokken wa doko desu ka?", en:"Where is the ticket machine?" },
+    { id:"qa_ramen_1", cn:"顧客問：推薦哪一個？", note:null, jp:"おすすめはどれですか？", romaji:"Osusume wa dore desu ka?", en:"Which one do you recommend?" },
+    { id:"qa_ramen_2", cn:"店員答：這個是推薦的", note:null, jp:"こちらがおすすめです。", romaji:"Kochira ga osusume desu.", en:"This is our recommendation" },
+    { id:"qa_ramen_3", cn:"店員問：請問幾位？", note:null, jp:"何名様ですか？", romaji:"Nan-mei-sama desu ka?", en:"How many people?" },
+    { id:"qa_ramen_4", cn:"顧客答：兩位", note:null, jp:"2人です", romaji:"Futari desu", en:"Two people" },
+    { id:"qa_ramen_5", cn:"店員問：麵條硬度要如何調整？", note:null, jp:"麺のかたさはどうしますか？", romaji:"Men no katasa wa dō shimasu ka?", en:"How would you like your noodles?" },
+    { id:"qa_ramen_6", cn:"顧客答：正常就好", note:null, jp:"普通でお願いします。", romaji:"Futsū de onegaishimasu.", en:"Normal, please" },
+    { id:"qa_ramen_7", cn:"顧客答：請幫我做偏硬", note:null, jp:"かためでお願いします", romaji:"Katame de onegai shimasu", en:"Firm, please" },
   ]},
   { title:'🥤 自動販賣機（自動販売機）', note:'確認投幣數字與退幣', items:[
     { id:"qa_vending_0", cn:"標示：150日圓", note:null, jp:"150円", romaji:"Hyaku go-jū-en", en:"150 yen" },
-    { id:"qa_vending_1", cn:"投入200日圓、找零50日圓", note:null, jp:"200円を入れて、50円のおつりです", romaji:"Ni-hyaku-en o irete, go-jū-en no otsuri desu", en:"Insert 200 yen, 50 yen change" },
+    { id:"qa_vending_1", cn:"投入200日圓", note:null, jp:"200円を入れます。", romaji:"Ni-hyaku-en o iremasu.", en:"Insert 200 yen" },
+    { id:"qa_vending_2", cn:"找零50日圓", note:null, jp:"50円のおつりです。", romaji:"Go-jū-en no otsuri desu.", en:"50 yen change" },
   ]},
-  { title:'🍣 餐廳（レストラン）', note:'點餐與分開結帳', items:[
-    { id:"qa_restaurant_0", cn:"顧客問：推薦的餐點是什麼？", note:null, jp:"おすすめは何ですか？", romaji:"Osusume wa nan desu ka?", en:"What do you recommend?" },
-    { id:"qa_restaurant_1", cn:"店員答：A套餐很受歡迎，880日圓", note:null, jp:"Aセットが人気です。880円です", romaji:"Ē-setto ga ninki desu. Happyaku hachi-jū-en desu", en:"The A set is popular. It's 880 yen" },
-    { id:"qa_restaurant_2", cn:"顧客問：可以分開付款嗎？", note:null, jp:"別々に払えますか？", romaji:"Betsubetsu ni haraemasu ka?", en:"Can we pay separately?" },
-    { id:"qa_restaurant_3", cn:"店員答：好的，沒問題", note:null, jp:"はい、大丈夫です", romaji:"Hai, daijōbu desu", en:"Yes, no problem" },
+  { title:'🍣 餐廳（レストラン）', note:'幾位、點餐、數量與結帳', items:[
+    { id:"qa_restaurant_0", cn:"店員問：請問幾位？", note:null, jp:"何名様ですか？", romaji:"Nan-mei-sama desu ka?", en:"How many people?" },
+    { id:"qa_restaurant_1", cn:"店員問：決定好要點什麼了嗎？", note:null, jp:"ご注文はお決まりですか？", romaji:"Gochūmon wa okimari desu ka?", en:"Are you ready to order?" },
+    { id:"qa_restaurant_2", cn:"顧客答：還沒", note:null, jp:"まだです。", romaji:"Mada desu.", en:"Not yet" },
+    { id:"qa_restaurant_3", cn:"顧客問：推薦的餐點是什麼？", note:null, jp:"おすすめは何ですか？", romaji:"Osusume wa nan desu ka?", en:"What do you recommend?" },
+    { id:"qa_restaurant_4", cn:"店員答：A套餐很受歡迎，880日圓", note:null, jp:"Aセットが人気です。880円です", romaji:"Ē-setto ga ninki desu. Happyaku hachi-jū-en desu", en:"The A set is popular. It's 880 yen" },
+    { id:"qa_restaurant_5", cn:"顧客：請給我一個這個", note:null, jp:"これを一つください。", romaji:"Kore o hitotsu kudasai.", en:"One of these, please" },
+    { id:"qa_restaurant_6", cn:"顧客：請給我兩杯水", note:null, jp:"水を二つお願いします。", romaji:"Mizu o futatsu onegaishimasu.", en:"Two waters, please" },
+    { id:"qa_restaurant_7", cn:"顧客問：可以分開付款嗎？", note:null, jp:"別々に払えますか？", romaji:"Betsubetsu ni haraemasu ka?", en:"Can we pay separately?" },
+    { id:"qa_restaurant_8", cn:"顧客：麻煩結帳", note:null, jp:"お会計お願いします。", romaji:"Okaikei onegaishimasu.", en:"Check, please" },
+    { id:"qa_restaurant_9", cn:"店員答：2,980日圓", note:null, jp:"2980円です。", romaji:"Ni-sen kyū-hyaku hachi-jū-en desu.", en:"It's 2,980 yen" },
   ]},
-  { title:'🏨 飯店（ホテル）', note:'辦理入住、房號與早餐時間（302号室已修正為一般數字念法さんびゃくに，不是逐字念さんぜろに）', items:[
+  { title:'🏨 飯店（ホテル）', note:'辦理入住、房號與早餐／退房時間', items:[
     { id:"qa_hotel_0", cn:"顧客：我要辦理入住", note:null, jp:"チェックインをお願いします", romaji:"Chekku-in o onegai shimasu", en:"I'd like to check in" },
-    { id:"qa_hotel_1", cn:"店員答：您的房間是302號房", note:null, jp:"お部屋は302号室です", romaji:"O-heya wa san-byaku-ni gō-shitsu desu", en:"Your room is 302" },
-    { id:"qa_hotel_2", cn:"顧客問：早餐幾點開始？", note:null, jp:"朝食は何時からですか？", romaji:"Chōshoku wa nan-ji kara desu ka?", en:"What time does breakfast start?" },
-    { id:"qa_hotel_3", cn:"店員答：早上7點開始", note:null, jp:"朝7時からです", romaji:"Asa shichi-ji kara desu", en:"It starts at 7am" },
+    { id:"qa_hotel_1", cn:"店員問：請告訴我您的姓名", note:null, jp:"お名前をお願いします。", romaji:"Onamae o onegaishimasu.", en:"May I have your name?" },
+    { id:"qa_hotel_2", cn:"店員答：您的房間是305號（標準數字唸法）", note:null, jp:"お部屋は305号室です。", romaji:"O-heya wa san-byaku-go gō-shitsu desu.", en:"Your room is 305" },
+    { id:"qa_hotel_3", cn:"⚠️補充：現場也可能聽到「逐字唸」的房號說法（比較口語，非教材主要教法）", note:'例如305會念成 さん・まる・ご，不是さんびゃくご，兩種都可能遇到', jp:"305号室（さん・まる・ご）", romaji:"San-maru-go gō-shitsu", en:"Room 305 (digit-by-digit style)" },
+    { id:"qa_hotel_4", cn:"顧客問：早餐幾點開始？", note:null, jp:"朝食は何時からですか？", romaji:"Chōshoku wa nan-ji kara desu ka?", en:"What time does breakfast start?" },
+    { id:"qa_hotel_5", cn:"店員答：早上7點開始", note:null, jp:"朝7時からです", romaji:"Asa shichi-ji kara desu", en:"It starts at 7am" },
+    { id:"qa_hotel_6", cn:"顧客問：退房是幾點？", note:null, jp:"チェックアウトは何時ですか？", romaji:"Chekku-auto wa nan-ji desu ka?", en:"What time is checkout?" },
   ]},
-  { title:'🚃 車站（駅）', note:'問路、月台與票價', items:[
-    { id:"qa_station_0", cn:"顧客問：到東京站要多少錢？", note:null, jp:"東京駅までいくらですか？", romaji:"Tōkyō-eki made ikura desu ka?", en:"How much to Tokyo Station?" },
-    { id:"qa_station_1", cn:"店員答：220日圓", note:null, jp:"220円です", romaji:"Ni-hyaku ni-jū-en desu", en:"It's 220 yen" },
-    { id:"qa_station_2", cn:"顧客問：在幾號月台？", note:null, jp:"何番線ですか？", romaji:"Nan-ban-sen desu ka?", en:"Which platform?" },
-    { id:"qa_station_3", cn:"店員答：3號月台", note:null, jp:"3番線です", romaji:"San-ban-sen desu", en:"Platform 3" },
+  { title:'🚃 車站（駅）', note:'問路、月台、票價與班次', items:[
+    { id:"qa_station_0", cn:"顧客問：大阪車站在哪裡？", note:null, jp:"大阪駅はどこですか？", romaji:"Ōsaka-eki wa doko desu ka?", en:"Where is Osaka Station?" },
+    { id:"qa_station_1", cn:"顧客問：前往東京的是幾號月台？", note:null, jp:"東京行きは何番線ですか？", romaji:"Tōkyō-iki wa nan-ban-sen desu ka?", en:"Which platform for Tokyo?" },
+    { id:"qa_station_2", cn:"店員答：3號月台", note:null, jp:"3番線です。", romaji:"San-ban-sen desu.", en:"Platform 3" },
+    { id:"qa_station_3", cn:"顧客問：這班電車會去大阪嗎？", note:null, jp:"この電車は大阪に行きますか？", romaji:"Kono densha wa Ōsaka ni ikimasu ka?", en:"Does this train go to Osaka?" },
+    { id:"qa_station_4", cn:"顧客問：下一班電車是幾點？", note:null, jp:"次の電車は何時ですか？", romaji:"Tsugi no densha wa nan-ji desu ka?", en:"What time is the next train?" },
+    { id:"qa_station_5", cn:"店員答：10點30分", note:null, jp:"10時30分です。", romaji:"Jū-ji san-jup-pun desu.", en:"10:30" },
+    { id:"qa_station_6", cn:"顧客問：到東京站要多少錢？", note:null, jp:"東京駅までいくらですか？", romaji:"Tōkyō-eki made ikura desu ka?", en:"How much to Tokyo Station?" },
+    { id:"qa_station_7", cn:"店員答：220日圓", note:null, jp:"220円です", romaji:"Ni-hyaku ni-jū-en desu", en:"It's 220 yen" },
+    { id:"qa_station_8", cn:"顧客問：在幾號月台？", note:null, jp:"何番線ですか？", romaji:"Nan-ban-sen desu ka?", en:"Which platform?" },
+    { id:"qa_station_9", cn:"店員答：3號月台", note:null, jp:"3番線です", romaji:"San-ban-sen desu", en:"Platform 3" },
+  ]},
+  { title:'✈️ 機場', note:'登機門、登機時間', items:[
+    { id:"qa_airport_0", cn:"顧客問：登機門是幾號？", note:null, jp:"搭乗口は何番ですか？", romaji:"Tōjō-guchi wa nan-ban desu ka?", en:"What's the boarding gate number?" },
+    { id:"qa_airport_1", cn:"店員答：24號", note:null, jp:"24番です。", romaji:"Ni-jū-yon-ban desu.", en:"Gate 24" },
+    { id:"qa_airport_2", cn:"顧客問：幾點登機？", note:null, jp:"搭乗は何時ですか？", romaji:"Tōjō wa nan-ji desu ka?", en:"What time is boarding?" },
+    { id:"qa_airport_3", cn:"店員答：14點30分", note:null, jp:"14時30分です。", romaji:"Jū-yo-ji san-jup-pun desu.", en:"14:30" },
+  ]},
+  { title:'🎫 電車／新幹線車票', note:'車資、自由座與列車號碼（號碼是逐字唸，跟一般金額不一樣）', items:[
+    { id:"qa_ticket_0", cn:"顧客問：到東京多少錢？", note:null, jp:"東京までいくらですか？", romaji:"Tōkyō made ikura desu ka?", en:"How much to Tokyo?" },
+    { id:"qa_ticket_1", cn:"顧客問：有自由座嗎？", note:null, jp:"自由席はありますか？", romaji:"Jiyūseki wa arimasu ka?", en:"Is there a non-reserved car?" },
+    { id:"qa_ticket_2", cn:"顧客問：第幾號列車？", note:null, jp:"何番の電車ですか？", romaji:"Nan-ban no densha desu ka?", en:"Which train number?" },
+    { id:"qa_ticket_3", cn:"店員答：12號（車次號碼通常逐字唸，跟12,000円這種金額念法不同）", note:null, jp:"12号です。", romaji:"Jū-ni-gō desu.", en:"Train number 12" },
+  ]},
+  { title:'🎟️ 景點／門票', note:'人數、票價與開放時間', items:[
+    { id:"qa_ticket2_0", cn:"顧客：兩位成人，麻煩了", note:null, jp:"大人二人お願いします。", romaji:"Otona futari onegaishimasu.", en:"Two adults, please" },
+    { id:"qa_ticket2_1", cn:"顧客問：票多少錢？", note:null, jp:"チケットはいくらですか？", romaji:"Chiketto wa ikura desu ka?", en:"How much are tickets?" },
+    { id:"qa_ticket2_2", cn:"店員答：一位1,200日圓", note:null, jp:"一人1200円です。", romaji:"Hitori sen-ni-hyaku-en desu.", en:"1,200 yen per person" },
+    { id:"qa_ticket2_3", cn:"顧客問：開放到幾點？", note:null, jp:"何時までですか？", romaji:"Nan-ji made desu ka?", en:"Until what time?" },
+  ]},
+  { title:'👕 購物服飾店', note:'尺寸與試穿', items:[
+    { id:"qa_clothes_0", cn:"顧客問：這個多少錢？", note:null, jp:"これ、いくらですか？", romaji:"Kore, ikura desu ka?", en:"How much is this?" },
+    { id:"qa_clothes_1", cn:"顧客問：有M號嗎？", note:null, jp:"Mサイズはありますか？", romaji:"Emu saizu wa arimasu ka?", en:"Do you have a size M?" },
+    { id:"qa_clothes_2", cn:"店員答：有的", note:null, jp:"はい、あります。", romaji:"Hai, arimasu.", en:"Yes, we have it" },
+    { id:"qa_clothes_3", cn:"顧客問：可以試穿嗎？", note:null, jp:"試着できますか？", romaji:"Shichaku dekimasu ka?", en:"Can I try this on?" },
+    { id:"qa_clothes_4", cn:"店員答：可以", note:null, jp:"はい、できます。", romaji:"Hai, dekimasu.", en:"Yes, you can" },
+  ]},
+  { title:'🛒 超市', note:'價格、數量與重量（グラム＝公克）', items:[
+    { id:"qa_market_0", cn:"顧客問：兩個多少錢？", note:null, jp:"二つでいくらですか？", romaji:"Futatsu de ikura desu ka?", en:"How much for two?" },
+    { id:"qa_market_1", cn:"顧客問：這是多少日圓？", note:null, jp:"これは何円ですか？", romaji:"Kore wa nan-en desu ka?", en:"How many yen is this?" },
+    { id:"qa_market_2", cn:"標示：100公克", note:null, jp:"100グラム", romaji:"Hyaku guramu", en:"100 grams" },
+    { id:"qa_market_3", cn:"標示：500公克", note:null, jp:"500グラム", romaji:"Go-hyaku guramu", en:"500 grams" },
+  ]},
+  { title:'🚕 計程車／交通', note:'車資詢問', items:[
+    { id:"qa_taxi_0", cn:"顧客問：到大阪車站多少錢？", note:null, jp:"大阪駅までいくらですか？", romaji:"Ōsaka-eki made ikura desu ka?", en:"How much to Osaka Station?" },
+    { id:"qa_taxi_1", cn:"抵達時顧客問：多少錢？", note:null, jp:"いくらですか？", romaji:"Ikura desu ka?", en:"How much is it?" },
+    { id:"qa_taxi_2", cn:"司機答：2,300日圓", note:null, jp:"2300円です。", romaji:"Ni-sen san-byaku-en desu.", en:"It's 2,300 yen" },
+  ]},
+  { title:'🔢 排隊／取號機', note:'號碼牌與廣播叫號', items:[
+    { id:"qa_queue_0", cn:"你拿到：127號", note:null, jp:"127番", romaji:"Hyaku ni-jū nana-ban", en:"Number 127" },
+    { id:"qa_queue_1", cn:"廣播：127號的客人", note:null, jp:"127番のお客様。", romaji:"Hyaku ni-jū nana-ban no okyaku-sama.", en:"Customer number 127" },
+  ]},
+  { title:'📱 電話／聯絡資料', note:'電話號碼要一個數字一個一個唸，跟金額、房號完全不一樣；想查任意電話號碼可以到「電話號碼」主題頁使用查詢工具', items:[
+    { id:"qa_phone_0", cn:"範例：090-1234-5678 要拆成三組，一個數字一個數字唸", note:'不要把090當成「九十」來念', jp:"ぜろ・きゅう・ぜろ　いち・に・さん・よん　ご・ろく・なな・はち", romaji:"Zero-kyū-zero, ichi-ni-san-yon, go-roku-nana-hachi", en:"090-1234-5678, read digit by digit" },
   ]},
 ];
 
@@ -1297,9 +1389,10 @@ function openPhraseBrowser(categories, title){
       ${c.note?`<div class="section-intro">${c.note}</div>`:''}
       ${c.items.map(it=>{
         const counters = findCounters(it.jp);
+        const initialJp = counters.length ? rebuildPhraseWithCounters(it.jp, counters, counters.map(m=>m.n)) : it.jp;
         return `
         <div class="card" data-item="${it.id}">
-          <div class="jp" data-jpline="${it.id}">${rb(it.jp)}</div>
+          <div class="jp" data-jpline="${it.id}">${rb(initialJp)}</div>
           <div class="hira">${it.romaji}</div>
           <div class="cn">${it.cn}${it.note?' · '+it.note:''}</div>
           <div class="cn" style="color:var(--sub);">${it.en}</div>
@@ -1316,7 +1409,10 @@ function openPhraseBrowser(categories, title){
     `).join('');
     const flatItems = cats.flatMap(c=>c.items);
     const currentJp = {};
-    flatItems.forEach(it=>{ currentJp[it.id] = it.jp; });
+    flatItems.forEach(it=>{
+      const counters = findCounters(it.jp);
+      currentJp[it.id] = counters.length ? rebuildPhraseWithCounters(it.jp, counters, counters.map(m=>m.n)) : it.jp;
+    });
     inner.querySelectorAll('[data-itemid]').forEach(inp=>{
       inp.addEventListener('input', ()=>{
         const itemId = inp.dataset.itemid;
@@ -1475,9 +1571,10 @@ function openGrammarNotes(){
         <div style="margin-top:10px;font-size:12px;color:var(--sub);">例句</div>
         ${g.examples.map((ex,ei)=>{
           const counters = findCounters(ex.jp);
+          const initialExJp = counters.length ? rebuildPhraseWithCounters(ex.jp, counters, counters.map(m=>m.n)) : ex.jp;
           return `
           <div class="card" style="margin-top:6px;">
-            <div class="jp" style="cursor:pointer;" data-glex="${gi}_${ei}" data-glexline="${gi}_${ei}">${rb(ex.jp)}</div>
+            <div class="jp" style="cursor:pointer;" data-glex="${gi}_${ei}" data-glexline="${gi}_${ei}">${rb(initialExJp)}</div>
             <div class="hira">${ex.romaji}</div>
             <div class="cn">${ex.cn}</div>
             ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;">
@@ -1542,6 +1639,12 @@ function openGrammarNotes(){
       ${OTHER_DATE_VOCAB.map(([jp,h,rj,cn])=>`<div class="vocabCell" data-speak="${h.split('／')[0]}"><div class="jp">${jp}（${h}）</div><div class="rj">${rj}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🧠 日本人到底在問什麼？「何／いくら」速查表</h3>
+    <div class="section-intro">看到一句話裡有「何」開頭的詞，先查這裡，不用整句慢慢猜。</div>
+    <div class="vocabGrid">
+      ${NANI_X_GLOSSARY.map(([jp,h,cn])=>`<div class="vocabCell" data-speak="${h}"><div class="jp">${rb(jp)}</div><div class="rj">${h}</div><div class="cn">${cn}</div></div>`).join('')}
+    </div>
+
     <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">助詞判斷小抄（30句）－點藍色小按鈕聽發音</h3>
     ${PARTICLE_PATTERNS.map((parts,i)=>`
       <div class="particleItem">
@@ -1565,7 +1668,10 @@ function openGrammarNotes(){
     el.addEventListener('click', ()=>speak(GRAMMAR_LESSONS[Number(el.dataset.glesson)].jp, 0.85));
   });
   const glCurrentJp = {};
-  GRAMMAR_LESSONS.forEach((g,gi)=>g.examples.forEach((ex,ei)=>{ glCurrentJp[gi+'_'+ei] = ex.jp; }));
+  GRAMMAR_LESSONS.forEach((g,gi)=>g.examples.forEach((ex,ei)=>{
+    const counters = findCounters(ex.jp);
+    glCurrentJp[gi+'_'+ei] = counters.length ? rebuildPhraseWithCounters(ex.jp, counters, counters.map(m=>m.n)) : ex.jp;
+  }));
   list.querySelectorAll('[data-glex]').forEach(el=>{
     el.addEventListener('click', ()=>{
       speak(glCurrentJp[el.dataset.glex], 0.85);
