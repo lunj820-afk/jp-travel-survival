@@ -501,6 +501,15 @@ function rebuildPhraseWithCounters(jp, matches, values){
   result += jp.slice(cursor);
   return result;
 }
+/* 數字改變時，中文翻譯裡對應的數字（阿拉伯數字或中文數字）也依序替換成新數值 */
+function rebuildCnWithCounts(cn, values){
+  if(!values || !values.length) return cn;
+  let idx = 0;
+  return cn.replace(/[0-9]+|[一二三四五六七八九十兩]+/g, (match)=>{
+    if(idx < values.length) return String(values[idx++]);
+    return match;
+  });
+}
 
 /* 情境購物／點餐例句（可改數量）*/
 const SCENE_ITEMS = {
@@ -534,7 +543,7 @@ const SCENE_ITEMS = {
     {jp:'目薬', reading:'めぐすり', cn:'眼藥水', counter:'hon'},
     {jp:'入浴剤', reading:'にゅうよくざい', cn:'入浴劑', counter:'ko'},
     {jp:'生理用ナプキン', reading:'せいりようなぷきん', cn:'衛生棉', counter:'mai'},
-    {jp:'綿棒', reading:'めんぼう', cn:'棉花棒', counter:'hon'},
+    {jp:'綿棒', reading:'めんぼう', cn:'棉花棒', counter:'hon', cnUnit:'支'},
   ],
   ramen: [
     {jp:'ラーメン', reading:'らーめん', cn:'拉麵', counter:'tsu'},
@@ -568,7 +577,7 @@ const SCENE_ITEMS = {
   ],
   hotel: [
     {jp:'タオル', reading:'たおる', cn:'毛巾', counter:'mai'},
-    {jp:'歯ブラシ', reading:'はぶらし', cn:'牙刷', counter:'hon'},
+    {jp:'歯ブラシ', reading:'はぶらし', cn:'牙刷', counter:'hon', cnUnit:'支'},
     {jp:'枕', reading:'まくら', cn:'枕頭', counter:'ko'},
     {jp:'スリッパ', reading:'すりっぱ', cn:'拖鞋', counter:'soku'},
     {jp:'毛布', reading:'もうふ', cn:'毛毯', counter:'mai'},
@@ -577,7 +586,7 @@ const SCENE_ITEMS = {
   ],
   station: [
     {jp:'きっぷ', reading:'きっぷ', cn:'車票', counter:'mai'},
-    {jp:'傘', reading:'かさ', cn:'雨傘', counter:'hon'},
+    {jp:'傘', reading:'かさ', cn:'雨傘', counter:'hon', cnUnit:'把'},
     {jp:'駅弁', reading:'えきべん', cn:'車站便當', counter:'ko'},
   ],
 };
@@ -1160,11 +1169,22 @@ const TRIP_CATEGORIES = [
 /* 情境問答：日本旅遊最常遇到數字／金額的7個場合，每句店員問／顧客答都可以點擊發音、數字可調整 */
 const SCENARIO_QA = [
   { title:'🏪 便利商店（コンビニ）', note:'結帳、袋子與加熱服務', items:[
-    { id:"qa_store_0", cn:"店員問：要加購袋子嗎？", note:null, jp:"袋はご利用ですか？", romaji:"Fukuro wa goriyō desu ka?", en:"Would you like a bag?" },
-    { id:"qa_store_1", cn:"顧客答：好，麻煩了", note:null, jp:"はい、お願いします", romaji:"Hai, onegai shimasu", en:"Yes, please" },
-    { id:"qa_store_2", cn:"顧客答：不用，沒關係", note:null, jp:"いいえ、大丈夫です", romaji:"Iie, daijōbu desu", en:"No, that's okay" },
-    { id:"qa_store_3", cn:"店員問：要微波加熱嗎？", note:null, jp:"温めますか？", romaji:"Atatamemasu ka?", en:"Would you like this warmed up?" },
-    { id:"qa_store_4", cn:"顧客答：請幫我加熱", note:null, jp:"お願いします", romaji:"Onegai shimasu", en:"Yes, please" },
+    { id:"qa_store_0", cn:"店員問：要加購袋子嗎？", note:null, jp:"袋はご利用ですか？", romaji:"Fukuro wa goriyō desu ka?", en:"Would you like a bag?",
+      segs:[{t:'袋',r:'ふくろ',m:'袋子'},{t:'は',r:'は',m:'助詞（主題標記）'},{t:'ご利用',r:'ごりよう',m:'使用（禮貌説法）'},{t:'ですか',r:'ですか',m:'是…嗎？'}] },
+    { id:"qa_store_1", cn:"顧客答：好，袋子一個，麻煩了", note:'回答時把「袋」再說一次，練習聽到就能反應', jp:"袋を一つお願いします。", romaji:"Fukuro o hitotsu onegaishimasu.", en:"One bag, please",
+      segs:[{t:'袋',r:'ふくろ',m:'袋子'},{t:'を',r:'を',m:'助詞（受詞標記）'},{t:'一つ',r:'ひとつ',m:'一個（下方可調整數量）'},{t:'お願いします',r:'おねがいします',m:'麻煩了／拜託'}] },
+    { id:"qa_store_1b", cn:"顧客答（大袋子）：好，大的袋子一個，麻煩了", note:'大／中／小三種尺寸的說法', jp:"大きい袋を一つお願いします。", romaji:"Ōkii fukuro o hitotsu onegaishimasu.", en:"One big bag, please",
+      segs:[{t:'大きい',r:'おおきい',m:'大的'},{t:'袋',r:'ふくろ',m:'袋子'},{t:'を',r:'を',m:'助詞'},{t:'一つ',r:'ひとつ',m:'一個（下方可調整數量）'},{t:'お願いします',r:'おねがいします',m:'麻煩了'}] },
+    { id:"qa_store_1c", cn:"顧客答（中袋子）：好，中的袋子一個，麻煩了", note:null, jp:"中くらいの袋を一つお願いします。", romaji:"Chūkurai no fukuro o hitotsu onegaishimasu.", en:"One medium bag, please",
+      segs:[{t:'中くらいの',r:'ちゅうくらいの',m:'中等大小的'},{t:'袋',r:'ふくろ',m:'袋子'},{t:'を',r:'を',m:'助詞'},{t:'一つ',r:'ひとつ',m:'一個（下方可調整數量）'},{t:'お願いします',r:'おねがいします',m:'麻煩了'}] },
+    { id:"qa_store_1d", cn:"顧客答（小袋子）：好，小的袋子一個，麻煩了", note:null, jp:"小さい袋を一つお願いします。", romaji:"Chiisai fukuro o hitotsu onegaishimasu.", en:"One small bag, please",
+      segs:[{t:'小さい',r:'ちいさい',m:'小的'},{t:'袋',r:'ふくろ',m:'袋子'},{t:'を',r:'を',m:'助詞'},{t:'一つ',r:'ひとつ',m:'一個（下方可調整數量）'},{t:'お願いします',r:'おねがいします',m:'麻煩了'}] },
+    { id:"qa_store_2", cn:"顧客答：不用，沒關係", note:null, jp:"いいえ、大丈夫です", romaji:"Iie, daijōbu desu", en:"No, that's okay",
+      segs:[{t:'いいえ',r:'いいえ',m:'不／不是'},{t:'大丈夫',r:'だいじょうぶ',m:'沒關係／不要緊'},{t:'です',r:'です',m:'禮貌句尾'}] },
+    { id:"qa_store_3", cn:"店員問：要微波加熱嗎？", note:null, jp:"温めますか？", romaji:"Atatamemasu ka?", en:"Would you like this warmed up?",
+      segs:[{t:'温めます',r:'あたためます',m:'加熱'},{t:'か',r:'か',m:'嗎（疑問助詞）'}] },
+    { id:"qa_store_4", cn:"顧客答：好，請幫我加熱", note:'回答時把「温める」再說一次', jp:"はい、温めてください。", romaji:"Hai, atatamete kudasai.", en:"Yes, please warm it up",
+      segs:[{t:'はい',r:'はい',m:'是／好'},{t:'温めて',r:'あたためて',m:'請加熱（て形）'},{t:'ください',r:'ください',m:'請'}] },
     { id:"qa_store_5", cn:"店員問：有集點卡嗎？", note:null, jp:"ポイントカードはありますか？", romaji:"Pointo kādo wa arimasu ka?", en:"Do you have a point card?" },
     { id:"qa_store_6", cn:"顧客答：沒有", note:null, jp:"ありません", romaji:"Arimasen", en:"No, I don't" },
     { id:"qa_store_7", cn:"店員問：需要幾雙筷子？（膳＝筷子的量詞）", note:null, jp:"お箸は何膳お付けしますか？", romaji:"Ohashi wa nan-zen otsuke shimasu ka?", en:"How many pairs of chopsticks?" },
@@ -1462,10 +1482,11 @@ function renderHome(){
 }
 
 /* ---- 情境頁：購物／點餐例句，數量可即時修改 ---- */
+const SCENE_QA_INDEX = {store:0, drug:1, ramen:2, vending:3, restaurant:4, hotel:5, station:6};
 function openScene(sceneId){
   switchView('learn');
   const scene = SCENES.find(s=>s.id===sceneId);
-  document.getElementById('learnTitle').textContent = scene.emoji+' '+scene.title+' 情境例句';
+  document.getElementById('learnTitle').textContent = scene.emoji+' '+scene.title;
   document.getElementById('learnIntro').textContent = '輸入數量，句子會自動改變讀音（日文的「個/本/枚/杯」量詞念法都不一樣）。';
   document.getElementById('topicQuizArea').innerHTML = '';
   const toolWrap = document.getElementById('phoneToolWrap');
@@ -1474,12 +1495,103 @@ function openScene(sceneId){
   else if(scene.tool==='train'){ toolWrap.style.display='block'; renderTrainLookupTool(); }
   else if(scene.tool==='people'){ toolWrap.style.display='block'; renderPeopleCounterTool(); }
   else { toolWrap.style.display='none'; }
-  renderSceneItems(sceneId);
+
+  const qaIdx = SCENE_QA_INDEX[sceneId];
+  const list = document.getElementById('learnList');
+  if(qaIdx!==undefined && SCENARIO_QA[qaIdx]){
+    list.innerHTML = `<div class="catchips" id="sceneModeChips">
+        <div class="chip active" data-mode="order">🛒 點餐例句</div>
+        <div class="chip" data-mode="qa">🗨️ 情境問答</div>
+      </div>
+      <div id="sceneModeBody"></div>`;
+    const body = document.getElementById('sceneModeBody');
+    function renderMode(mode){
+      if(mode==='order') renderSceneItems(sceneId, body);
+      else renderScenarioQAInline(SCENARIO_QA[qaIdx], body);
+    }
+    document.getElementById('sceneModeChips').querySelectorAll('.chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        document.querySelectorAll('#sceneModeChips .chip').forEach(c=>c.classList.remove('active'));
+        chip.classList.add('active');
+        renderMode(chip.dataset.mode);
+      });
+    });
+    renderMode('order');
+  } else {
+    renderSceneItems(sceneId);
+  }
+}
+/* 在指定容器內渲染單一情境問答分類（供情境頁的「情境問答」分頁使用）*/
+function renderSegSpans(segs){
+  return segs.map((s,si)=>`<span class="tok" data-segidx="${si}">${rb(s.t)}</span>`).join('');
+}
+function renderScenarioQAInline(cat, container){
+  container.innerHTML = `
+    ${cat.note?`<div class="section-intro">${cat.note}</div>`:''}
+    ${cat.items.map(it=>{
+      const counters = findCounters(it.jp);
+      const initialJp = counters.length ? rebuildPhraseWithCounters(it.jp, counters, counters.map(m=>m.n)) : it.jp;
+      const jpInner = it.segs ? renderSegSpans(it.segs) : rb(initialJp);
+      return `
+      <div class="card" data-item="${it.id}">
+        <div class="jp" data-jpline="${it.id}"${it.segs?` data-hassegs="1"`:''}>${jpInner}</div>
+        ${it.segs?'<div class="section-intro" style="margin-top:2px;">👆 點句子裡的單字看讀音與意思</div>':''}
+        <div class="hira">${it.romaji}</div>
+        <div class="cn" data-cnline="${it.id}">${counters.length?rebuildCnWithCounts(it.cn, counters.map(m=>m.n)):it.cn}${it.note?' · '+it.note:''}</div>
+        <div class="cn" style="color:var(--sub);">${it.en}</div>
+        ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-itemid="${it.id}" data-ci="${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
+        </div>` : ''}
+        <div class="actions">
+          <button data-rate="0.5" data-say="${it.id}">🐢 慢速 0.5x</button>
+          <button data-rate="0.65" data-say="${it.id}">🐢 慢速 0.65x</button>
+          <button data-rate="1.0" data-say="${it.id}">▶️ 正常</button>
+        </div>
+      </div>
+    `;}).join('')}
+  `;
+  const currentJp = {};
+  cat.items.forEach(it=>{
+    const counters = findCounters(it.jp);
+    currentJp[it.id] = counters.length ? rebuildPhraseWithCounters(it.jp, counters, counters.map(m=>m.n)) : it.jp;
+  });
+  container.querySelectorAll('[data-itemid]').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      const itemId = inp.dataset.itemid;
+      const it = cat.items.find(x=>x.id===itemId);
+      const counters = findCounters(it.jp);
+      const values = counters.map((m,ci)=>{
+        const el = container.querySelector(`[data-itemid="${itemId}"][data-ci="${ci}"]`);
+        return Number(el.value) || m.n;
+      });
+      const newJp = rebuildPhraseWithCounters(it.jp, counters, values);
+      currentJp[itemId] = newJp;
+      container.querySelector(`[data-jpline="${itemId}"]`).innerHTML = rb(newJp);
+      const cnEl = container.querySelector(`[data-cnline="${itemId}"]`);
+      if(cnEl) cnEl.textContent = rebuildCnWithCounts(it.cn, values) + (it.note?' · '+it.note:'');
+    });
+  });
+  container.querySelectorAll('[data-say]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      speak(currentJp[btn.dataset.say], Number(btn.dataset.rate));
+    });
+  });
+  container.querySelectorAll('[data-hassegs] [data-segidx]').forEach(tok=>{
+    tok.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const line = tok.closest('[data-jpline]');
+      const itemId = line.dataset.jpline;
+      const it = cat.items.find(x=>x.id===itemId);
+      if(!it || !it.segs) return;
+      const seg = it.segs[Number(tok.dataset.segidx)];
+      openSegSheet(seg);
+    });
+  });
 }
 
-function renderSceneItems(sceneId){
+function renderSceneItems(sceneId, container){
   const items = SCENE_ITEMS[sceneId] || [];
-  const list = document.getElementById('learnList');
+  const list = container || document.getElementById('learnList');
   list.innerHTML = items.map((it,i)=>`
     <div class="card" data-idx="${i}">
       <div class="jp">${rb(it.jp)} <span style="font-size:12px;color:var(--accent2);">${it.cn}</span></div>
@@ -1504,7 +1616,7 @@ function renderSceneItems(sceneId){
     const n = Number(input.value)||1;
     const cReading = counterReading(it.counter, n);
     const sentence = `${it.jp}を${cReading}ください。`;
-    const cn = `請給我 ${n} ${COUNTER_CN_UNIT[it.counter]} ${it.cn}。`;
+    const cn = `請給我 ${n} ${it.cnUnit || COUNTER_CN_UNIT[it.counter]} ${it.cn}。`;
     list.querySelector(`[data-out="${i}"]`).textContent = `${it.reading}を ${cReading} ください。`;
     list.querySelector(`[data-outcn="${i}"]`).textContent = cn;
     list.querySelector(`[data-out="${i}"]`).dataset.full = sentence;
@@ -1550,7 +1662,7 @@ function openPhraseBrowser(categories, title){
         <div class="card" data-item="${it.id}">
           <div class="jp" data-jpline="${it.id}">${rb(initialJp)}</div>
           <div class="hira">${it.romaji}</div>
-          <div class="cn">${it.cn}${it.note?' · '+it.note:''}</div>
+          <div class="cn" data-cnline="${it.id}">${counters.length?rebuildCnWithCounts(it.cn, counters.map(m=>m.n)):it.cn}${it.note?' · '+it.note:''}</div>
           <div class="cn" style="color:var(--sub);">${it.en}</div>
           ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
             ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-itemid="${it.id}" data-ci="${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
@@ -1581,6 +1693,8 @@ function openPhraseBrowser(categories, title){
         const newJp = rebuildPhraseWithCounters(it.jp, counters, values);
         currentJp[itemId] = newJp;
         inner.querySelector(`[data-jpline="${itemId}"]`).innerHTML = rb(newJp);
+        const cnEl = inner.querySelector(`[data-cnline="${itemId}"]`);
+        if(cnEl) cnEl.textContent = rebuildCnWithCounts(it.cn, values) + (it.note?' · '+it.note:'');
       });
     });
     inner.querySelectorAll('[data-say]').forEach(btn=>{
@@ -1706,8 +1820,19 @@ function openGrammarNotes(){
   document.getElementById('phoneToolWrap').style.display='none';
   document.getElementById('topicQuizArea').innerHTML = '';
   const list = document.getElementById('learnList');
+  const GN_CHIPS = [
+    ['gn-lessons','句型教室'],['gn-verbforms','動詞四形'],['gn-verbtable','動詞變化表'],['gn-adj','形容詞'],
+    ['gn-sbe','句子構成'],['gn-nsp','名詞句'],['gn-existence','存在句'],['gn-position','位置表現'],['gn-nide','に vs で'],
+    ['gn-time','時間表現'],['gn-counter','數量詞'],['gn-counterorder','數量詞易搞混'],['gn-reltime','相對時間'],['gn-otherdate','其他日期'],
+    ['gn-nanix','何+X'],['gn-particle30','助詞30句'],['gn-particleoverview','助詞總表'],['gn-nihede','に/へ/で'],['gn-mixed','綜合練習'],
+    ['gn-demo','指示代名詞'],['gn-timemarkers','時間標誌詞'],['gn-body','人體'],['gn-color','顏色'],['gn-clothing','服飾'],
+    ['gn-tableware','餐具'],['gn-personality','人格特質'],['gn-advstate','狀態副詞'],['gn-advtime','時間副詞'],
+  ];
   list.innerHTML = `
-    <h3 style="font-size:14px;color:var(--sub);margin:4px 0 8px;">句型文法教室</h3>
+    <div class="catchips" id="gnChips" style="position:sticky;top:0;background:var(--bg);padding:6px 0;z-index:5;">
+      ${GN_CHIPS.map(([id,label])=>`<div class="chip" data-scrollto="${id}">${label}</div>`).join('')}
+    </div>
+    <h3 id="gn-lessons" style="font-size:14px;color:var(--sub);margin:4px 0 8px;">句型文法教室</h3>
     <div class="section-intro">把常出現的句型拆開講：文法規則＋例句＋小對話，幫助建立文法感覺。</div>
     ${GRAMMAR_LESSONS.map((g,gi)=>`
       <div class="patternCard" style="margin-bottom:16px;padding:14px;">
@@ -1732,7 +1857,7 @@ function openGrammarNotes(){
           <div class="card" style="margin-top:6px;">
             <div class="jp" style="cursor:pointer;" data-glex="${gi}_${ei}" data-glexline="${gi}_${ei}">${rb(initialExJp)}</div>
             <div class="hira">${ex.romaji}</div>
-            <div class="cn">${ex.cn}</div>
+            <div class="cn" data-glcnline="${gi}_${ei}">${counters.length?rebuildCnWithCounts(ex.cn, counters.map(m=>m.n)):ex.cn}</div>
             ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;">
               ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-glcnt-gi="${gi}" data-glcnt-ei="${ei}" data-glcnt-ci="${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
             </div>` : ''}
@@ -1755,7 +1880,7 @@ function openGrammarNotes(){
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">動詞四形總整理</h3>
+    <h3 id="gn-verbforms" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">動詞四形總整理</h3>
     ${VERB_FORMS.map((v,i)=>`
       <div class="patternCard" style="margin-bottom:8px;padding:10px 12px;">
         <div style="font-size:12px;color:var(--sub);">${v.name}｜${v.usage}</div>
@@ -1764,7 +1889,7 @@ function openGrammarNotes(){
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">動詞變化表（代表動詞）</h3>
+    <h3 id="gn-verbtable" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">動詞變化表（代表動詞）</h3>
     <div style="overflow-x:auto;">
     <table style="width:100%;border-collapse:collapse;font-size:13px;">
       <tr style="border-bottom:1px solid var(--border);color:var(--sub);"><th style="text-align:left;padding:4px;">辭書形</th><th style="text-align:left;padding:4px;">ます形</th><th style="text-align:left;padding:4px;">て形</th><th style="text-align:left;padding:4px;">ない形</th><th style="text-align:left;padding:4px;">ている形</th><th style="text-align:left;padding:4px;">た形</th><th style="text-align:left;padding:4px;">中文</th></tr>
@@ -1773,7 +1898,7 @@ function openGrammarNotes(){
     </div>
     <div class="tipRow" style="margin-top:10px;"><span class="mark">💡</span><div>日文動詞不隨人稱（我／你／他／我們）改變，只隨時態與敬語程度改變：無論主詞是誰，「行きます」「します」都是同一個形態。</div></div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">形容詞句型（い形容詞／な形容詞）</h3>
+    <h3 id="gn-adj" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">形容詞句型（い形容詞／な形容詞）</h3>
     <div class="vocabGrid">
       ${ADJECTIVE_PATTERNS.map((a,i)=>`
         <div class="vocabCell" data-adj="${i}">
@@ -1784,7 +1909,7 @@ function openGrammarNotes(){
       `).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">一張圖秒懂日語句子構成</h3>
+    <h3 id="gn-sbe" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">一張圖秒懂日語句子構成</h3>
     <div class="section-intro">同一句話從簡單慢慢加長，觀察句子怎麼一層層疊起來。</div>
     ${SENTENCE_BUILD_EXAMPLES.map((s,i)=>`
       <div class="card" style="margin-bottom:6px;cursor:pointer;" data-sbe="${i}">
@@ -1793,7 +1918,7 @@ function openGrammarNotes(){
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">名詞句（名詞＋です系列）</h3>
+    <h3 id="gn-nsp" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">名詞句（名詞＋です系列）</h3>
     <div class="vocabGrid">
       ${NOUN_SENTENCE_PATTERNS.map((n,i)=>`
         <div class="vocabCell" data-nsp="${i}">
@@ -1804,7 +1929,7 @@ function openGrammarNotes(){
       `).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">存在句（あります／います）</h3>
+    <h3 id="gn-existence" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">存在句（あります／います）</h3>
     <div class="vocabGrid">
       ${EXISTENCE_PATTERNS.map((e,i)=>`
         <div class="vocabCell" data-ep="${i}">
@@ -1815,7 +1940,7 @@ function openGrammarNotes(){
       `).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">位置表現（上／下／前／後／中／隣）</h3>
+    <h3 id="gn-position" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">位置表現（上／下／前／後／中／隣）</h3>
     <div class="vocabGrid">
       ${POSITION_PATTERNS.map((p,i)=>`
         <div class="vocabCell" data-pp="${i}">
@@ -1826,7 +1951,7 @@ function openGrammarNotes(){
       `).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">易搞混：場所＋に（存在）vs 場所＋で（動作）</h3>
+    <h3 id="gn-nide" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">易搞混：場所＋に（存在）vs 場所＋で（動作）</h3>
     ${NI_DE_CONFUSION.map((t,i)=>`
       <div class="tipRow" data-nide="${i}" style="cursor:pointer;">
         <span class="mark">📍</span>
@@ -1834,7 +1959,7 @@ function openGrammarNotes(){
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:4px 0 8px;">五、時間表現（時間點／日期／期間／頻率）</h3>
+    <h3 id="gn-time" style="font-size:14px;color:var(--sub);margin:4px 0 8px;">五、時間表現（時間點／日期／期間／頻率）</h3>
     <div class="vocabGrid">
       ${GRAMMAR_TIME_PATTERNS.map((p,i)=>`
         <div class="vocabCell" data-say="tp${i}">
@@ -1845,7 +1970,7 @@ function openGrammarNotes(){
       `).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">六、數量詞（いくつ／〜人／〜本／〜枚／〜個／〜匹／〜回）</h3>
+    <h3 id="gn-counter" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">六、數量詞（いくつ／〜人／〜本／〜枚／〜個／〜匹／〜回）</h3>
     <div class="vocabGrid">
       ${GRAMMAR_COUNTER_PATTERNS.map((p,i)=>`
         <div class="vocabCell" data-say="cp${i}">
@@ -1856,7 +1981,7 @@ function openGrammarNotes(){
       `).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">六-易搞混：數量詞的位置</h3>
+    <h3 id="gn-counterorder" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">六-易搞混：數量詞的位置</h3>
     ${GRAMMAR_ORDER_TIPS.map((t,i)=>`
       <div class="tipRow" data-tip="${i}" style="cursor:pointer;">
         <span class="mark">${t.ok?'✅':'❌'}</span>
@@ -1864,30 +1989,30 @@ function openGrammarNotes(){
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">時間表達（相對時間）</h3>
+    <h3 id="gn-reltime" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">時間表達（相對時間）</h3>
     <div class="vocabGrid">
       ${RELATIVE_TIME_VOCAB.map(([jp,h,rj,cn])=>`<div class="vocabCell" data-speak="${h.split('／')[0]}"><div class="jp">${jp}（${h}）</div><div class="rj">${rj}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">其他日期相關表達</h3>
+    <h3 id="gn-otherdate" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">其他日期相關表達</h3>
     <div class="vocabGrid">
       ${OTHER_DATE_VOCAB.map(([jp,h,rj,cn])=>`<div class="vocabCell" data-speak="${h.split('／')[0]}"><div class="jp">${jp}（${h}）</div><div class="rj">${rj}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🧠 日本人到底在問什麼？「何／いくら」速查表</h3>
+    <h3 id="gn-nanix" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🧠 日本人到底在問什麼？「何／いくら」速查表</h3>
     <div class="section-intro">看到一句話裡有「何」開頭的詞，先查這裡，不用整句慢慢猜。</div>
     <div class="vocabGrid">
       ${NANI_X_GLOSSARY.map(([jp,h,cn])=>`<div class="vocabCell" data-speak="${h}"><div class="jp">${rb(jp)}</div><div class="rj">${h}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">助詞判斷小抄（30句）－點藍色小按鈕聽發音</h3>
+    <h3 id="gn-particle30" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">助詞判斷小抄（30句）－點藍色小按鈕聽發音</h3>
     ${PARTICLE_PATTERNS.map((parts,i)=>`
       <div class="particleItem">
         ${i+1}. ${parts.map(([zh,p])=>`${zh}是 <button class="particleChip" data-p="${p}">${p}</button>`).join('，')}
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">七、助詞總整理（を／に／へ／で／と／から／まで）</h3>
+    <h3 id="gn-particleoverview" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">七、助詞總整理（を／に／へ／で／と／から／まで）</h3>
     ${PARTICLE_OVERVIEW.map((p,i)=>`
       <div class="patternCard" style="margin-bottom:8px;padding:10px 12px;">
         <div style="display:flex;justify-content:space-between;"><span class="warnTag">${p.p}</span><span style="font-size:12px;color:var(--sub);">${p.meaning}</span></div>
@@ -1896,7 +2021,7 @@ function openGrammarNotes(){
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">易搞混：に vs へ vs で（場所相關）</h3>
+    <h3 id="gn-nihede" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">易搞混：に vs へ vs で（場所相關）</h3>
     ${NI_HE_DE_CONFUSION.map((t,i)=>`
       <div class="tipRow" data-nihede="${i}" style="cursor:pointer;">
         <span class="mark">📍</span>
@@ -1904,7 +2029,7 @@ function openGrammarNotes(){
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">八、例句整理（綜合練習句）</h3>
+    <h3 id="gn-mixed" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">八、例句整理（綜合練習句）</h3>
     <div class="vocabGrid">
       ${MIXED_PRACTICE_SENTENCES.map((m,i)=>`
         <div class="vocabCell" data-mps="${i}">
@@ -1915,7 +2040,7 @@ function openGrammarNotes(){
       `).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">指示代名詞（これ／それ／あれ）</h3>
+    <h3 id="gn-demo" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">指示代名詞（これ／それ／あれ）</h3>
     <div style="overflow-x:auto;">
     <table style="width:100%;border-collapse:collapse;font-size:13px;">
       <tr style="border-bottom:1px solid var(--border);color:var(--sub);"><th style="text-align:left;padding:4px;">距離</th><th style="text-align:left;padding:4px;">指示事物</th><th style="text-align:left;padding:4px;">指示場所</th><th style="text-align:left;padding:4px;">禮貌／方向</th></tr>
@@ -1923,7 +2048,7 @@ function openGrammarNotes(){
     </table>
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">時間標誌詞（依時態分類）</h3>
+    <h3 id="gn-timemarkers" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">時間標誌詞（依時態分類）</h3>
     ${Object.keys(TIME_MARKERS).map(cat=>`
       <div style="font-size:12px;color:var(--sub);margin:10px 0 6px;">${cat}</div>
       <div class="vocabGrid">
@@ -1931,37 +2056,37 @@ function openGrammarNotes(){
       </div>
     `).join('')}
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🧍 人體單字</h3>
+    <h3 id="gn-body" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🧍 人體單字</h3>
     <div class="vocabGrid">
       ${VOCAB_BODY.map(([h,kanji,cn])=>`<div class="vocabCell" data-speak="${h}"><div class="jp">${kanji}（${h}）</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🎨 顏色單字</h3>
+    <h3 id="gn-color" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🎨 顏色單字</h3>
     <div class="vocabGrid">
       ${VOCAB_COLOR.map(([h,kanji,cn])=>`<div class="vocabCell" data-speak="${h}"><div class="jp">${kanji?kanji+'（'+h+'）':h}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">👕 服飾與配件</h3>
+    <h3 id="gn-clothing" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">👕 服飾與配件</h3>
     <div class="vocabGrid">
       ${VOCAB_CLOTHING.map(([jp,cn])=>`<div class="vocabCell" data-speak="${jp}"><div class="jp">${rb(jp)}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🍽️ 餐具與用品</h3>
+    <h3 id="gn-tableware" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">🍽️ 餐具與用品</h3>
     <div class="vocabGrid">
       ${VOCAB_TABLEWARE.map(([jp,cn])=>`<div class="vocabCell" data-speak="${jp}"><div class="jp">${rb(jp)}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">😊 人格特質</h3>
+    <h3 id="gn-personality" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">😊 人格特質</h3>
     <div class="vocabGrid">
       ${VOCAB_PERSONALITY.map(([jp,cn])=>`<div class="vocabCell" data-speak="${jp.replace(/（.*?）/,'')}"><div class="jp">${rb(jp)}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">📝 狀態／程度副詞</h3>
+    <h3 id="gn-advstate" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">📝 狀態／程度副詞</h3>
     <div class="vocabGrid">
       ${VOCAB_ADVERBS_STATE.map(([jp,cn])=>`<div class="vocabCell" data-speak="${jp.split('／')[0]}"><div class="jp">${rb(jp)}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
 
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">⏱️ 時間／頻率副詞</h3>
+    <h3 id="gn-advtime" style="font-size:14px;color:var(--sub);margin:16px 0 8px;">⏱️ 時間／頻率副詞</h3>
     <div class="vocabGrid">
       ${VOCAB_ADVERBS_TIME.map(([jp,cn])=>`<div class="vocabCell" data-speak="${jp.replace(/（.*?）/,'')}"><div class="jp">${rb(jp)}</div><div class="cn">${cn}</div></div>`).join('')}
     </div>
@@ -2005,6 +2130,8 @@ function openGrammarNotes(){
       const newJp = rebuildPhraseWithCounters(ex.jp, counters, values);
       glCurrentJp[key] = newJp;
       list.querySelector(`[data-glexline="${key}"]`).innerHTML = rb(newJp);
+      const cnEl = list.querySelector(`[data-glcnline="${key}"]`);
+      if(cnEl) cnEl.textContent = rebuildCnWithCounts(ex.cn, values);
     });
   });
   list.querySelectorAll('[data-glreply]').forEach(el=>{
@@ -2058,8 +2185,43 @@ function openGrammarNotes(){
   list.querySelectorAll('[data-tm]').forEach(el=>{
     el.addEventListener('click', ()=>speak(el.dataset.tm, 0.9));
   });
+  list.querySelectorAll('[data-scrollto]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const target = document.getElementById(chip.dataset.scrollto);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
 }
 
+/* 依「量詞類型」把情境問答裡相關的句子抓出來，跨頁互相連結用 */
+const CATEGORY_QA_COUNTER_TYPES = {
+  money: ['yen'], time: ['hour','minute'], people: ['nin'], train: ['bansen'], room: ['goushitsu'],
+};
+function getRelatedQA(counterTypes){
+  const results = [];
+  SCENARIO_QA.forEach(cat=>{
+    cat.items.forEach(it=>{
+      const counters = findCounters(it.jp);
+      if(counters.some(c=>counterTypes.includes(c.counterType))) results.push(it);
+    });
+  });
+  return results;
+}
+function renderRelatedQASection(counterTypes){
+  const related = getRelatedQA(counterTypes);
+  const list = document.getElementById('learnList');
+  if(!related.length) return;
+  const wrap = document.createElement('div');
+  wrap.id = 'relatedQAArea';
+  wrap.innerHTML = `<button id="relatedQABtn" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--chip);font-size:14px;font-weight:700;cursor:pointer;color:var(--text);margin-bottom:16px;">🗨️ 情境問答裡相關的句子（${related.length}句）</button><div id="relatedQAInner" style="margin-bottom:16px;"></div>`;
+  list.parentNode.insertBefore(wrap, list);
+  document.getElementById('relatedQABtn').addEventListener('click', ()=>{
+    const inner = document.getElementById('relatedQAInner');
+    if(inner.dataset.open==='1'){ inner.innerHTML=''; inner.dataset.open='0'; return; }
+    inner.dataset.open='1';
+    renderScenarioQAInline({title:'', note:null, items:related}, inner);
+  });
+}
 function openLearn(catKey){
   switchView('learn');
   const c = CATEGORIES[catKey];
@@ -2067,6 +2229,8 @@ function openLearn(catKey){
   document.getElementById('learnIntro').textContent = c.intro;
   document.getElementById('phoneToolWrap').innerHTML = '';
   document.getElementById('topicQuizArea').innerHTML = '';
+  const oldRelated = document.getElementById('relatedQAArea');
+  if(oldRelated) oldRelated.remove();
   if(catKey==='phone'){
     document.getElementById('learnList').innerHTML='';
     document.getElementById('phoneToolWrap').style.display='block';
@@ -2090,6 +2254,7 @@ function openLearn(catKey){
     renderTopicQuizToggle(c.items, c.title);
     renderLearnList(c.items);
   }
+  if(CATEGORY_QA_COUNTER_TYPES[catKey]) renderRelatedQASection(CATEGORY_QA_COUNTER_TYPES[catKey]);
 }
 
 function renderMonthDateLookupTool(){
