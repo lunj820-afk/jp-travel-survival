@@ -591,6 +591,705 @@ const SCENE_ITEMS = {
   ],
 };
 
+/* ============ 日本美食日文大全（FOOD_CATEGORIES）============ */
+const FOOD_PATTERN_ITEMS = [
+  {jp:'ラーメンをください。', reading:'らーめんをください。', cn:'我要拉麵。（＿＿＿をください＝我要＿＿＿）'},
+  {jp:'マグロをください。', reading:'まぐろをください。', cn:'我要鮪魚。'},
+  {jp:'ビールをください。', reading:'びーるをください。', cn:'我要一杯啤酒。'},
+  {jp:'お好み焼きをください。', reading:'おこのみやきをください。', cn:'我要大阪燒。'},
+  {jp:'これを二つください。', reading:'これをふたつください。', cn:'我要兩個這個。（②我要幾個）'},
+  {jp:'ビールを二つください。', reading:'びーるをふたつください。', cn:'我要兩杯啤酒。（③我要幾杯）'},
+  {jp:'ラーメンを一つください。', reading:'らーめんをひとつください。', cn:'我要一份拉麵。（④我要一份）'},
+  {jp:'これをください。', reading:'これをください。', cn:'我要這個。（⑤我要這個）'},
+  {jp:'それをください。', reading:'それをください。', cn:'我要那個。（⑥我要那個）'},
+  {jp:'おすすめは何ですか？', reading:'おすすめはなんですか？', cn:'有什麼推薦的嗎？（⑦有什麼推薦？）'},
+  {jp:'メニューはありますか？', reading:'めにゅーはありますか？', cn:'有菜單嗎？（⑧有沒有＿＿＿？可替換任何名詞）'},
+  {jp:'砂糖はいりません。', reading:'さとうはいりません。', cn:'不要糖。（⑨不要＿＿＿，可替換任何名詞）'},
+  {jp:'ネギを抜いてください。', reading:'ねぎをぬいてください。', cn:'請不要放蔥。（⑩可以不要＿＿＿嗎？）'},
+];
+
+const FOOD_CATEGORIES = [
+  { title:'⭐ 萬用點餐句型', note:'學會「＿＿＿をください」＝「請給我＿＿＿」，看到任何食物名稱都可以直接代入這個句型點餐。', items: FOOD_PATTERN_ITEMS },
+
+  { title:'🍶① 居酒屋（いざかや）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {header:'下酒菜／小菜'},
+    {jp:'枝豆', reading:'えだまめ', cn:'毛豆', counter:'tsu'},
+    {jp:'冷奴', reading:'ひややっこ', cn:'冷豆腐', counter:'tsu'},
+    {jp:'たこわさ', reading:'たこわさ', cn:'芥末章魚', counter:'tsu'},
+    {jp:'塩辛', reading:'しおから', cn:'鹽漬海鮮', counter:'tsu'},
+    {jp:'漬物', reading:'つけもの', cn:'醃漬物', counter:'tsu'},
+    {jp:'キムチ', reading:'きむち', cn:'泡菜', counter:'tsu'},
+    {jp:'ポテトサラダ', reading:'ぽてとさらだ', cn:'馬鈴薯沙拉', counter:'tsu'},
+    {jp:'シーザーサラダ', reading:'しーざーさらだ', cn:'凱薩沙拉', counter:'tsu'},
+    {jp:'海藻サラダ', reading:'かいそうさらだ', cn:'海藻沙拉', counter:'tsu'},
+    {header:'炸物'},
+    {jp:'唐揚げ', reading:'からあげ', cn:'炸雞', counter:'ko'},
+    {jp:'ポテトフライ', reading:'ぽてとふらい', cn:'薯條', counter:'tsu'},
+    {jp:'フライドポテト', reading:'ふらいどぽてと', cn:'薯條', counter:'tsu'},
+    {jp:'コロッケ', reading:'ころっけ', cn:'可樂餅', counter:'ko'},
+    {jp:'メンチカツ', reading:'めんちかつ', cn:'炸肉餅', counter:'ko'},
+    {jp:'ささみチーズフライ', reading:'ささみちーずふらい', cn:'起司雞柳', counter:'ko'},
+    {jp:'なんこつ唐揚げ', reading:'なんこつからあげ', cn:'炸雞軟骨', counter:'tsu'},
+    {jp:'タコ唐揚げ', reading:'たこからあげ', cn:'炸章魚', counter:'tsu'},
+    {jp:'エビフライ', reading:'えびふらい', cn:'炸蝦', counter:'ko'},
+    {header:'烤物'},
+    {jp:'焼き鳥', reading:'やきとり', cn:'烤雞串', counter:'hon', cnUnit:'支'},
+    {jp:'焼き豚', reading:'やきぶた', cn:'烤豬肉', counter:'tsu'},
+    {jp:'焼きイカ', reading:'やきいか', cn:'烤花枝', counter:'tsu'},
+    {jp:'焼き魚', reading:'やきざかな', cn:'烤魚', counter:'tsu'},
+    {jp:'ほっけ', reading:'ほっけ', cn:'花魚', counter:'tsu'},
+    {jp:'ししゃも', reading:'ししゃも', cn:'柳葉魚', counter:'tsu'},
+    {jp:'とうもろこし', reading:'とうもろこし', cn:'烤玉米', counter:'hon', cnUnit:'支'},
+    {jp:'焼きなす', reading:'やきなす', cn:'烤茄子', counter:'tsu'},
+    {header:'蛋／豆腐'},
+    {jp:'出汁巻き卵', reading:'だしまきたまご', cn:'高湯玉子燒', counter:'tsu'},
+    {jp:'明太子入り卵焼き', reading:'めんたいこいりたまごやき', cn:'明太子玉子燒', counter:'tsu'},
+    {jp:'茶碗蒸し', reading:'ちゃわんむし', cn:'茶碗蒸', counter:'tsu'},
+    {jp:'揚げ出し豆腐', reading:'あげだしどうふ', cn:'炸豆腐', counter:'tsu'},
+    {header:'生魚'},
+    {jp:'お刺身', reading:'おさしみ', cn:'生魚片', counter:'tsu'},
+    {jp:'お刺身盛り合わせ', reading:'おさしみもりあわせ', cn:'綜合生魚片', counter:'tsu'},
+    {jp:'マグロ', reading:'まぐろ', cn:'鮪魚', counter:'tsu'},
+    {jp:'サーモン', reading:'さーもん', cn:'鮭魚', counter:'tsu'},
+    {jp:'タイ', reading:'たい', cn:'鯛魚', counter:'tsu'},
+    {jp:'カンパチ', reading:'かんぱち', cn:'紅甘鯵', counter:'tsu'},
+    {jp:'ブリ', reading:'ぶり', cn:'鰤魚', counter:'tsu'},
+    {jp:'イカ', reading:'いか', cn:'花枝', counter:'tsu'},
+    {jp:'タコ', reading:'たこ', cn:'章魚', counter:'tsu'},
+    {jp:'ホタテ', reading:'ほたて', cn:'干貝', counter:'ko'},
+  ]},
+
+  { title:'🍣② 壽司（すし）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {header:'常見握壽司'},
+    {jp:'マグロ', reading:'まぐろ', cn:'鮪魚', counter:'ko'},
+    {jp:'中トロ', reading:'ちゅうとろ', cn:'中腹鮪魚', counter:'ko'},
+    {jp:'大トロ', reading:'おおとろ', cn:'大腹鮪魚', counter:'ko'},
+    {jp:'サーモン', reading:'さーもん', cn:'鮭魚', counter:'ko'},
+    {jp:'ハマチ', reading:'はまち', cn:'青甘', counter:'ko'},
+    {jp:'ブリ', reading:'ぶり', cn:'鰤魚', counter:'ko'},
+    {jp:'タイ', reading:'たい', cn:'鯛魚', counter:'ko'},
+    {jp:'ヒラメ', reading:'ひらめ', cn:'比目魚', counter:'ko'},
+    {jp:'カンパチ', reading:'かんぱち', cn:'紅甘鯵', counter:'ko'},
+    {jp:'アジ', reading:'あじ', cn:'鯵魚', counter:'ko'},
+    {jp:'サバ', reading:'さば', cn:'鯖魚', counter:'ko'},
+    {jp:'イワシ', reading:'いわし', cn:'鯷魚', counter:'ko'},
+    {jp:'コハダ', reading:'こはだ', cn:'小鰭', counter:'ko'},
+    {jp:'エビ', reading:'えび', cn:'蝦', counter:'ko'},
+    {jp:'甘エビ', reading:'あまえび', cn:'甜蝦', counter:'ko'},
+    {jp:'赤エビ', reading:'あかえび', cn:'赤蝦', counter:'ko'},
+    {jp:'ボタンエビ', reading:'ぼたんえび', cn:'牡丹蝦', counter:'ko'},
+    {jp:'ホタテ', reading:'ほたて', cn:'干貝', counter:'ko'},
+    {jp:'イカ', reading:'いか', cn:'花枝', counter:'ko'},
+    {jp:'タコ', reading:'たこ', cn:'章魚', counter:'ko'},
+    {jp:'うなぎ', reading:'うなぎ', cn:'鰻魚', counter:'ko'},
+    {jp:'あなご', reading:'あなご', cn:'星鰻', counter:'ko'},
+    {jp:'イクラ', reading:'いくら', cn:'鮭魚卵', counter:'ko'},
+    {jp:'ウニ', reading:'うに', cn:'海膽', counter:'ko'},
+    {jp:'とびこ', reading:'とびこ', cn:'飛魚卵', counter:'ko'},
+    {jp:'ネギトロ', reading:'ねぎとろ', cn:'蔥花鮪魚泥', counter:'ko'},
+    {jp:'玉子', reading:'たまご', cn:'玉子', counter:'ko'},
+    {jp:'かんぴょう', reading:'かんぴょう', cn:'干瓢', counter:'ko'},
+    {header:'壽司種類'},
+    {jp:'握り寿司', reading:'にぎりずし', cn:'握壽司', counter:'tsu'},
+    {jp:'巻き寿司', reading:'まきずし', cn:'壽司卷', counter:'hon', cnUnit:'捲'},
+    {jp:'軍艦巻き', reading:'ぐんかんまき', cn:'軍艦壽司', counter:'ko'},
+    {jp:'手巻き寿司', reading:'てまきずし', cn:'手卷', counter:'hon', cnUnit:'捲'},
+    {jp:'ちらし寿司', reading:'ちらしずし', cn:'散壽司', counter:'tsu'},
+    {jp:'稲荷寿司', reading:'いなりずし', cn:'豆皮壽司', counter:'ko'},
+    {jp:'炙り寿司', reading:'あぶりずし', cn:'炙燒壽司', counter:'ko'},
+    {jp:'おまかせ', reading:'おまかせ', cn:'主廚發辦', counter:'tsu'},
+  ]},
+
+  { title:'🍜③ 拉麵（ラーメン）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {header:'湯頭'},
+    {jp:'醤油ラーメン', reading:'しょうゆらーめん', cn:'醬油拉麵', counter:'tsu'},
+    {jp:'味噌ラーメン', reading:'みそらーめん', cn:'味噌拉麵', counter:'tsu'},
+    {jp:'塩ラーメン', reading:'しおらーめん', cn:'鹽味拉麵', counter:'tsu'},
+    {jp:'豚骨ラーメン', reading:'とんこつらーめん', cn:'豚骨拉麵', counter:'tsu'},
+    {jp:'鶏白湯ラーメン', reading:'とりぱいたんらーめん', cn:'雞白湯拉麵', counter:'tsu'},
+    {jp:'魚介ラーメン', reading:'ぎょかいらーめん', cn:'海鮮高湯拉麵', counter:'tsu'},
+    {jp:'担々麺', reading:'たんたんめん', cn:'擔擔麵', counter:'tsu'},
+    {jp:'辛味噌ラーメン', reading:'からみそらーめん', cn:'辣味噌拉麵', counter:'tsu'},
+    {jp:'家系ラーメン', reading:'いえけいらーめん', cn:'家系拉麵', counter:'tsu'},
+    {jp:'二郎系ラーメン', reading:'じろうけいらーめん', cn:'二郎系拉麵', counter:'tsu'},
+    {header:'麵'},
+    {jp:'ラーメン', reading:'らーめん', cn:'拉麵', counter:'tsu'},
+    {jp:'つけ麺', reading:'つけめん', cn:'沾麵', counter:'tsu'},
+    {jp:'油そば', reading:'あぶらそば', cn:'油拌麵', counter:'tsu'},
+    {jp:'まぜそば', reading:'まぜそば', cn:'拌麵', counter:'tsu'},
+    {header:'配料'},
+    {jp:'チャーシュー', reading:'ちゃーしゅー', cn:'叉燒', counter:'mai', cnUnit:'片'},
+    {jp:'味玉', reading:'あじたま', cn:'溏心蛋', counter:'ko'},
+    {jp:'煮卵', reading:'にたまご', cn:'滷蛋', counter:'ko'},
+    {jp:'メンマ', reading:'めんま', cn:'筍乾', counter:'tsu'},
+    {jp:'ネギ', reading:'ねぎ', cn:'蔥', counter:'tsu'},
+    {jp:'海苔', reading:'のり', cn:'海苔', counter:'mai'},
+    {jp:'もやし', reading:'もやし', cn:'豆芽菜', counter:'tsu'},
+    {jp:'コーン', reading:'こーん', cn:'玉米', counter:'tsu'},
+    {jp:'バター', reading:'ばたー', cn:'奶油', counter:'tsu'},
+    {jp:'ほうれん草', reading:'ほうれんそう', cn:'菠菜', counter:'tsu'},
+    {jp:'きくらげ', reading:'きくらげ', cn:'木耳', counter:'tsu'},
+    {jp:'にんにく', reading:'にんにく', cn:'大蒜', counter:'tsu'},
+    {header:'拉麵店常見單品（原「拉麵店」情境合併）'},
+    {jp:'餃子', reading:'ぎょうざ', cn:'餃子', counter:'ko'},
+    {jp:'チャーハン', reading:'ちゃーはん', cn:'炒飯', counter:'tsu'},
+    {jp:'ビール', reading:'びーる', cn:'啤酒', counter:'hai'},
+    {jp:'ライス', reading:'らいす', cn:'白飯', counter:'hai'},
+    {jp:'半熟卵', reading:'はんじゅくたまご', cn:'溏心蛋', counter:'ko'},
+    {jp:'コーラ', reading:'こーら', cn:'可樂', counter:'hai'},
+    {jp:'替え玉', reading:'かえだま', cn:'加麵', counter:'ko'},
+  ]},
+
+  { title:'🥩④ 燒肉（焼肉・やきにく）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {header:'牛肉'},
+    {jp:'カルビ', reading:'かるび', cn:'牛五花', counter:'tsu'},
+    {jp:'ロース', reading:'ろーす', cn:'牛里肌', counter:'tsu'},
+    {jp:'ハラミ', reading:'はらみ', cn:'橫膈膜肉', counter:'tsu'},
+    {jp:'タン', reading:'たん', cn:'牛舌', counter:'tsu'},
+    {jp:'上タン', reading:'じょうたん', cn:'高級牛舌', counter:'tsu'},
+    {jp:'ミノ', reading:'みの', cn:'牛胃', counter:'tsu'},
+    {jp:'レバー', reading:'ればー', cn:'牛肝', counter:'tsu'},
+    {jp:'ヒレ', reading:'ひれ', cn:'菲力', counter:'tsu'},
+    {jp:'サーロイン', reading:'さーろいん', cn:'沙朗', counter:'tsu'},
+    {jp:'リブロース', reading:'りぶろーす', cn:'肋眼', counter:'tsu'},
+    {jp:'肩ロース', reading:'かたろーす', cn:'肩胛里肌', counter:'tsu'},
+    {header:'豬肉'},
+    {jp:'豚カルビ', reading:'ぶたかるび', cn:'豬五花', counter:'tsu'},
+    {jp:'豚トロ', reading:'ぶたとろ', cn:'松阪豬', counter:'tsu'},
+    {jp:'豚バラ', reading:'ぶたばら', cn:'豬五花', counter:'tsu'},
+    {jp:'豚ロース', reading:'ぶたろーす', cn:'豬里肌', counter:'tsu'},
+    {jp:'豚ホルモン', reading:'ぶたほるもん', cn:'豬內臟', counter:'tsu'},
+    {header:'雞肉'},
+    {jp:'鶏もも', reading:'とりもも', cn:'雞腿肉', counter:'tsu'},
+    {jp:'鶏むね', reading:'とりむね', cn:'雞胸肉', counter:'tsu'},
+    {jp:'せせり', reading:'せせり', cn:'雞頸肉', counter:'tsu'},
+    {jp:'つくね', reading:'つくね', cn:'雞肉丸', counter:'ko'},
+    {header:'其他'},
+    {jp:'ホルモン', reading:'ほるもん', cn:'內臟', counter:'tsu'},
+    {jp:'野菜盛り合わせ', reading:'やさいもりあわせ', cn:'綜合蔬菜', counter:'tsu'},
+    {jp:'キムチ', reading:'きむち', cn:'泡菜', counter:'tsu'},
+    {jp:'ナムル', reading:'なむる', cn:'韓式涼拌菜', counter:'tsu'},
+    {jp:'石焼ビビンバ', reading:'いしやきびびんば', cn:'石鍋拌飯', counter:'tsu'},
+    {jp:'冷麺', reading:'れいめん', cn:'冷麵', counter:'tsu'},
+  ]},
+
+  { title:'🍤⑤ 天婦羅（天ぷら・てんぷら）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'天ぷら', reading:'てんぷら', cn:'天婦羅', counter:'ko'},
+    {jp:'天ぷら盛り合わせ', reading:'てんぷらもりあわせ', cn:'綜合天婦羅', counter:'tsu'},
+    {jp:'エビ天', reading:'えびてん', cn:'炸蝦', counter:'ko'},
+    {jp:'イカ天', reading:'いかてん', cn:'炸花枝', counter:'ko'},
+    {jp:'キス天', reading:'きすてん', cn:'炸鱚魚', counter:'ko'},
+    {jp:'アナゴ天', reading:'あなごてん', cn:'炸星鰻', counter:'ko'},
+    {jp:'ホタテ天', reading:'ほたててん', cn:'炸干貝', counter:'ko'},
+    {jp:'かき揚げ', reading:'かきあげ', cn:'炸什錦', counter:'ko'},
+    {jp:'野菜天', reading:'やさいてん', cn:'炸蔬菜', counter:'ko'},
+    {jp:'なす', reading:'なす', cn:'茄子', counter:'ko'},
+    {jp:'かぼちゃ', reading:'かぼちゃ', cn:'南瓜', counter:'ko'},
+    {jp:'さつまいも', reading:'さつまいも', cn:'地瓜', counter:'ko'},
+    {jp:'れんこん', reading:'れんこん', cn:'蓮藕', counter:'ko'},
+    {jp:'しいたけ', reading:'しいたけ', cn:'香菇', counter:'ko'},
+    {jp:'ししとう', reading:'ししとう', cn:'獅子椒', counter:'ko'},
+    {jp:'大葉', reading:'おおば', cn:'紫蘇葉', counter:'mai', cnUnit:'片'},
+    {jp:'たまねぎ', reading:'たまねぎ', cn:'洋蔥', counter:'ko'},
+  ]},
+
+  { title:'🍚⑥ 丼飯（どんぶり）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'牛丼', reading:'ぎゅうどん', cn:'牛肉丼', counter:'tsu'},
+    {jp:'豚丼', reading:'ぶたどん', cn:'豬肉丼', counter:'tsu'},
+    {jp:'親子丼', reading:'おやこどん', cn:'親子丼', counter:'tsu'},
+    {jp:'カツ丼', reading:'かつどん', cn:'炸豬排丼', counter:'tsu'},
+    {jp:'天丼', reading:'てんどん', cn:'天婦羅丼', counter:'tsu'},
+    {jp:'海鮮丼', reading:'かいせんどん', cn:'海鮮丼', counter:'tsu'},
+    {jp:'うな丼', reading:'うなどん', cn:'鰻魚丼', counter:'tsu'},
+    {jp:'うな重', reading:'うなじゅう', cn:'鰻魚重', counter:'tsu'},
+    {jp:'ねぎとろ丼', reading:'ねぎとろどん', cn:'蔥花鮪魚丼', counter:'tsu'},
+    {jp:'鉄火丼', reading:'てっかどん', cn:'鮪魚丼', counter:'tsu'},
+    {jp:'いくら丼', reading:'いくらどん', cn:'鮭魚卵丼', counter:'tsu'},
+    {jp:'ローストビーフ丼', reading:'ろーすとびーふどん', cn:'烤牛肉丼', counter:'tsu'},
+    {jp:'カキ丼', reading:'かきどん', cn:'牡蠣丼', counter:'tsu'},
+  ]},
+
+  { title:'🍲⑦ 鍋物（鍋・なべ）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'すき焼き', reading:'すきやき', cn:'壽喜燒', counter:'tsu'},
+    {jp:'しゃぶしゃぶ', reading:'しゃぶしゃぶ', cn:'涮涮鍋', counter:'tsu'},
+    {jp:'もつ鍋', reading:'もつなべ', cn:'牛／豬內臟鍋', counter:'tsu'},
+    {jp:'水炊き', reading:'みずたき', cn:'水炊雞鍋', counter:'tsu'},
+    {jp:'ちゃんこ鍋', reading:'ちゃんこなべ', cn:'相撲火鍋', counter:'tsu'},
+    {jp:'キムチ鍋', reading:'きむちなべ', cn:'泡菜鍋', counter:'tsu'},
+    {jp:'寄せ鍋', reading:'よせなべ', cn:'綜合火鍋', counter:'tsu'},
+    {jp:'牡蠣鍋', reading:'かきなべ', cn:'牡蠣鍋', counter:'tsu'},
+    {jp:'あんこう鍋', reading:'あんこうなべ', cn:'鮟鱇魚鍋', counter:'tsu'},
+    {jp:'湯豆腐', reading:'ゆどうふ', cn:'湯豆腐', counter:'tsu'},
+    {jp:'おでん', reading:'おでん', cn:'關東煮', counter:'ko'},
+  ]},
+
+  { title:'🍥⑧ 蕎麥麵（そば）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'ざるそば', reading:'ざるそば', cn:'冷蕎麥麵', counter:'tsu'},
+    {jp:'もりそば', reading:'もりそば', cn:'冷蕎麥麵', counter:'tsu'},
+    {jp:'かけそば', reading:'かけそば', cn:'熱湯蕎麥麵', counter:'tsu'},
+    {jp:'天ぷらそば', reading:'てんぷらそば', cn:'天婦羅蕎麥麵', counter:'tsu'},
+    {jp:'きつねそば', reading:'きつねそば', cn:'豆皮蕎麥麵', counter:'tsu'},
+    {jp:'たぬきそば', reading:'たぬきそば', cn:'天婦羅渣蕎麥麵', counter:'tsu'},
+    {jp:'鴨南蛮', reading:'かもなんばん', cn:'鴨肉蕎麥麵', counter:'tsu'},
+    {jp:'とろろそば', reading:'とろろそば', cn:'山藥泥蕎麥麵', counter:'tsu'},
+    {jp:'月見そば', reading:'つきみそば', cn:'月見蕎麥麵', counter:'tsu'},
+    {jp:'おろしそば', reading:'おろしそば', cn:'蘿蔔泥蕎麥麵', counter:'tsu'},
+  ]},
+
+  { title:'🍜⑨ 烏龍麵（うどん）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'かけうどん', reading:'かけうどん', cn:'熱湯烏龍麵', counter:'tsu'},
+    {jp:'きつねうどん', reading:'きつねうどん', cn:'豆皮烏龍麵', counter:'tsu'},
+    {jp:'たぬきうどん', reading:'たぬきうどん', cn:'天婦羅渣烏龍麵', counter:'tsu'},
+    {jp:'天ぷらうどん', reading:'てんぷらうどん', cn:'天婦羅烏龍麵', counter:'tsu'},
+    {jp:'肉うどん', reading:'にくうどん', cn:'肉烏龍麵', counter:'tsu'},
+    {jp:'カレーうどん', reading:'かれーうどん', cn:'咖哩烏龍麵', counter:'tsu'},
+    {jp:'釜揚げうどん', reading:'かまあげうどん', cn:'釜揚烏龍麵', counter:'tsu'},
+    {jp:'釜玉うどん', reading:'かまたまうどん', cn:'生蛋釜玉烏龍麵', counter:'tsu'},
+    {jp:'ぶっかけうどん', reading:'ぶっかけうどん', cn:'沾汁烏龍麵', counter:'tsu'},
+    {jp:'冷やしうどん', reading:'ひやしうどん', cn:'冷烏龍麵', counter:'tsu'},
+  ]},
+
+  { title:'🐙⑩ 大阪美食', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'お好み焼き', reading:'おこのみやき', cn:'大阪燒', counter:'tsu'},
+    {jp:'たこ焼き', reading:'たこやき', cn:'章魚燒', counter:'ko'},
+    {jp:'焼きそば', reading:'やきそば', cn:'炒麵', counter:'tsu'},
+    {jp:'ねぎ焼き', reading:'ねぎやき', cn:'蔥燒', counter:'tsu'},
+    {jp:'串カツ', reading:'くしかつ', cn:'大阪炸串', counter:'hon', cnUnit:'支'},
+    {jp:'どて焼き', reading:'どてやき', cn:'味噌燉牛筋', counter:'tsu'},
+    {jp:'うどん', reading:'うどん', cn:'烏龍麵', counter:'tsu'},
+    {jp:'きつねうどん', reading:'きつねうどん', cn:'豆皮烏龍麵', counter:'tsu'},
+    {jp:'551豚まん', reading:'ごーごーいちぶたまん', cn:'551肉包', counter:'ko'},
+    {jp:'箱寿司', reading:'はこずし', cn:'箱壽司', counter:'tsu'},
+    {jp:'バッテラ', reading:'ばってら', cn:'鯖魚箱壽司', counter:'tsu'},
+    {jp:'てっちり', reading:'てっちり', cn:'河豚鍋', counter:'tsu'},
+    {jp:'ふぐ刺し', reading:'ふぐさし', cn:'河豚生魚片', counter:'tsu'},
+  ]},
+
+  { title:'🍢⑪ 串燒／串揚げ', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'焼き鳥', reading:'やきとり', cn:'烤雞串', counter:'hon', cnUnit:'支'},
+    {jp:'ねぎま', reading:'ねぎま', cn:'雞肉蔥串', counter:'hon', cnUnit:'支'},
+    {jp:'つくね', reading:'つくね', cn:'雞肉丸串', counter:'hon', cnUnit:'支'},
+    {jp:'皮', reading:'かわ', cn:'雞皮', counter:'hon', cnUnit:'支'},
+    {jp:'もも', reading:'もも', cn:'雞腿', counter:'hon', cnUnit:'支'},
+    {jp:'砂肝', reading:'すなぎも', cn:'雞胗', counter:'hon', cnUnit:'支'},
+    {jp:'ぼんじり', reading:'ぼんじり', cn:'雞屁股', counter:'hon', cnUnit:'支'},
+    {jp:'なんこつ', reading:'なんこつ', cn:'軟骨', counter:'hon', cnUnit:'支'},
+    {jp:'レバー', reading:'ればー', cn:'雞肝', counter:'hon', cnUnit:'支'},
+    {jp:'豚バラ', reading:'ぶたばら', cn:'豬五花', counter:'hon', cnUnit:'支'},
+    {jp:'アスパラ', reading:'あすぱら', cn:'蘆筍', counter:'hon', cnUnit:'支'},
+    {jp:'しいたけ', reading:'しいたけ', cn:'香菇', counter:'hon', cnUnit:'支'},
+    {jp:'うずら', reading:'うずら', cn:'鵪鶉蛋', counter:'hon', cnUnit:'支'},
+    {jp:'串カツ', reading:'くしかつ', cn:'炸串', counter:'hon', cnUnit:'支'},
+    {jp:'チーズ串', reading:'ちーずくし', cn:'起司串', counter:'hon', cnUnit:'支'},
+    {jp:'エビ串', reading:'えびくし', cn:'蝦串', counter:'hon', cnUnit:'支'},
+  ]},
+
+  { title:'🐟⑫ 海鮮料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'刺身', reading:'さしみ', cn:'生魚片', counter:'tsu'},
+    {jp:'海鮮丼', reading:'かいせんどん', cn:'海鮮丼', counter:'tsu'},
+    {jp:'焼き魚', reading:'やきざかな', cn:'烤魚', counter:'tsu'},
+    {jp:'煮魚', reading:'にざかな', cn:'煮魚', counter:'tsu'},
+    {jp:'焼き貝', reading:'やきがい', cn:'烤貝類', counter:'tsu'},
+    {jp:'ホタテ', reading:'ほたて', cn:'干貝', counter:'ko'},
+    {jp:'カキ', reading:'かき', cn:'牡蠣', counter:'ko'},
+    {jp:'カニ', reading:'かに', cn:'螃蟹', counter:'tsu'},
+    {jp:'エビ', reading:'えび', cn:'蝦', counter:'ko'},
+    {jp:'イカ', reading:'いか', cn:'花枝', counter:'tsu'},
+    {jp:'タコ', reading:'たこ', cn:'章魚', counter:'tsu'},
+    {jp:'ウニ', reading:'うに', cn:'海膽', counter:'tsu'},
+    {jp:'イクラ', reading:'いくら', cn:'鮭魚卵', counter:'tsu'},
+    {jp:'サザエ', reading:'さざえ', cn:'蠑螺', counter:'ko'},
+    {jp:'アワビ', reading:'あわび', cn:'鮑魚', counter:'ko'},
+    {jp:'マグロ', reading:'まぐろ', cn:'鮪魚', counter:'tsu'},
+    {jp:'サーモン', reading:'さーもん', cn:'鮭魚', counter:'tsu'},
+    {jp:'ブリ', reading:'ぶり', cn:'鰤魚', counter:'tsu'},
+    {jp:'タイ', reading:'たい', cn:'鯛魚', counter:'tsu'},
+  ]},
+
+  { title:'🍱⑬ 定食（ていしょく）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'焼き魚定食', reading:'やきざかなていしょく', cn:'烤魚定食', counter:'tsu'},
+    {jp:'刺身定食', reading:'さしみていしょく', cn:'生魚片定食', counter:'tsu'},
+    {jp:'唐揚げ定食', reading:'からあげていしょく', cn:'炸雞定食', counter:'tsu'},
+    {jp:'とんかつ定食', reading:'とんかつていしょく', cn:'炸豬排定食', counter:'tsu'},
+    {jp:'生姜焼き定食', reading:'しょうがやきていしょく', cn:'薑燒豬肉定食', counter:'tsu'},
+    {jp:'焼肉定食', reading:'やきにくていしょく', cn:'燒肉定食', counter:'tsu'},
+    {jp:'天ぷら定食', reading:'てんぷらていしょく', cn:'天婦羅定食', counter:'tsu'},
+    {jp:'ハンバーグ定食', reading:'はんばーぐていしょく', cn:'漢堡排定食', counter:'tsu'},
+    {jp:'カキフライ定食', reading:'かきふらいていしょく', cn:'炸牡蠣定食', counter:'tsu'},
+    {jp:'エビフライ定食', reading:'えびふらいていしょく', cn:'炸蝦定食', counter:'tsu'},
+    {header:'餐廳常見加點（原「餐廳」情境合併）'},
+    {jp:'生ビール', reading:'なまびーる', cn:'生啤酒', counter:'hai'},
+    {jp:'お水', reading:'おみず', cn:'水', counter:'hai'},
+    {jp:'寿司', reading:'すし', cn:'壽司', counter:'ko'},
+    {jp:'天ぷら', reading:'てんぷら', cn:'天婦羅', counter:'ko'},
+    {jp:'お茶漬け', reading:'おちゃづけ', cn:'茶泡飯', counter:'tsu'},
+    {jp:'定食', reading:'ていしょく', cn:'定食套餐', counter:'tsu'},
+    {jp:'コーラ', reading:'こーら', cn:'可樂', counter:'hai'},
+    {jp:'デザート', reading:'でざーと', cn:'甜點', counter:'ko'},
+  ]},
+
+  { title:'🍛⑭ 咖哩（カレー）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'カレーライス', reading:'かれーらいす', cn:'咖哩飯', counter:'tsu'},
+    {jp:'ビーフカレー', reading:'びーふかれー', cn:'牛肉咖哩', counter:'tsu'},
+    {jp:'ポークカレー', reading:'ぽーくかれー', cn:'豬肉咖哩', counter:'tsu'},
+    {jp:'チキンカレー', reading:'ちきんかれー', cn:'雞肉咖哩', counter:'tsu'},
+    {jp:'野菜カレー', reading:'やさいかれー', cn:'蔬菜咖哩', counter:'tsu'},
+    {jp:'カツカレー', reading:'かつかれー', cn:'炸豬排咖哩', counter:'tsu'},
+    {jp:'チーズカレー', reading:'ちーずかれー', cn:'起司咖哩', counter:'tsu'},
+    {jp:'海鮮カレー', reading:'かいせんかれー', cn:'海鮮咖哩', counter:'tsu'},
+    {jp:'オムカレー', reading:'おむかれー', cn:'蛋包咖哩', counter:'tsu'},
+    {jp:'スープカレー', reading:'すーぷかれー', cn:'湯咖哩', counter:'tsu'},
+  ]},
+
+  { title:'🍔⑮ 漢堡／西式速食', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'ハンバーガー', reading:'はんばーがー', cn:'漢堡', counter:'ko'},
+    {jp:'チーズバーガー', reading:'ちーずばーがー', cn:'起司漢堡', counter:'ko'},
+    {jp:'フィッシュバーガー', reading:'ふぃっしゅばーがー', cn:'魚堡', counter:'ko'},
+    {jp:'チキンバーガー', reading:'ちきんばーがー', cn:'雞肉漢堡', counter:'ko'},
+    {jp:'フライドポテト', reading:'ふらいどぽてと', cn:'薯條', counter:'tsu'},
+    {jp:'チキンナゲット', reading:'ちきんなげっと', cn:'雞塊', counter:'tsu'},
+    {jp:'オニオンリング', reading:'おにおんりんぐ', cn:'洋蔥圈', counter:'tsu'},
+    {jp:'ホットドッグ', reading:'ほっとどっぐ', cn:'熱狗', counter:'hon', cnUnit:'個'},
+    {jp:'サンドイッチ', reading:'さんどいっち', cn:'三明治', counter:'ko'},
+    {jp:'パスタ', reading:'ぱすた', cn:'義大利麵', counter:'tsu'},
+    {jp:'グラタン', reading:'ぐらたん', cn:'焗烤', counter:'tsu'},
+    {jp:'ドリア', reading:'どりあ', cn:'焗烤飯', counter:'tsu'},
+  ]},
+
+  { title:'🍳⑯ 早餐／早午餐', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'朝食', reading:'ちょうしょく', cn:'早餐', counter:'tsu'},
+    {jp:'モーニングセット', reading:'もーにんぐせっと', cn:'早餐套餐', counter:'tsu'},
+    {jp:'トースト', reading:'とーすと', cn:'吐司', counter:'mai', cnUnit:'片'},
+    {jp:'パン', reading:'ぱん', cn:'麵包', counter:'ko'},
+    {jp:'クロワッサン', reading:'くろわっさん', cn:'可頌', counter:'ko'},
+    {jp:'サンドイッチ', reading:'さんどいっち', cn:'三明治', counter:'ko'},
+    {jp:'スクランブルエッグ', reading:'すくらんぶるえっぐ', cn:'炒蛋', counter:'tsu'},
+    {jp:'目玉焼き', reading:'めだまやき', cn:'荷包蛋', counter:'ko'},
+    {jp:'オムレツ', reading:'おむれつ', cn:'歐姆蛋', counter:'tsu'},
+    {jp:'ベーコン', reading:'べーこん', cn:'培根', counter:'mai', cnUnit:'片'},
+    {jp:'ソーセージ', reading:'そーせーじ', cn:'香腸', counter:'hon', cnUnit:'條'},
+    {jp:'ヨーグルト', reading:'よーぐると', cn:'優格', counter:'ko'},
+    {jp:'グラノーラ', reading:'ぐらのーら', cn:'穀片', counter:'tsu'},
+    {jp:'おにぎり', reading:'おにぎり', cn:'飯糰', counter:'ko'},
+    {jp:'味噌汁', reading:'みそしる', cn:'味噌湯', counter:'hai'},
+    {jp:'焼き魚', reading:'やきざかな', cn:'烤魚', counter:'tsu'},
+  ]},
+
+  { title:'🍙⑰ 飯糰（おにぎり）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'鮭', reading:'しゃけ', cn:'鮭魚', counter:'ko'},
+    {jp:'梅', reading:'うめ', cn:'梅子', counter:'ko'},
+    {jp:'ツナマヨ', reading:'つなまよ', cn:'鮪魚美乃滋', counter:'ko'},
+    {jp:'明太子', reading:'めんたいこ', cn:'明太子', counter:'ko'},
+    {jp:'昆布', reading:'こんぶ', cn:'昆布', counter:'ko'},
+    {jp:'おかか', reading:'おかか', cn:'柴魚', counter:'ko'},
+    {jp:'高菜', reading:'たかな', cn:'高菜', counter:'ko'},
+    {jp:'たらこ', reading:'たらこ', cn:'鱈魚卵', counter:'ko'},
+    {jp:'焼きおにぎり', reading:'やきおにぎり', cn:'烤飯糰', counter:'ko'},
+    {jp:'天むす', reading:'てんむす', cn:'天婦羅蝦飯糰', counter:'ko'},
+  ]},
+
+  { title:'🥞⑱ 咖啡廳／Cafe（カフェ）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'コーヒー', reading:'こーひー', cn:'咖啡', counter:'hai'},
+    {jp:'アイスコーヒー', reading:'あいすこーひー', cn:'冰咖啡', counter:'hai'},
+    {jp:'ホットコーヒー', reading:'ほっとこーひー', cn:'熱咖啡', counter:'hai'},
+    {jp:'カフェラテ', reading:'かふぇらて', cn:'拿鐵', counter:'hai'},
+    {jp:'カプチーノ', reading:'かぷちーの', cn:'卡布奇諾', counter:'hai'},
+    {jp:'エスプレッソ', reading:'えすぷれっそ', cn:'義式濃縮', counter:'hai'},
+    {jp:'抹茶ラテ', reading:'まっちゃらて', cn:'抹茶拿鐵', counter:'hai'},
+    {jp:'紅茶', reading:'こうちゃ', cn:'紅茶', counter:'hai'},
+    {jp:'アイスティー', reading:'あいすてぃー', cn:'冰紅茶', counter:'hai'},
+    {jp:'ミルクティー', reading:'みるくてぃー', cn:'奶茶', counter:'hai'},
+    {jp:'ココア', reading:'ここあ', cn:'可可', counter:'hai'},
+    {jp:'レモネード', reading:'れもねーど', cn:'檸檬汽水', counter:'hai'},
+    {jp:'フルーツジュース', reading:'ふるーつじゅーす', cn:'果汁', counter:'hai'},
+  ]},
+
+  { title:'🍰⑲ 蛋糕／甜點店', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'ショートケーキ', reading:'しょーとけーき', cn:'草莓鮮奶油蛋糕', counter:'ko'},
+    {jp:'チーズケーキ', reading:'ちーずけーき', cn:'起司蛋糕', counter:'ko'},
+    {jp:'ガトーショコラ', reading:'がとーしょこら', cn:'巧克力蛋糕', counter:'ko'},
+    {jp:'モンブラン', reading:'もんぶらん', cn:'蒙布朗', counter:'ko'},
+    {jp:'シフォンケーキ', reading:'しふぉんけーき', cn:'戚風蛋糕', counter:'ko'},
+    {jp:'ロールケーキ', reading:'ろーるけーき', cn:'瑞士捲', counter:'ko'},
+    {jp:'プリン', reading:'ぷりん', cn:'布丁', counter:'ko'},
+    {jp:'シュークリーム', reading:'しゅーくりーむ', cn:'泡芙', counter:'ko'},
+    {jp:'エクレア', reading:'えくれあ', cn:'閃電泡芙', counter:'ko'},
+    {jp:'パフェ', reading:'ぱふぇ', cn:'芭菲', counter:'ko'},
+    {jp:'クレープ', reading:'くれーぷ', cn:'可麗餅', counter:'ko'},
+    {jp:'パンケーキ', reading:'ぱんけーき', cn:'鬆餅', counter:'tsu'},
+    {jp:'ワッフル', reading:'わっふる', cn:'格子鬆餅', counter:'ko'},
+  ]},
+
+  { title:'🍵⑳ 日式甜點（和菓子）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'抹茶アイス', reading:'まっちゃあいす', cn:'抹茶冰淇淋', counter:'ko'},
+    {jp:'抹茶パフェ', reading:'まっちゃぱふぇ', cn:'抹茶芭菲', counter:'ko'},
+    {jp:'大福', reading:'だいふく', cn:'大福', counter:'ko'},
+    {jp:'いちご大福', reading:'いちごだいふく', cn:'草莓大福', counter:'ko'},
+    {jp:'どら焼き', reading:'どらやき', cn:'銅鑼燒', counter:'ko'},
+    {jp:'たい焼き', reading:'たいやき', cn:'鯛魚燒', counter:'ko'},
+    {jp:'わらび餅', reading:'わらびもち', cn:'蕨餅', counter:'ko'},
+    {jp:'団子', reading:'だんご', cn:'糰子', counter:'ko'},
+    {jp:'みたらし団子', reading:'みたらしだんご', cn:'醬油糰子', counter:'ko'},
+    {jp:'あんみつ', reading:'あんみつ', cn:'日式蜜豆', counter:'ko'},
+    {jp:'ぜんざい', reading:'ぜんざい', cn:'紅豆甜湯', counter:'tsu'},
+    {jp:'おはぎ', reading:'おはぎ', cn:'萩餅', counter:'ko'},
+    {jp:'最中', reading:'もなか', cn:'日式最中', counter:'ko'},
+    {jp:'羊羹', reading:'ようかん', cn:'羊羹', counter:'ko'},
+  ]},
+
+  { title:'🍡㉑ 日本街頭小吃', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'たこ焼き', reading:'たこやき', cn:'章魚燒', counter:'ko'},
+    {jp:'お好み焼き', reading:'おこのみやき', cn:'大阪燒', counter:'tsu'},
+    {jp:'焼きそば', reading:'やきそば', cn:'炒麵', counter:'tsu'},
+    {jp:'焼きとうもろこし', reading:'やきとうもろこし', cn:'烤玉米', counter:'hon', cnUnit:'支'},
+    {jp:'じゃがバター', reading:'じゃがばたー', cn:'奶油馬鈴薯', counter:'ko'},
+    {jp:'りんご飴', reading:'りんごあめ', cn:'蘋果糖', counter:'ko'},
+    {jp:'いちご飴', reading:'いちごあめ', cn:'草莓糖', counter:'ko'},
+    {jp:'たい焼き', reading:'たいやき', cn:'鯛魚燒', counter:'ko'},
+    {jp:'たこせん', reading:'たこせん', cn:'章魚燒蝦餅', counter:'ko'},
+    {jp:'クレープ', reading:'くれーぷ', cn:'可麗餅', counter:'ko'},
+    {jp:'ベビーカステラ', reading:'べびーかすてら', cn:'小雞蛋糕', counter:'tsu'},
+    {jp:'唐揚げ', reading:'からあげ', cn:'炸雞', counter:'ko'},
+    {jp:'串カツ', reading:'くしかつ', cn:'炸串', counter:'hon', cnUnit:'支'},
+    {jp:'イカ焼き', reading:'いかやき', cn:'烤花枝', counter:'tsu'},
+  ]},
+
+  { title:'🥪㉒ 便利商店（コンビニ）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {header:'飯類'},
+    {jp:'おにぎり', reading:'おにぎり', cn:'飯糰', counter:'ko'},
+    {jp:'お弁当', reading:'おべんとう', cn:'便當', counter:'tsu'},
+    {jp:'寿司', reading:'すし', cn:'壽司', counter:'ko'},
+    {jp:'いなり寿司', reading:'いなりずし', cn:'豆皮壽司', counter:'ko'},
+    {jp:'巻き寿司', reading:'まきずし', cn:'壽司卷', counter:'hon', cnUnit:'捲'},
+    {header:'麵類'},
+    {jp:'カップラーメン', reading:'かっぷらーめん', cn:'泡麵', counter:'ko'},
+    {jp:'焼きそば', reading:'やきそば', cn:'炒麵', counter:'tsu'},
+    {jp:'うどん', reading:'うどん', cn:'烏龍麵', counter:'tsu'},
+    {jp:'パスタ', reading:'ぱすた', cn:'義大利麵', counter:'tsu'},
+    {jp:'そば', reading:'そば', cn:'蕎麥麵', counter:'tsu'},
+    {header:'熟食'},
+    {jp:'唐揚げ', reading:'からあげ', cn:'炸雞', counter:'ko'},
+    {jp:'コロッケ', reading:'ころっけ', cn:'可樂餅', counter:'ko'},
+    {jp:'アメリカンドッグ', reading:'あめりかんどっぐ', cn:'美式熱狗', counter:'hon', cnUnit:'支'},
+    {jp:'フランクフルト', reading:'ふらんくふると', cn:'法蘭克福香腸', counter:'hon', cnUnit:'條'},
+    {jp:'肉まん', reading:'にくまん', cn:'肉包', counter:'ko'},
+    {jp:'あんまん', reading:'あんまん', cn:'紅豆包', counter:'ko'},
+    {jp:'ピザまん', reading:'ぴざまん', cn:'披薩包', counter:'ko'},
+    {header:'甜食'},
+    {jp:'プリン', reading:'ぷりん', cn:'布丁', counter:'ko'},
+    {jp:'シュークリーム', reading:'しゅーくりーむ', cn:'泡芙', counter:'ko'},
+    {jp:'エクレア', reading:'えくれあ', cn:'閃電泡芙', counter:'ko'},
+    {jp:'ケーキ', reading:'けーき', cn:'蛋糕', counter:'ko'},
+    {jp:'アイス', reading:'あいす', cn:'冰淇淋', counter:'ko'},
+    {jp:'チョコレート', reading:'ちょこれーと', cn:'巧克力', counter:'ko'},
+    {jp:'ポテトチップス', reading:'ぽてとちっぷす', cn:'洋芋片', counter:'tsu'},
+  ]},
+
+  { title:'🍶㉓ 飲料', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {header:'茶'},
+    {jp:'お茶', reading:'おちゃ', cn:'茶', counter:'hai'},
+    {jp:'緑茶', reading:'りょくちゃ', cn:'綠茶', counter:'hai'},
+    {jp:'抹茶', reading:'まっちゃ', cn:'抹茶', counter:'hai'},
+    {jp:'ほうじ茶', reading:'ほうじちゃ', cn:'焙茶', counter:'hai'},
+    {jp:'玄米茶', reading:'げんまいちゃ', cn:'玄米茶', counter:'hai'},
+    {jp:'麦茶', reading:'むぎちゃ', cn:'麥茶', counter:'hai'},
+    {jp:'烏龍茶', reading:'うーろんちゃ', cn:'烏龍茶', counter:'hai'},
+    {header:'咖啡'},
+    {jp:'コーヒー', reading:'こーひー', cn:'咖啡', counter:'hai'},
+    {jp:'アイスコーヒー', reading:'あいすこーひー', cn:'冰咖啡', counter:'hai'},
+    {jp:'カフェラテ', reading:'かふぇらて', cn:'拿鐵', counter:'hai'},
+    {jp:'カプチーノ', reading:'かぷちーの', cn:'卡布奇諾', counter:'hai'},
+    {header:'其他'},
+    {jp:'水', reading:'みず', cn:'水', counter:'hai'},
+    {jp:'お水', reading:'おみず', cn:'水', counter:'hai'},
+    {jp:'炭酸水', reading:'たんさんすい', cn:'氣泡水', counter:'hai'},
+    {jp:'オレンジジュース', reading:'おれんじじゅーす', cn:'柳橙汁', counter:'hai'},
+    {jp:'りんごジュース', reading:'りんごじゅーす', cn:'蘋果汁', counter:'hai'},
+    {jp:'コーラ', reading:'こーら', cn:'可樂', counter:'hai'},
+    {jp:'ジンジャーエール', reading:'じんじゃーえーる', cn:'薑汁汽水', counter:'hai'},
+  ]},
+
+  { title:'🍺㉔ 居酒屋酒類', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'生ビール', reading:'なまびーる', cn:'生啤酒', counter:'hai'},
+    {jp:'瓶ビール', reading:'びんびーる', cn:'瓶裝啤酒', counter:'hon'},
+    {jp:'日本酒', reading:'にほんしゅ', cn:'日本酒', counter:'hai'},
+    {jp:'吟醸酒', reading:'ぎんじょうしゅ', cn:'吟釀酒', counter:'hai'},
+    {jp:'純米酒', reading:'じゅんまいしゅ', cn:'純米酒', counter:'hai'},
+    {jp:'焼酎', reading:'しょうちゅう', cn:'燒酎', counter:'hai'},
+    {jp:'梅酒', reading:'うめしゅ', cn:'梅酒', counter:'hai'},
+    {jp:'ハイボール', reading:'はいぼーる', cn:'Highball', counter:'hai'},
+    {jp:'レモンサワー', reading:'れもんさわー', cn:'檸檬沙瓦', counter:'hai'},
+    {jp:'グレープフルーツサワー', reading:'ぐれーぷふるーつさわー', cn:'葡萄柚沙瓦', counter:'hai'},
+    {jp:'カクテル', reading:'かくてる', cn:'雞尾酒', counter:'hai'},
+    {jp:'ワイン', reading:'わいん', cn:'葡萄酒', counter:'hai'},
+  ]},
+
+  { title:'🥢㉕ 中華料理', note:'日本的「中華」跟台灣熟悉的中華料理不完全一樣，旅遊也很常看到。我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'餃子', reading:'ぎょうざ', cn:'餃子', counter:'ko'},
+    {jp:'焼き餃子', reading:'やきぎょうざ', cn:'煎餃', counter:'ko'},
+    {jp:'水餃子', reading:'すいぎょうざ', cn:'水餃', counter:'ko'},
+    {jp:'チャーハン', reading:'ちゃーはん', cn:'炒飯', counter:'tsu'},
+    {jp:'麻婆豆腐', reading:'まーぼーどうふ', cn:'麻婆豆腐', counter:'tsu'},
+    {jp:'酢豚', reading:'すぶた', cn:'咕咾肉', counter:'tsu'},
+    {jp:'青椒肉絲', reading:'ちんじゃおろーす', cn:'青椒肉絲', counter:'tsu'},
+    {jp:'エビチリ', reading:'えびちり', cn:'辣炒蝦', counter:'tsu'},
+    {jp:'春巻き', reading:'はるまき', cn:'春捲', counter:'hon', cnUnit:'條'},
+    {jp:'小籠包', reading:'しょうろんぽう', cn:'小籠包', counter:'ko'},
+    {jp:'杏仁豆腐', reading:'あんにんどうふ', cn:'杏仁豆腐', counter:'tsu'},
+  ]},
+
+  { title:'🍝㉖ 義大利料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'パスタ', reading:'ぱすた', cn:'義大利麵', counter:'tsu'},
+    {jp:'ミートソース', reading:'みーとそーす', cn:'肉醬義大利麵', counter:'tsu'},
+    {jp:'ナポリタン', reading:'なぽりたん', cn:'日式拿坡里義大利麵', counter:'tsu'},
+    {jp:'カルボナーラ', reading:'かるぼなーら', cn:'培根蛋麵', counter:'tsu'},
+    {jp:'ペペロンチーノ', reading:'ぺぺろんちーの', cn:'蒜香辣椒義大利麵', counter:'tsu'},
+    {jp:'ボロネーゼ', reading:'ぼろねーぜ', cn:'波隆那肉醬', counter:'tsu'},
+    {jp:'ピザ', reading:'ぴざ', cn:'披薩', counter:'tsu'},
+    {jp:'マルゲリータ', reading:'まるげりーた', cn:'瑪格麗特披薩', counter:'tsu'},
+    {jp:'リゾット', reading:'りぞっと', cn:'燉飯', counter:'tsu'},
+    {jp:'ラザニア', reading:'らざにあ', cn:'千層麵', counter:'tsu'},
+  ]},
+
+  { title:'🥞㉗ 鐵板／洋食', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'ハンバーグ', reading:'はんばーぐ', cn:'漢堡排', counter:'tsu'},
+    {jp:'オムライス', reading:'おむらいす', cn:'蛋包飯', counter:'tsu'},
+    {jp:'ナポリタン', reading:'なぽりたん', cn:'拿坡里義大利麵', counter:'tsu'},
+    {jp:'ビーフシチュー', reading:'びーふしちゅー', cn:'紅酒燉牛肉', counter:'tsu'},
+    {jp:'クリームシチュー', reading:'くりーむしちゅー', cn:'奶油燉菜', counter:'tsu'},
+    {jp:'エビフライ', reading:'えびふらい', cn:'炸蝦', counter:'ko'},
+    {jp:'カキフライ', reading:'かきふらい', cn:'炸牡蠣', counter:'ko'},
+    {jp:'コロッケ', reading:'ころっけ', cn:'可樂餅', counter:'ko'},
+    {jp:'グラタン', reading:'ぐらたん', cn:'焗烤', counter:'tsu'},
+    {jp:'ドリア', reading:'どりあ', cn:'焗烤飯', counter:'tsu'},
+    {jp:'ステーキ', reading:'すてーき', cn:'牛排', counter:'tsu'},
+  ]},
+
+  { title:'🍱㉘ 駅弁／車站便當', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'駅弁', reading:'えきべん', cn:'車站便當', counter:'ko'},
+    {jp:'幕の内弁当', reading:'まくのうちべんとう', cn:'幕之內便當', counter:'ko'},
+    {jp:'牛肉弁当', reading:'ぎゅうにくべんとう', cn:'牛肉便當', counter:'ko'},
+    {jp:'焼肉弁当', reading:'やきにくべんとう', cn:'燒肉便當', counter:'ko'},
+    {jp:'鮭弁当', reading:'しゃけべんとう', cn:'鮭魚便當', counter:'ko'},
+    {jp:'海鮮弁当', reading:'かいせんべんとう', cn:'海鮮便當', counter:'ko'},
+    {jp:'ちらし寿司', reading:'ちらしずし', cn:'散壽司', counter:'ko'},
+    {jp:'おにぎり', reading:'おにぎり', cn:'飯糰', counter:'ko'},
+  ]},
+
+  { title:'🐡㉙ 高級／特色日本料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'懐石料理', reading:'かいせきりょうり', cn:'懷石料理', counter:'tsu'},
+    {jp:'会席料理', reading:'かいせきりょうり', cn:'會席料理', counter:'tsu'},
+    {jp:'ふぐ料理', reading:'ふぐりょうり', cn:'河豚料理', counter:'tsu'},
+    {jp:'ふぐ刺し', reading:'ふぐさし', cn:'河豚生魚片', counter:'tsu'},
+    {jp:'すっぽん料理', reading:'すっぽんりょうり', cn:'鱉料理', counter:'tsu'},
+    {jp:'うなぎ', reading:'うなぎ', cn:'鰻魚料理', counter:'tsu'},
+    {jp:'うな重', reading:'うなじゅう', cn:'鰻魚重', counter:'tsu'},
+    {jp:'和牛', reading:'わぎゅう', cn:'和牛', counter:'tsu'},
+    {jp:'神戸牛', reading:'こうべぎゅう', cn:'神戶牛', counter:'tsu'},
+    {jp:'松阪牛', reading:'まつさかぎゅう', cn:'松阪牛', counter:'tsu'},
+    {jp:'近江牛', reading:'おうみぎゅう', cn:'近江牛', counter:'tsu'},
+    {jp:'伊勢海老', reading:'いせえび', cn:'伊勢龍蝦', counter:'ko'},
+    {jp:'あわび', reading:'あわび', cn:'鮑魚', counter:'ko'},
+    {jp:'かに', reading:'かに', cn:'螃蟹', counter:'tsu'},
+    {jp:'うに', reading:'うに', cn:'海膽', counter:'tsu'},
+  ]},
+
+  { title:'🥬㉚ 素食／蔬菜料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'野菜サラダ', reading:'やさいさらだ', cn:'蔬菜沙拉', counter:'tsu'},
+    {jp:'野菜天ぷら', reading:'やさいてんぷら', cn:'蔬菜天婦羅', counter:'tsu'},
+    {jp:'焼き野菜', reading:'やきやさい', cn:'烤蔬菜', counter:'tsu'},
+    {jp:'湯豆腐', reading:'ゆどうふ', cn:'湯豆腐', counter:'tsu'},
+    {jp:'冷奴', reading:'ひややっこ', cn:'冷豆腐', counter:'tsu'},
+    {jp:'枝豆', reading:'えだまめ', cn:'毛豆', counter:'tsu'},
+    {jp:'野菜カレー', reading:'やさいかれー', cn:'蔬菜咖哩', counter:'tsu'},
+    {jp:'野菜うどん', reading:'やさいうどん', cn:'蔬菜烏龍麵', counter:'tsu'},
+    {jp:'野菜そば', reading:'やさいそば', cn:'蔬菜蕎麥麵', counter:'tsu'},
+    {jp:'精進料理', reading:'しょうじんりょうり', cn:'精進料理', counter:'tsu'},
+  ]},
+
+  { title:'🗾㉛ 日本各地特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {header:'大阪'},
+    {jp:'お好み焼き', reading:'おこのみやき', cn:'大阪燒', counter:'tsu'},
+    {jp:'たこ焼き', reading:'たこやき', cn:'章魚燒', counter:'ko'},
+    {jp:'串カツ', reading:'くしかつ', cn:'炸串', counter:'hon', cnUnit:'支'},
+    {jp:'ねぎ焼き', reading:'ねぎやき', cn:'蔥燒', counter:'tsu'},
+    {header:'京都'},
+    {jp:'湯豆腐', reading:'ゆどうふ', cn:'湯豆腐', counter:'tsu'},
+    {jp:'京料理', reading:'きょうりょうり', cn:'京料理', counter:'tsu'},
+    {jp:'抹茶スイーツ', reading:'まっちゃすいーつ', cn:'抹茶甜點', counter:'ko'},
+    {jp:'にしんそば', reading:'にしんそば', cn:'鯡魚蕎麥麵', counter:'tsu'},
+    {header:'北海道'},
+    {jp:'海鮮丼', reading:'かいせんどん', cn:'海鮮丼', counter:'tsu'},
+    {jp:'ジンギスカン', reading:'じんぎすかん', cn:'成吉思汗烤羊肉', counter:'tsu'},
+    {jp:'スープカレー', reading:'すーぷかれー', cn:'湯咖哩', counter:'tsu'},
+    {jp:'味噌ラーメン', reading:'みそらーめん', cn:'味噌拉麵', counter:'tsu'},
+    {jp:'いくら丼', reading:'いくらどん', cn:'鮭魚卵丼', counter:'tsu'},
+    {jp:'うに丼', reading:'うにどん', cn:'海膽丼', counter:'tsu'},
+    {header:'沖繩'},
+    {jp:'沖縄そば', reading:'おきなわそば', cn:'沖繩蕎麥麵', counter:'tsu'},
+    {jp:'ゴーヤーチャンプルー', reading:'ごーやーちゃんぷるー', cn:'苦瓜炒蛋', counter:'tsu'},
+    {jp:'ラフテー', reading:'らふてー', cn:'沖繩滷豬肉', counter:'tsu'},
+    {jp:'海ぶどう', reading:'うみぶどう', cn:'海葡萄', counter:'tsu'},
+    {jp:'タコライス', reading:'たこらいす', cn:'塔可飯', counter:'tsu'},
+    {jp:'サーターアンダギー', reading:'さーたーあんだぎー', cn:'沖繩甜甜圈', counter:'ko'},
+    {header:'名古屋'},
+    {jp:'味噌カツ', reading:'みそかつ', cn:'味噌炸豬排', counter:'tsu'},
+    {jp:'手羽先', reading:'てばさき', cn:'雞翅', counter:'hon', cnUnit:'隻'},
+    {jp:'ひつまぶし', reading:'ひつまぶし', cn:'鰻魚飯三吃', counter:'tsu'},
+    {jp:'きしめん', reading:'きしめん', cn:'名古屋扁烏龍麵', counter:'tsu'},
+    {header:'福岡'},
+    {jp:'とんこつラーメン', reading:'とんこつらーめん', cn:'豚骨拉麵', counter:'tsu'},
+    {jp:'もつ鍋', reading:'もつなべ', cn:'內臟鍋', counter:'tsu'},
+    {jp:'明太子', reading:'めんたいこ', cn:'明太子', counter:'ko'},
+    {jp:'水炊き', reading:'みずたき', cn:'水炊雞鍋', counter:'tsu'},
+    {header:'廣島'},
+    {jp:'広島焼き', reading:'ひろしまやき', cn:'廣島燒', counter:'tsu'},
+    {jp:'牡蠣', reading:'かき', cn:'牡蠣', counter:'ko'},
+    {jp:'牡蠣料理', reading:'かきりょうり', cn:'牡蠣料理', counter:'tsu'},
+    {header:'仙台'},
+    {jp:'牛タン', reading:'ぎゅうたん', cn:'牛舌', counter:'tsu'},
+    {jp:'ずんだ餅', reading:'ずんだもち', cn:'毛豆泥麻糬', counter:'ko'},
+  ]},
+
+  { title:'🍞 麵包店（パン屋・ぱんや）', note:'日本的麵包店非常強，去日本買早餐或點心一定會遇到。我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'メロンパン', reading:'めろんぱん', cn:'蜜瓜麵包', counter:'ko'},
+    {jp:'カレーパン', reading:'かれーぱん', cn:'咖哩麵包', counter:'ko'},
+    {jp:'あんパン', reading:'あんぱん', cn:'紅豆麵包', counter:'ko'},
+    {jp:'クリームパン', reading:'くりーむぱん', cn:'克林姆/奶油麵包', counter:'ko'},
+    {jp:'食パン', reading:'しょくぱん', cn:'吐司', counter:'mai', cnUnit:'片'},
+    {jp:'明太子フランス', reading:'めんたいこふらんす', cn:'明太子法國麵包', counter:'ko'},
+  ]},
+
+  { title:'🍨 冰淇淋／冰品（アイス・かき氷）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'ソフトクリーム', reading:'そふとくりーむ', cn:'霜淇淋', counter:'ko'},
+    {jp:'かき氷', reading:'かきごおり', cn:'剉冰', counter:'ko'},
+    {jp:'ジェラート', reading:'じぇらーと', cn:'義式冰淇淋', counter:'ko'},
+    {jp:'抹茶ソフト', reading:'まっちゃそふと', cn:'抹茶霜淇淋', counter:'ko'},
+  ]},
+
+  { title:'🍖 熟食／肉鋪小吃（精肉店・せいにくてん）', note:'上野、商店街很常買到的現炸小吃。我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'メンチカツ', reading:'めんちかつ', cn:'炸肉餅', counter:'ko'},
+    {jp:'ハムカツ', reading:'はむかつ', cn:'炸火腿排', counter:'ko'},
+    {jp:'コロッケ', reading:'ころっけ', cn:'牛肉可樂餅', counter:'ko'},
+  ]},
+
+  { title:'🍻 居酒屋特調酒類（チューハイ・サワー）', note:'居酒屋點酒時，除了啤酒Highball外最常出現的類型。我要＿＿＿。→ ＿＿＿をください。', items:[
+    {jp:'ウーロンハイ', reading:'うーろんはい', cn:'烏龍嗨（烏龍茶調酒）', counter:'hai'},
+    {jp:'緑茶ハイ', reading:'りょくちゃはい', cn:'綠茶調酒', counter:'hai'},
+    {jp:'カルピスサワー', reading:'かるぴすさわー', cn:'可爾必思沙瓦', counter:'hai'},
+    {jp:'プレーンサワー', reading:'ぷれーんさわー', cn:'原味沙瓦', counter:'hai'},
+  ]},
+
+  { title:'🍥 拉麵進階「客製化選項」（麵硬度／湯頭）', note:'在拉麵店（特別是博多豚骨或家系拉麵）店員常會問的選項，這幾個不用套「をください」，直接回答就好。', items:[
+    {jp:'硬め', reading:'かため', cn:'麵偏硬'},
+    {jp:'普通', reading:'ふつう', cn:'正常'},
+    {jp:'軟らかめ', reading:'やわらかめ', cn:'麵偏軟'},
+    {jp:'味濃いめ', reading:'あじこいめ', cn:'湯頭偏濃'},
+    {jp:'あっさり', reading:'あっさり', cn:'清淡'},
+    {jp:'こってり', reading:'こってり', cn:'濃郁／濃厚'},
+  ]},
+];
+
 /* ============ 文法筆記（時間表現／數量詞／相對時間／助詞）============ */
 const GRAMMAR_TIME_PATTERNS = [
   {cat:'時間點', pattern:'時間＋に', jp:'7時に起きます。', reading:'しちじに おきます。', cn:'七點起床。'},
@@ -1317,9 +2016,8 @@ const CATEGORIES = {
 const SCENES = [
   {id:'store',emoji:'🏪',title:'便利商店'},
   {id:'drug',emoji:'🛍️',title:'藥妝店'},
-  {id:'ramen',emoji:'🍜',title:'拉麵店'},
+  {id:'food',emoji:'🍽️',title:'日本美食'},
   {id:'vending',emoji:'🥤',title:'自動販賣機'},
-  {id:'restaurant',emoji:'🍣',title:'餐廳',tool:'people'},
   {id:'hotel',emoji:'🏨',title:'飯店',tool:'room'},
   {id:'station',emoji:'🚃',title:'車站',tool:'train'},
 ];
@@ -1461,7 +2159,10 @@ function renderHome(){
     `<div class="scenecard" data-scene="${s.id}"><div class="emoji">${s.emoji}</div><div class="label">${s.title}</div></div>`
   ).join('');
   sceneGrid.querySelectorAll('.scenecard').forEach(el=>{
-    el.addEventListener('click', ()=>openScene(el.dataset.scene));
+    el.addEventListener('click', ()=>{
+      if(el.dataset.scene==='food') openFoodBrowser();
+      else openScene(el.dataset.scene);
+    });
   });
   const catGrid = document.getElementById('categoryGrid');
   catGrid.innerHTML = Object.keys(CATEGORIES).map(k=>{
@@ -1644,6 +2345,113 @@ function renderSceneItems(sceneId, container){
       speak(full, Number(btn.dataset.rate));
     });
   });
+}
+
+/* ---- 日本美食日文大全：橫向分類瀏覽 ---- */
+function foodItemId(catIdx, itemIdx){ return `food_${catIdx}_${itemIdx}`; }
+
+function renderFoodCategoryList(idx){
+  const inner = document.getElementById('foodListInner');
+  const cats = idx===-1 ? FOOD_CATEGORIES.map((c,i)=>({c,i})) : [{c:FOOD_CATEGORIES[idx], i:idx}];
+  inner.innerHTML = cats.map(({c,i})=>`
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${c.title}</h3>
+    ${c.note?`<div class="section-intro">${c.note}</div>`:''}
+    ${c.items.map((it,j)=>{
+      if(it.header){
+        return `<h4 style="font-size:13px;color:var(--accent2);margin:14px 0 6px;">${it.header}</h4>`;
+      }
+      const id = foodItemId(i,j);
+      if(it.counter){
+        return `
+        <div class="card" data-fooditem="${id}">
+          <div class="jp">${rb(it.jp)} <span style="font-size:12px;color:var(--accent2);">${it.cn}</span></div>
+          <div class="hira">${it.reading}</div>
+          <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
+            <span style="font-size:12px;color:var(--sub);">數量：</span>
+            <input type="number" min="1" max="20" value="1" data-fqty="${id}" style="width:60px;padding:6px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;">
+          </div>
+          <div class="hira" data-fout="${id}" style="margin-top:8px;font-size:16px;color:var(--text);font-weight:700;"></div>
+          <div class="cn" data-foutcn="${id}"></div>
+          <div class="actions">
+            <button data-frate="0.5" data-fsay="${id}">🐢 慢速 0.5x</button>
+            <button data-frate="0.65" data-fsay="${id}">🐢 慢速 0.65x</button>
+            <button data-frate="1.0" data-fsay="${id}">▶️ 正常</button>
+          </div>
+        </div>`;
+      }
+      return `
+        <div class="card" data-fooditem="${id}">
+          <div class="jp">${rb(it.jp)}</div>
+          <div class="hira">${it.reading}</div>
+          <div class="cn">${it.cn}</div>
+          <div class="actions">
+            <button data-frate="0.5" data-fsayplain="${id}">🐢 慢速 0.5x</button>
+            <button data-frate="0.65" data-fsayplain="${id}">🐢 慢速 0.65x</button>
+            <button data-frate="1.0" data-fsayplain="${id}">▶️ 正常</button>
+          </div>
+        </div>`;
+    }).join('')}
+  `).join('');
+
+  const idMap = {};
+  cats.forEach(({c,i})=>{ c.items.forEach((it,j)=>{ if(!it.header) idMap[foodItemId(i,j)] = it; }); });
+
+  function updateSentence(id){
+    const it = idMap[id];
+    const input = inner.querySelector(`[data-fqty="${id}"]`);
+    const n = Number(input.value)||1;
+    const cReading = counterReading(it.counter, n);
+    const sentence = `${it.jp}を${cReading}ください。`;
+    const cn = `請給我 ${n} ${it.cnUnit || COUNTER_CN_UNIT[it.counter]} ${it.cn}。`;
+    inner.querySelector(`[data-fout="${id}"]`).textContent = `${it.reading}を ${cReading} ください。`;
+    inner.querySelector(`[data-foutcn="${id}"]`).textContent = cn;
+    inner.querySelector(`[data-fout="${id}"]`).dataset.full = sentence;
+  }
+  Object.keys(idMap).forEach(id=>{ if(idMap[id].counter) updateSentence(id); });
+  inner.querySelectorAll('[data-fqty]').forEach(inp=>{
+    inp.addEventListener('input', ()=>updateSentence(inp.dataset.fqty));
+  });
+  inner.querySelectorAll('[data-fsay]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.fsay;
+      const full = inner.querySelector(`[data-fout="${id}"]`).dataset.full;
+      speak(full, Number(btn.dataset.frate));
+    });
+  });
+  inner.querySelectorAll('[data-fsayplain]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.fsayplain;
+      speak(idMap[id].jp, Number(btn.dataset.frate));
+    });
+  });
+
+  const pool = Object.keys(idMap).map(id=>({id, display: idMap[id].jp, hira: idMap[id].reading}));
+  renderTopicQuizToggle(pool, idx===-1 ? '全部日本美食單字' : FOOD_CATEGORIES[idx].title);
+}
+
+function openFoodBrowser(){
+  switchView('learn');
+  const oldRelated = document.getElementById('relatedQAArea');
+  if(oldRelated) oldRelated.remove();
+  document.getElementById('learnTitle').textContent = '🍽️ 日本美食日文大全';
+  document.getElementById('learnIntro').textContent = '橫向點分類切換，每一類都可以套「＿＿＿をください」＝「請給我＿＿＿」直接代入點餐。輸入數量，念法會自動改變（個/本/枚/杯量詞念法都不一樣）。';
+  document.getElementById('phoneToolWrap').innerHTML = '';
+  document.getElementById('phoneToolWrap').style.display = 'none';
+  document.getElementById('topicQuizArea').innerHTML = '';
+  const list = document.getElementById('learnList');
+  list.innerHTML = `<div class="catchips" id="foodChips">
+      <div class="chip" data-idx="-1">全部</div>
+      ${FOOD_CATEGORIES.map((c,i)=>`<div class="chip${i===0?' active':''}" data-idx="${i}">${c.title.replace(/[（(][^）)]*[）)]/g,'').trim()}</div>`).join('')}
+    </div>
+    <div id="foodListInner"></div>`;
+  document.getElementById('foodChips').querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.querySelectorAll('#foodChips .chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      renderFoodCategoryList(Number(chip.dataset.idx));
+    });
+  });
+  renderFoodCategoryList(0);
 }
 
 /* ---- 常用短句／行程專屬瀏覽 ---- */
