@@ -1495,6 +1495,8 @@ function renderHome(){
 const SCENE_QA_INDEX = {store:0, drug:1, ramen:2, vending:3, restaurant:4, hotel:5, station:6};
 function openScene(sceneId){
   switchView('learn');
+  const oldRelated = document.getElementById('relatedQAArea');
+  if(oldRelated) oldRelated.remove();
   const scene = SCENES.find(s=>s.id===sceneId);
   document.getElementById('learnTitle').textContent = scene.emoji+' '+scene.title;
   document.getElementById('learnIntro').textContent = '輸入數量，句子會自動改變讀音（日文的「個/本/枚/杯」量詞念法都不一樣）。';
@@ -1647,6 +1649,8 @@ function renderSceneItems(sceneId, container){
 /* ---- 常用短句／行程專屬瀏覽 ---- */
 function openPhraseBrowser(categories, title){
   switchView('learn');
+  const oldRelated = document.getElementById('relatedQAArea');
+  if(oldRelated) oldRelated.remove();
   document.getElementById('learnTitle').textContent = title;
   document.getElementById('learnIntro').textContent = '點分類切換，點卡片下方按鈕直接發音（片假名上方會自動標注音）。';
   document.getElementById('phoneToolWrap').innerHTML = '';
@@ -1824,6 +1828,8 @@ function renderTimeLookupTool(){
 /* ---- 文法筆記頁 ---- */
 function openGrammarNotes(){
   switchView('learn');
+  const oldRelated = document.getElementById('relatedQAArea');
+  if(oldRelated) oldRelated.remove();
   document.getElementById('learnTitle').textContent = '📖 文法筆記';
   document.getElementById('learnIntro').textContent = '點卡片／按鈕直接聽發音，不用自己讀一堆日文。';
   document.getElementById('phoneToolWrap').innerHTML='';
