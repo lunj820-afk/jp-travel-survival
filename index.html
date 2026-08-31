@@ -240,8 +240,8 @@ function numberToJapanese(num){
 })();
 
 /* ============ 片假名自動加註平假名（ruby furigana）============ */
-const KANJI_SIMPLE = {"円": "えん", "本": "ほん", "会": "かい", "先": "せん", "列": "れつ", "寺": "てら", "缶": "かん", "肉": "にく", "串": "くし", "何": "なん", "忘": "わす", "杖": "つえ", "来": "らい", "見": "み", "並": "なら", "使": "つか", "券": "けん", "押": "お", "枕": "まくら", "枚": "まい", "玉": "だま", "物": "もの", "乗": "の", "城": "じょう", "姫": "ひめ", "待": "ま", "持": "も", "食": "た", "帰": "かえ", "時": "じ", "粉": "こ", "紙": "かみ", "茶": "ちゃ", "起": "お", "袋": "ふくろ", "傘": "かさ", "割": "わ", "換": "か", "替": "か", "歯": "は", "温": "あたた", "焼": "や", "猫": "ねこ", "買": "か", "階": "かい", "飲": "の", "話": "はな", "道": "みち", "預": "あず", "箸": "はし", "撮": "さつ", "麺": "めん", "願": "ねが", "止": "ど", "匹": "ひき", "一人": "ひとり", "二人": "ふたり", "三人": "さんにん", "四人": "よにん", "人数": "にんずう", "入口": "いりぐち", "三枚": "さんまい", "二枚": "にまい", "千尋": "ちひろ", "土産": "みやげ", "大福": "だいふく", "子供": "こども", "予約": "よやく", "天空": "てんくう", "少々": "しょうしょう", "日本": "にほん", "日焼": "ひや", "毛布": "もうふ", "牛丼": "ぎゅうどん", "写真": "しゃしん", "出口": "でぐち", "台湾": "たいわん", "号室": "ごうしつ", "弁当": "べんとう", "目薬": "めぐすり", "両替": "りょうがえ", "会計": "かいけい", "名詞": "めいし", "団子": "だんご", "地方": "ちほう", "何時": "なんじ", "何番": "なんばん", "何歳": "なんさい", "免税": "めんぜい", "寿司": "すし", "乳液": "にゅうえき", "刺身": "さしみ", "始発": "しはつ", "学校": "がっこう", "定食": "ていしょく", "店内": "てんない", "抹茶": "まっちゃ", "放題": "ほうだい", "注文": "ちゅうもん", "空室": "くうしつ", "空港": "くうこう", "返却": "へんきゃく", "前売": "まえうり", "英語": "えいご", "限定": "げんてい", "神社": "じんじゃ", "茶漬": "ちゃづけ", "國家": "こっか", "梅田": "うめだ", "現金": "げんきん", "着物": "きもの", "終電": "しゅうでん", "荷物": "にもつ", "部屋": "へや", "場所": "ばしょ", "歯磨": "はみが", "温泉": "おんせん", "満室": "まんしつ", "満席": "まんせき", "焼肉": "やきにく", "番線": "ばんせん", "菓子": "かし", "週間": "しゅうかん", "階段": "かいだん", "禁煙": "きんえん", "試着": "しちゃく", "遅延": "ちえん", "運休": "うんきゅう", "電車": "でんしゃ", "綿棒": "めんぼう", "雑誌": "ざっし", "餃子": "ぎょうざ", "駅弁": "えきべん", "數字": "すうじ", "難波": "なんば", "魔法": "まほう", "入浴剤": "にゅうよくざい", "土曜日": "どようび", "大丈夫": "だいじょうぶ", "大阪城": "おおさかじょう", "大阪駅": "おおさかえき", "女性用": "じょせいよう", "中国語": "ちゅうごくご", "化粧水": "けしょうすい", "心斎橋": "しんさいばし", "日本語": "にほんご", "日曜日": "にちようび", "月曜日": "げつようび", "木曜日": "もくようび", "水曜日": "すいようび", "火曜日": "かようび", "半熟卵": "はんじゅくたまご", "台湾人": "たいわんじん", "生理用": "せいりよう", "回練習": "かいれんしゅう", "当日券": "とうじつけん", "何分制": "なんぷんせい", "何名様": "なんめいさま", "何番線": "なんばんせん", "呂恩潔": "ロエンジエ", "改札口": "かいさつぐち", "男性用": "だんせいよう", "券売機": "けんばいき", "東京行": "とうきょうゆき", "金曜日": "きんようび", "非常口": "ひじょうぐち", "故障中": "こしょうちゅう", "美容液": "びようえき", "宮崎駿": "みやざきはやお", "案内所": "あんないじょ", "海遊館": "かいゆうかん", "営業中": "えいぎょうちゅう", "現在地": "げんざいち", "絆創膏": "ばんそうこう", "通天閣": "つうてんかく", "最終便": "さいしゅうびん", "喫煙所": "きつえんじょ", "新今宮": "しんいまみや", "新世界": "しんせかい", "準備中": "じゅんびちゅう", "道頓堀": "どうとんぼり", "精算機": "せいさんき", "摩耶山": "まやさん", "親子丼": "おやこどん", "優先席": "ゆうせんせき", "大人一枚": "おとないちまい", "大人二枚": "おとなにまい", "子供一枚": "こどもいちまい", "子供料金": "こどもりょうきん", "立入禁止": "たちいりきんし", "使用禁止": "しようきんし", "往復二枚": "おうふくにまい", "炭酸飲料": "たんさんいんりょう", "時間勉強": "じかんべんきょう", "部屋番号": "へやばんごう", "黒門市場": "くろもんいちば", "飲食禁止": "いんしょくきんし", "電話番号": "でんわばんごう", "撮影禁止": "さつえいきんし", "自動販売機": "じどうはんばいき", "観光案内所": "かんこうあんないじょ", "大阪城天守閣": "おおさかじょうてんしゅかく", "女性専用車両": "じょせいせんようしゃりょう", "天王寺動物園": "てんのうじどうぶつえん", "関西国際空港": "かんさいこくさいくうこう", "大阪生活今昔館": "おおさかせいかつこんじゃくかん", "天神橋筋商店街": "てんじんばしすじしょうてんがい", "個": "こ", "号": "ごう", "番": "ばん", "膳": "ぜん", "水": "みず", "普通": "ふつう", "名前": "なまえ", "客様": "きゃくさま", "搭乗口": "とうじょうぐち", "搭乗": "とうじょう", "自由席": "じゆうせき", "食券": "しょっけん", "利用": "りよう", "付": "つ", "可能": "かのう", "人気": "にんき", "別々": "べつべつ", "朝": "あさ", "次": "つぎ", "東京駅": "とうきょうえき", "東京": "とうきょう", "大阪": "おおさか", "何日": "なんにち", "何人": "なんにん", "何階": "なんがい", "何分": "なんぷん", "何個": "なんこ", "何枚": "なんまい", "何色": "なにいろ", "駅": "えき", "前": "まえ", "銀行": "ぎんこう", "公園": "こうえん", "中": "なか", "財布": "さいふ", "隣": "となり", "学生": "がくせい", "勉強": "べんきょう", "友達": "ともだち", "台北": "たいぺい", "仕事": "しごと", "雨": "あめ", "図書館": "としょかん", "犬": "いぬ", "陽気": "ようき", "目": "め", "寒": "さむ", "私": "わたし", "教室": "きょうしつ", "机": "つくえ", "上": "うえ", "下": "した", "書": "か", "言": "い", "今": "いま", "野菜": "やさい"};
-const KANJI_CONTEXT = [["二つ", 1, "ふた"], ["三つ", 1, "みっ"], ["大きい", 1, "おお"], ["小さい", 1, "ちい"], ["少し", 1, "すこ"], ["引く", 1, "ひ"], ["撮って", 1, "と"], ["撮っていただけますか", 1, "と"], ["行きたい", 1, "い"], ["行きます", 1, "い"], ["行きますか", 1, "い"], ["行って", 1, "い"], ["来ました", 1, "き"], ["来ましたか", 1, "き"], ["曲がってください", 1, "ま"], ["辛くない", 1, "から"], ["迷い", 1, "まよ"], ["決まり", 1, "き"], ["払えます", 1, "はら"], ["払えますか", 1, "はら"], ["入れます", 1, "い"], ["後ろ", 1, "うし"], ["遊びます", 1, "あそ"], ["着ます", 1, "き"], ["行きません", 1, "い"], ["歩きます", 1, "ある"], ["読みます", 1, "よ"], ["賑やか", 1, "にぎ"], ["明るい", 1, "あか"], ["朗らか", 1, "ほが"], ["優しい", 1, "やさ"], ["大人しい", 2, "おとな"], ["控え", 1, "ひか"], ["急に", 1, "きゅう"], ["行く", 1, "い"], ["行かない", 1, "い"], ["行った", 1, "い"], ["入らないでください", 1, "はい"]];
+const KANJI_SIMPLE = {"円": "えん", "本": "ほん", "会": "かい", "先": "せん", "列": "れつ", "寺": "てら", "缶": "かん", "肉": "にく", "串": "くし", "何": "なん", "忘": "わす", "杖": "つえ", "来": "らい", "見": "み", "並": "なら", "使": "つか", "券": "けん", "押": "お", "枕": "まくら", "枚": "まい", "玉": "だま", "物": "もの", "乗": "の", "城": "じょう", "姫": "ひめ", "待": "ま", "持": "も", "食": "た", "帰": "かえ", "時": "じ", "粉": "こ", "紙": "かみ", "茶": "ちゃ", "起": "お", "袋": "ふくろ", "傘": "かさ", "割": "わ", "換": "か", "替": "か", "歯": "は", "温": "あたた", "焼": "や", "猫": "ねこ", "買": "か", "階": "かい", "飲": "の", "話": "はな", "道": "みち", "預": "あず", "箸": "はし", "撮": "さつ", "麺": "めん", "願": "ねが", "止": "ど", "匹": "ひき", "一人": "ひとり", "二人": "ふたり", "三人": "さんにん", "四人": "よにん", "人数": "にんずう", "入口": "いりぐち", "三枚": "さんまい", "二枚": "にまい", "千尋": "ちひろ", "土産": "みやげ", "大福": "だいふく", "子供": "こども", "予約": "よやく", "天空": "てんくう", "少々": "しょうしょう", "日本": "にほん", "日焼": "ひや", "毛布": "もうふ", "牛丼": "ぎゅうどん", "写真": "しゃしん", "出口": "でぐち", "台湾": "たいわん", "号室": "ごうしつ", "弁当": "べんとう", "目薬": "めぐすり", "両替": "りょうがえ", "会計": "かいけい", "名詞": "めいし", "団子": "だんご", "地方": "ちほう", "何時": "なんじ", "何番": "なんばん", "何歳": "なんさい", "免税": "めんぜい", "寿司": "すし", "乳液": "にゅうえき", "刺身": "さしみ", "始発": "しはつ", "学校": "がっこう", "定食": "ていしょく", "店内": "てんない", "抹茶": "まっちゃ", "放題": "ほうだい", "注文": "ちゅうもん", "空室": "くうしつ", "空港": "くうこう", "返却": "へんきゃく", "前売": "まえうり", "英語": "えいご", "限定": "げんてい", "神社": "じんじゃ", "茶漬": "ちゃづけ", "國家": "こっか", "梅田": "うめだ", "現金": "げんきん", "着物": "きもの", "終電": "しゅうでん", "荷物": "にもつ", "部屋": "へや", "場所": "ばしょ", "歯磨": "はみが", "温泉": "おんせん", "満室": "まんしつ", "満席": "まんせき", "焼肉": "やきにく", "番線": "ばんせん", "菓子": "かし", "週間": "しゅうかん", "階段": "かいだん", "禁煙": "きんえん", "試着": "しちゃく", "遅延": "ちえん", "運休": "うんきゅう", "電車": "でんしゃ", "綿棒": "めんぼう", "雑誌": "ざっし", "餃子": "ぎょうざ", "駅弁": "えきべん", "數字": "すうじ", "難波": "なんば", "魔法": "まほう", "入浴剤": "にゅうよくざい", "土曜日": "どようび", "大丈夫": "だいじょうぶ", "大阪城": "おおさかじょう", "大阪駅": "おおさかえき", "女性用": "じょせいよう", "中国語": "ちゅうごくご", "化粧水": "けしょうすい", "心斎橋": "しんさいばし", "日本語": "にほんご", "日曜日": "にちようび", "月曜日": "げつようび", "木曜日": "もくようび", "水曜日": "すいようび", "火曜日": "かようび", "半熟卵": "はんじゅくたまご", "台湾人": "たいわんじん", "生理用": "せいりよう", "回練習": "かいれんしゅう", "当日券": "とうじつけん", "何分制": "なんぷんせい", "何名様": "なんめいさま", "何番線": "なんばんせん", "呂恩潔": "ロエンジエ", "改札口": "かいさつぐち", "男性用": "だんせいよう", "券売機": "けんばいき", "東京行": "とうきょうゆき", "金曜日": "きんようび", "非常口": "ひじょうぐち", "故障中": "こしょうちゅう", "美容液": "びようえき", "宮崎駿": "みやざきはやお", "案内所": "あんないじょ", "海遊館": "かいゆうかん", "営業中": "えいぎょうちゅう", "現在地": "げんざいち", "絆創膏": "ばんそうこう", "通天閣": "つうてんかく", "最終便": "さいしゅうびん", "喫煙所": "きつえんじょ", "新今宮": "しんいまみや", "新世界": "しんせかい", "準備中": "じゅんびちゅう", "道頓堀": "どうとんぼり", "精算機": "せいさんき", "摩耶山": "まやさん", "親子丼": "おやこどん", "優先席": "ゆうせんせき", "大人一枚": "おとないちまい", "大人二枚": "おとなにまい", "子供一枚": "こどもいちまい", "子供料金": "こどもりょうきん", "立入禁止": "たちいりきんし", "使用禁止": "しようきんし", "往復二枚": "おうふくにまい", "炭酸飲料": "たんさんいんりょう", "時間勉強": "じかんべんきょう", "部屋番号": "へやばんごう", "黒門市場": "くろもんいちば", "飲食禁止": "いんしょくきんし", "電話番号": "でんわばんごう", "撮影禁止": "さつえいきんし", "自動販売機": "じどうはんばいき", "観光案内所": "かんこうあんないじょ", "大阪城天守閣": "おおさかじょうてんしゅかく", "女性専用車両": "じょせいせんようしゃりょう", "天王寺動物園": "てんのうじどうぶつえん", "関西国際空港": "かんさいこくさいくうこう", "大阪生活今昔館": "おおさかせいかつこんじゃくかん", "天神橋筋商店街": "てんじんばしすじしょうてんがい", "個": "こ", "号": "ごう", "番": "ばん", "膳": "ぜん", "水": "みず", "普通": "ふつう", "名前": "なまえ", "客様": "きゃくさま", "搭乗口": "とうじょうぐち", "搭乗": "とうじょう", "自由席": "じゆうせき", "食券": "しょっけん", "利用": "りよう", "付": "つ", "可能": "かのう", "人気": "にんき", "別々": "べつべつ", "朝": "あさ", "次": "つぎ", "東京駅": "とうきょうえき", "東京": "とうきょう", "大阪": "おおさか", "何日": "なんにち", "何人": "なんにん", "何階": "なんがい", "何分": "なんぷん", "何個": "なんこ", "何枚": "なんまい", "何色": "なにいろ", "駅": "えき", "前": "まえ", "銀行": "ぎんこう", "公園": "こうえん", "中": "なか", "財布": "さいふ", "隣": "となり", "学生": "がくせい", "勉強": "べんきょう", "友達": "ともだち", "台北": "たいぺい", "仕事": "しごと", "雨": "あめ", "図書館": "としょかん", "犬": "いぬ", "陽気": "ようき", "目": "め", "寒": "さむ", "私": "わたし", "教室": "きょうしつ", "机": "つくえ", "上": "うえ", "下": "した", "書": "か", "言": "い", "今": "いま", "野菜": "やさい", "以上": "いじょう", "大人": "おとな", "一膳": "いちぜん", "人": "にん", "分": "ふん"};
+const KANJI_CONTEXT = [["二つ", 1, "ふた"], ["三つ", 1, "みっ"], ["大きい", 1, "おお"], ["小さい", 1, "ちい"], ["少し", 1, "すこ"], ["引く", 1, "ひ"], ["撮って", 1, "と"], ["撮っていただけますか", 1, "と"], ["行きたい", 1, "い"], ["行きます", 1, "い"], ["行きますか", 1, "い"], ["行って", 1, "い"], ["来ました", 1, "き"], ["来ましたか", 1, "き"], ["曲がってください", 1, "ま"], ["辛くない", 1, "から"], ["迷い", 1, "まよ"], ["決まり", 1, "き"], ["払えます", 1, "はら"], ["払えますか", 1, "はら"], ["入れます", 1, "い"], ["後ろ", 1, "うし"], ["遊びます", 1, "あそ"], ["着ます", 1, "き"], ["行きません", 1, "い"], ["歩きます", 1, "ある"], ["読みます", 1, "よ"], ["賑やか", 1, "にぎ"], ["明るい", 1, "あか"], ["朗らか", 1, "ほが"], ["優しい", 1, "やさ"], ["大人しい", 2, "おとな"], ["控え", 1, "ひか"], ["急に", 1, "きゅう"], ["行く", 1, "い"], ["行かない", 1, "い"], ["行った", 1, "い"], ["入らないでください", 1, "はい"], ["一つ", 1, "ひと"]];
 const KANJI_MAXLEN = 10;
 function kataToHira(s){
   let out = '';
@@ -1168,127 +1168,119 @@ const TRIP_CATEGORIES = [
 
 /* 情境問答：日本旅遊最常遇到數字／金額的7個場合，每句店員問／顧客答都可以點擊發音、數字可調整 */
 const SCENARIO_QA = [
-  { title:'🏪 便利商店（コンビニ）', note:'結帳、袋子與加熱服務', items:[
-    { id:"qa_store_0", cn:"店員問：要加購袋子嗎？", note:null, jp:"袋はご利用ですか？", romaji:"Fukuro wa goriyō desu ka?", en:"Would you like a bag?",
-      segs:[{t:'袋',r:'ふくろ',m:'袋子'},{t:'は',r:'は',m:'助詞（主題標記）'},{t:'ご利用',r:'ごりよう',m:'使用（禮貌説法）'},{t:'ですか',r:'ですか',m:'是…嗎？'}] },
-    { id:"qa_store_1", cn:"顧客答：好，袋子一個，麻煩了", note:'回答時把「袋」再說一次，練習聽到就能反應', jp:"袋を一つお願いします。", romaji:"Fukuro o hitotsu onegaishimasu.", en:"One bag, please",
-      segs:[{t:'袋',r:'ふくろ',m:'袋子'},{t:'を',r:'を',m:'助詞（受詞標記）'},{t:'一つ',r:'ひとつ',m:'一個（下方可調整數量）'},{t:'お願いします',r:'おねがいします',m:'麻煩了／拜託'}] },
-    { id:"qa_store_1b", cn:"顧客答（大袋子）：好，大的袋子一個，麻煩了", note:'大／中／小三種尺寸的說法', jp:"大きい袋を一つお願いします。", romaji:"Ōkii fukuro o hitotsu onegaishimasu.", en:"One big bag, please",
-      segs:[{t:'大きい',r:'おおきい',m:'大的'},{t:'袋',r:'ふくろ',m:'袋子'},{t:'を',r:'を',m:'助詞'},{t:'一つ',r:'ひとつ',m:'一個（下方可調整數量）'},{t:'お願いします',r:'おねがいします',m:'麻煩了'}] },
-    { id:"qa_store_1c", cn:"顧客答（中袋子）：好，中的袋子一個，麻煩了", note:null, jp:"中くらいの袋を一つお願いします。", romaji:"Chūkurai no fukuro o hitotsu onegaishimasu.", en:"One medium bag, please",
-      segs:[{t:'中くらいの',r:'ちゅうくらいの',m:'中等大小的'},{t:'袋',r:'ふくろ',m:'袋子'},{t:'を',r:'を',m:'助詞'},{t:'一つ',r:'ひとつ',m:'一個（下方可調整數量）'},{t:'お願いします',r:'おねがいします',m:'麻煩了'}] },
-    { id:"qa_store_1d", cn:"顧客答（小袋子）：好，小的袋子一個，麻煩了", note:null, jp:"小さい袋を一つお願いします。", romaji:"Chiisai fukuro o hitotsu onegaishimasu.", en:"One small bag, please",
-      segs:[{t:'小さい',r:'ちいさい',m:'小的'},{t:'袋',r:'ふくろ',m:'袋子'},{t:'を',r:'を',m:'助詞'},{t:'一つ',r:'ひとつ',m:'一個（下方可調整數量）'},{t:'お願いします',r:'おねがいします',m:'麻煩了'}] },
-    { id:"qa_store_2", cn:"顧客答：不用，沒關係", note:null, jp:"いいえ、大丈夫です", romaji:"Iie, daijōbu desu", en:"No, that's okay",
-      segs:[{t:'いいえ',r:'いいえ',m:'不／不是'},{t:'大丈夫',r:'だいじょうぶ',m:'沒關係／不要緊'},{t:'です',r:'です',m:'禮貌句尾'}] },
-    { id:"qa_store_3", cn:"店員問：要微波加熱嗎？", note:null, jp:"温めますか？", romaji:"Atatamemasu ka?", en:"Would you like this warmed up?",
-      segs:[{t:'温めます',r:'あたためます',m:'加熱'},{t:'か',r:'か',m:'嗎（疑問助詞）'}] },
-    { id:"qa_store_4", cn:"顧客答：好，請幫我加熱", note:'回答時把「温める」再說一次', jp:"はい、温めてください。", romaji:"Hai, atatamete kudasai.", en:"Yes, please warm it up",
-      segs:[{t:'はい',r:'はい',m:'是／好'},{t:'温めて',r:'あたためて',m:'請加熱（て形）'},{t:'ください',r:'ください',m:'請'}] },
-    { id:"qa_store_5", cn:"店員問：有集點卡嗎？", note:null, jp:"ポイントカードはありますか？", romaji:"Pointo kādo wa arimasu ka?", en:"Do you have a point card?" },
-    { id:"qa_store_6", cn:"顧客答：沒有", note:null, jp:"ありません", romaji:"Arimasen", en:"No, I don't" },
-    { id:"qa_store_7", cn:"店員問：需要幾雙筷子？（膳＝筷子的量詞）", note:null, jp:"お箸は何膳お付けしますか？", romaji:"Ohashi wa nan-zen otsuke shimasu ka?", en:"How many pairs of chopsticks?" },
-    { id:"qa_store_8", cn:"顧客答：一雙，麻煩了", note:null, jp:"一膳お願いします。", romaji:"Ichi-zen onegaishimasu.", en:"One pair, please" },
+  { title:"🏪 便利商店（コンビニ）", note:"結帳、袋子與加熱服務", items:[
+    { id:"qa_store_0", cn:"店員問：要加購袋子嗎？", note:null, jp:"袋はご利用ですか？", romaji:"Fukuro wa goriyō desu ka?", en:"Would you like a bag?", segs:[{t:"袋",r:"ふくろ",m:"袋子"},{t:"は",r:"は",m:"助詞（主題標記）"},{t:"ご利用",r:"ごりよう",m:"使用（禮貌説法）"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_store_1", cn:"顧客答：好，袋子一個，麻煩了", note:"回答時把「袋」再說一次，練習聽到就能反應", jp:"袋を一つお願いします。", romaji:"Fukuro o hitotsu onegaishimasu.", en:"One bag, please", segs:[{t:"袋",r:"ふくろ",m:"袋子"},{t:"を",r:"を",m:"助詞（受詞標記）"},{t:"一つ",r:"ひとつ",m:"一個（下方可調整數量）"},{t:"お願いします",r:"おねがいします",m:"麻煩了／拜託"}] },
+    { id:"qa_store_1b", cn:"顧客答（大袋子）：好，大的袋子一個，麻煩了", note:"大／中／小三種尺寸的說法", jp:"大きい袋を一つお願いします。", romaji:"Ōkii fukuro o hitotsu onegaishimasu.", en:"One big bag, please", segs:[{t:"大きい",r:"おおきい",m:"大的"},{t:"袋",r:"ふくろ",m:"袋子"},{t:"を",r:"を",m:"助詞"},{t:"一つ",r:"ひとつ",m:"一個（下方可調整數量）"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_store_1c", cn:"顧客答（中袋子）：好，中的袋子一個，麻煩了", note:null, jp:"中くらいの袋を一つお願いします。", romaji:"Chūkurai no fukuro o hitotsu onegaishimasu.", en:"One medium bag, please", segs:[{t:"中くらいの",r:"ちゅうくらいの",m:"中等大小的"},{t:"袋",r:"ふくろ",m:"袋子"},{t:"を",r:"を",m:"助詞"},{t:"一つ",r:"ひとつ",m:"一個（下方可調整數量）"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_store_1d", cn:"顧客答（小袋子）：好，小的袋子一個，麻煩了", note:null, jp:"小さい袋を一つお願いします。", romaji:"Chiisai fukuro o hitotsu onegaishimasu.", en:"One small bag, please", segs:[{t:"小さい",r:"ちいさい",m:"小的"},{t:"袋",r:"ふくろ",m:"袋子"},{t:"を",r:"を",m:"助詞"},{t:"一つ",r:"ひとつ",m:"一個（下方可調整數量）"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_store_2", cn:"顧客答：不用，沒關係", note:null, jp:"いいえ、大丈夫です", romaji:"Iie, daijōbu desu", en:"No, that's okay", segs:[{t:"いいえ",r:"いいえ",m:"不／不是"},{t:"大丈夫",r:"だいじょうぶ",m:"沒關係／不要緊"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_store_3", cn:"店員問：要微波加熱嗎？", note:null, jp:"温めますか？", romaji:"Atatamemasu ka?", en:"Would you like this warmed up?", segs:[{t:"温めます",r:"あたためます",m:"加熱"},{t:"か",r:"か",m:"嗎（疑問助詞）"}] },
+    { id:"qa_store_4", cn:"顧客答：好，請幫我加熱", note:"回答時把「温める」再說一次", jp:"はい、温めてください。", romaji:"Hai, atatamete kudasai.", en:"Yes, please warm it up", segs:[{t:"はい",r:"はい",m:"是／好"},{t:"温めて",r:"あたためて",m:"請加熱（て形）"},{t:"ください",r:"ください",m:"請"}] },
+    { id:"qa_store_5", cn:"店員問：有集點卡嗎？", note:null, jp:"ポイントカードはありますか？", romaji:"Pointo kādo wa arimasu ka?", en:"Do you have a point card?", segs:[{t:"ポイントカード",r:"ぽいんとかーど",m:"集點卡"},{t:"は",r:"は",m:"助詞"},{t:"あります",r:"あります",m:"有（無生命物）"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_store_6", cn:"顧客答：沒有", note:null, jp:"ありません", romaji:"Arimasen", en:"No, I don't", segs:[{t:"ありません",r:"ありません",m:"沒有（あります的否定）"}] },
+    { id:"qa_store_7", cn:"店員問：需要幾雙筷子？（膳＝筷子的量詞）", note:null, jp:"お箸は何膳お付けしますか？", romaji:"Ohashi wa nan-zen otsuke shimasu ka?", en:"How many pairs of chopsticks?", segs:[{t:"お箸",r:"おはし",m:"筷子"},{t:"は",r:"は",m:"助詞"},{t:"何膳",r:"なんぜん",m:"幾雙"},{t:"お付けします",r:"おつけします",m:"附上"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_store_8", cn:"顧客答：一雙，麻煩了", note:null, jp:"一膳お願いします。", romaji:"Ichi-zen onegaishimasu.", en:"One pair, please", segs:[{t:"一膳",r:"いちぜん",m:"一雙（下方可調整數量）"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
   ]},
-  { title:'🛍️ 藥妝店（ドラッグストア）', note:'詢問價格、數量限制與退稅（免稅門檻依店家與制度而異，5,000円只是常見範例，不是全國固定規則）', items:[
-    { id:"qa_drug_0", cn:"顧客問：這個多少錢？", note:null, jp:"これはいくらですか？", romaji:"Kore wa ikura desu ka?", en:"How much is this?" },
-    { id:"qa_drug_1", cn:"店員答：1,500日圓", note:null, jp:"1500円です", romaji:"Sen go-hyaku-en desu", en:"It's 1,500 yen" },
-    { id:"qa_drug_2", cn:"顧客問：可以退稅嗎？", note:null, jp:"免税できますか？", romaji:"Menzei dekimasu ka?", en:"Can I get a tax refund?" },
-    { id:"qa_drug_3", cn:"店員答：這家店滿5,000日圓以上可以退稅", note:null, jp:"はい、5000円以上で可能です", romaji:"Hai, go-sen-en ijō de kanō desu", en:"Yes, if it's over 5,000 yen (at this store)" },
-    { id:"qa_drug_4", cn:"顧客：請給我兩個這個", note:null, jp:"これを二つください。", romaji:"Kore o futatsu kudasai.", en:"Two of these, please" },
-    { id:"qa_drug_5", cn:"店員問：要幾個？", note:null, jp:"何個ですか？", romaji:"Nan-ko desu ka?", en:"How many?" },
-    { id:"qa_drug_6", cn:"顧客答：三個，麻煩了", note:null, jp:"三つお願いします。", romaji:"Mittsu onegaishimasu.", en:"Three, please" },
+  { title:"🛍️ 藥妝店（ドラッグストア）", note:"詢問價格、數量限制與退稅（免稅門檻依店家與制度而異，5,000円只是常見範例，不是全國固定規則）", items:[
+    { id:"qa_drug_0", cn:"顧客問：這個多少錢？", note:null, jp:"これはいくらですか？", romaji:"Kore wa ikura desu ka?", en:"How much is this?", segs:[{t:"これ",r:"これ",m:"這個"},{t:"は",r:"は",m:"助詞"},{t:"いくら",r:"いくら",m:"多少錢"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_drug_1", cn:"店員答：1,500日圓", note:null, jp:"1500円です", romaji:"Sen go-hyaku-en desu", en:"It's 1,500 yen", segs:[{t:"1500円",r:"せんごひゃくえん",m:"1500日圓（下方可調整金額）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_drug_2", cn:"顧客問：可以退稅嗎？", note:null, jp:"免税できますか？", romaji:"Menzei dekimasu ka?", en:"Can I get a tax refund?", segs:[{t:"免税",r:"めんぜい",m:"退稅"},{t:"できます",r:"できます",m:"可以／能夠"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_drug_3", cn:"店員答：這家店滿5,000日圓以上可以退稅", note:null, jp:"はい、5000円以上で可能です", romaji:"Hai, go-sen-en ijō de kanō desu", en:"Yes, if it's over 5,000 yen (at this store)", segs:[{t:"はい",r:"はい",m:"是／好"},{t:"5000円",r:"ごせんえん",m:"5000日圓（下方可調整金額）"},{t:"以上",r:"いじょう",m:"以上"},{t:"で",r:"で",m:"助詞"},{t:"可能",r:"かのう",m:"可以／可行"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_drug_4", cn:"顧客：請給我兩個這個", note:null, jp:"これを二つください。", romaji:"Kore o futatsu kudasai.", en:"Two of these, please", segs:[{t:"これ",r:"これ",m:"這個"},{t:"を",r:"を",m:"助詞"},{t:"二つ",r:"ふたつ",m:"兩個（下方可調整數量）"},{t:"ください",r:"ください",m:"請給我"}] },
+    { id:"qa_drug_5", cn:"店員問：要幾個？", note:null, jp:"何個ですか？", romaji:"Nan-ko desu ka?", en:"How many?", segs:[{t:"何個",r:"なんこ",m:"幾個"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_drug_6", cn:"顧客答：三個，麻煩了", note:null, jp:"三つお願いします。", romaji:"Mittsu onegaishimasu.", en:"Three, please", segs:[{t:"三つ",r:"みっつ",m:"三個（下方可調整數量）"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
   ]},
-  { title:'🍜 拉麵店（ラーメン屋）', note:'確認人數、餐券機與麵條硬度', items:[
-    { id:"qa_ramen_0", cn:"顧客問：餐券機在哪裡？", note:null, jp:"食券はどこですか？", romaji:"Shokken wa doko desu ka?", en:"Where is the ticket machine?" },
-    { id:"qa_ramen_1", cn:"顧客問：推薦哪一個？", note:null, jp:"おすすめはどれですか？", romaji:"Osusume wa dore desu ka?", en:"Which one do you recommend?" },
-    { id:"qa_ramen_2", cn:"店員答：這個是推薦的", note:null, jp:"こちらがおすすめです。", romaji:"Kochira ga osusume desu.", en:"This is our recommendation" },
-    { id:"qa_ramen_3", cn:"店員問：請問幾位？", note:null, jp:"何名様ですか？", romaji:"Nan-mei-sama desu ka?", en:"How many people?" },
-    { id:"qa_ramen_4", cn:"顧客答：兩位", note:null, jp:"2人です", romaji:"Futari desu", en:"Two people" },
-    { id:"qa_ramen_5", cn:"店員問：麵條硬度要如何調整？", note:null, jp:"麺のかたさはどうしますか？", romaji:"Men no katasa wa dō shimasu ka?", en:"How would you like your noodles?" },
-    { id:"qa_ramen_6", cn:"顧客答：正常就好", note:null, jp:"普通でお願いします。", romaji:"Futsū de onegaishimasu.", en:"Normal, please" },
-    { id:"qa_ramen_7", cn:"顧客答：請幫我做偏硬", note:null, jp:"かためでお願いします", romaji:"Katame de onegai shimasu", en:"Firm, please" },
+  { title:"🍜 拉麵店（ラーメン屋）", note:"確認人數、餐券機與麵條硬度", items:[
+    { id:"qa_ramen_0", cn:"顧客問：餐券機在哪裡？", note:null, jp:"食券はどこですか？", romaji:"Shokken wa doko desu ka?", en:"Where is the ticket machine?", segs:[{t:"食券",r:"しょっけん",m:"餐券"},{t:"は",r:"は",m:"助詞"},{t:"どこ",r:"どこ",m:"哪裡"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_ramen_1", cn:"顧客問：推薦哪一個？", note:null, jp:"おすすめはどれですか？", romaji:"Osusume wa dore desu ka?", en:"Which one do you recommend?", segs:[{t:"おすすめ",r:"おすすめ",m:"推薦"},{t:"は",r:"は",m:"助詞"},{t:"どれ",r:"どれ",m:"哪一個"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_ramen_2", cn:"店員答：這個是推薦的", note:null, jp:"こちらがおすすめです。", romaji:"Kochira ga osusume desu.", en:"This is our recommendation", segs:[{t:"こちら",r:"こちら",m:"這個（禮貌說法）"},{t:"が",r:"が",m:"助詞"},{t:"おすすめ",r:"おすすめ",m:"推薦"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_ramen_3", cn:"店員問：請問幾位？", note:null, jp:"何名様ですか？", romaji:"Nan-mei-sama desu ka?", en:"How many people?", segs:[{t:"何名様",r:"なんめいさま",m:"幾位（敬語）"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_ramen_4", cn:"顧客答：兩位", note:null, jp:"2人です", romaji:"Futari desu", en:"Two people", segs:[{t:"2人",r:"ふたり",m:"兩位（下方可調整人數）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_ramen_5", cn:"店員問：麵條硬度要如何調整？", note:null, jp:"麺のかたさはどうしますか？", romaji:"Men no katasa wa dō shimasu ka?", en:"How would you like your noodles?", segs:[{t:"麺",r:"めん",m:"麵條"},{t:"の",r:"の",m:"助詞（的）"},{t:"かたさ",r:"かたさ",m:"硬度"},{t:"は",r:"は",m:"助詞"},{t:"どうします",r:"どうします",m:"要怎麼做"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_ramen_6", cn:"顧客答：正常就好", note:null, jp:"普通でお願いします。", romaji:"Futsū de onegaishimasu.", en:"Normal, please", segs:[{t:"普通",r:"ふつう",m:"正常／普通"},{t:"で",r:"で",m:"助詞"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_ramen_7", cn:"顧客答：請幫我做偏硬", note:null, jp:"かためでお願いします", romaji:"Katame de onegai shimasu", en:"Firm, please", segs:[{t:"かため",r:"かため",m:"偏硬"},{t:"で",r:"で",m:"助詞"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
   ]},
-  { title:'🥤 自動販賣機（自動販売機）', note:'確認投幣數字與退幣', items:[
-    { id:"qa_vending_0", cn:"標示：150日圓", note:null, jp:"150円", romaji:"Hyaku go-jū-en", en:"150 yen" },
-    { id:"qa_vending_1", cn:"投入200日圓", note:null, jp:"200円を入れます。", romaji:"Ni-hyaku-en o iremasu.", en:"Insert 200 yen" },
-    { id:"qa_vending_2", cn:"找零50日圓", note:null, jp:"50円のおつりです。", romaji:"Go-jū-en no otsuri desu.", en:"50 yen change" },
+  { title:"🥤 自動販賣機（自動販売機）", note:"確認投幣數字與退幣", items:[
+    { id:"qa_vending_0", cn:"標示：150日圓", note:null, jp:"150円", romaji:"Hyaku go-jū-en", en:"150 yen", segs:[{t:"150円",r:"ひゃくごじゅうえん",m:"150日圓（下方可調整金額）"}] },
+    { id:"qa_vending_1", cn:"投入200日圓", note:null, jp:"200円を入れます。", romaji:"Ni-hyaku-en o iremasu.", en:"Insert 200 yen", segs:[{t:"200円",r:"にひゃくえん",m:"200日圓（下方可調整金額）"},{t:"を",r:"を",m:"助詞"},{t:"入れます",r:"いれます",m:"投入"}] },
+    { id:"qa_vending_2", cn:"找零50日圓", note:null, jp:"50円のおつりです。", romaji:"Go-jū-en no otsuri desu.", en:"50 yen change", segs:[{t:"50円",r:"ごじゅうえん",m:"50日圓（下方可調整金額）"},{t:"の",r:"の",m:"助詞（的）"},{t:"おつり",r:"おつり",m:"找零"},{t:"です",r:"です",m:"禮貌句尾"}] },
   ]},
-  { title:'🍣 餐廳（レストラン）', note:'幾位、點餐、數量與結帳', items:[
-    { id:"qa_restaurant_0", cn:"店員問：請問幾位？", note:null, jp:"何名様ですか？", romaji:"Nan-mei-sama desu ka?", en:"How many people?" },
-    { id:"qa_restaurant_1", cn:"店員問：決定好要點什麼了嗎？", note:null, jp:"ご注文はお決まりですか？", romaji:"Gochūmon wa okimari desu ka?", en:"Are you ready to order?" },
-    { id:"qa_restaurant_2", cn:"顧客答：還沒", note:null, jp:"まだです。", romaji:"Mada desu.", en:"Not yet" },
-    { id:"qa_restaurant_3", cn:"顧客問：推薦的餐點是什麼？", note:null, jp:"おすすめは何ですか？", romaji:"Osusume wa nan desu ka?", en:"What do you recommend?" },
-    { id:"qa_restaurant_4", cn:"店員答：A套餐很受歡迎，880日圓", note:null, jp:"Aセットが人気です。880円です", romaji:"Ē-setto ga ninki desu. Happyaku hachi-jū-en desu", en:"The A set is popular. It's 880 yen" },
-    { id:"qa_restaurant_5", cn:"顧客：請給我一個這個", note:null, jp:"これを一つください。", romaji:"Kore o hitotsu kudasai.", en:"One of these, please" },
-    { id:"qa_restaurant_6", cn:"顧客：請給我兩杯水", note:null, jp:"水を二つお願いします。", romaji:"Mizu o futatsu onegaishimasu.", en:"Two waters, please" },
-    { id:"qa_restaurant_7", cn:"顧客問：可以分開付款嗎？", note:null, jp:"別々に払えますか？", romaji:"Betsubetsu ni haraemasu ka?", en:"Can we pay separately?" },
-    { id:"qa_restaurant_8", cn:"顧客：麻煩結帳", note:null, jp:"お会計お願いします。", romaji:"Okaikei onegaishimasu.", en:"Check, please" },
-    { id:"qa_restaurant_9", cn:"店員答：2,980日圓", note:null, jp:"2980円です。", romaji:"Ni-sen kyū-hyaku hachi-jū-en desu.", en:"It's 2,980 yen" },
+  { title:"🍣 餐廳（レストラン）", note:"幾位、點餐、數量與結帳", items:[
+    { id:"qa_restaurant_0", cn:"店員問：請問幾位？", note:null, jp:"何名様ですか？", romaji:"Nan-mei-sama desu ka?", en:"How many people?", segs:[{t:"何名様",r:"なんめいさま",m:"幾位（敬語）"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_restaurant_1", cn:"店員問：決定好要點什麼了嗎？", note:null, jp:"ご注文はお決まりですか？", romaji:"Gochūmon wa okimari desu ka?", en:"Are you ready to order?", segs:[{t:"ご注文",r:"ごちゅうもん",m:"點餐內容"},{t:"は",r:"は",m:"助詞"},{t:"お決まり",r:"おきまり",m:"決定好了"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_restaurant_2", cn:"顧客答：還沒", note:null, jp:"まだです。", romaji:"Mada desu.", en:"Not yet", segs:[{t:"まだ",r:"まだ",m:"還沒"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_restaurant_3", cn:"顧客問：推薦的餐點是什麼？", note:null, jp:"おすすめは何ですか？", romaji:"Osusume wa nan desu ka?", en:"What do you recommend?", segs:[{t:"おすすめ",r:"おすすめ",m:"推薦"},{t:"は",r:"は",m:"助詞"},{t:"何",r:"なん",m:"什麼"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_restaurant_4", cn:"店員答：A套餐很受歡迎，880日圓", note:null, jp:"Aセットが人気です。880円です", romaji:"Ē-setto ga ninki desu. Happyaku hachi-jū-en desu", en:"The A set is popular. It's 880 yen", segs:[{t:"Aセット",r:"えーせっと",m:"A套餐"},{t:"が",r:"が",m:"助詞"},{t:"人気",r:"にんき",m:"受歡迎"},{t:"です",r:"です",m:"禮貌句尾"},{t:"880円",r:"はっぴゃくはちじゅうえん",m:"880日圓（下方可調整金額）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_restaurant_5", cn:"顧客：請給我一個這個", note:null, jp:"これを一つください。", romaji:"Kore o hitotsu kudasai.", en:"One of these, please", segs:[{t:"これ",r:"これ",m:"這個"},{t:"を",r:"を",m:"助詞"},{t:"一つ",r:"ひとつ",m:"一個（下方可調整數量）"},{t:"ください",r:"ください",m:"請給我"}] },
+    { id:"qa_restaurant_6", cn:"顧客：請給我兩杯水", note:null, jp:"水を二つお願いします。", romaji:"Mizu o futatsu onegaishimasu.", en:"Two waters, please", segs:[{t:"水",r:"みず",m:"水"},{t:"を",r:"を",m:"助詞"},{t:"二つ",r:"ふたつ",m:"兩杯（下方可調整數量）"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_restaurant_7", cn:"顧客問：可以分開付款嗎？", note:null, jp:"別々に払えますか？", romaji:"Betsubetsu ni haraemasu ka?", en:"Can we pay separately?", segs:[{t:"別々に",r:"べつべつに",m:"分別／各自"},{t:"払えます",r:"はらえます",m:"可以付款"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_restaurant_8", cn:"顧客：麻煩結帳", note:null, jp:"お会計お願いします。", romaji:"Okaikei onegaishimasu.", en:"Check, please", segs:[{t:"お会計",r:"おかいけい",m:"結帳"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_restaurant_9", cn:"店員答：2,980日圓", note:null, jp:"2980円です。", romaji:"Ni-sen kyū-hyaku hachi-jū-en desu.", en:"It's 2,980 yen", segs:[{t:"2980円",r:"にせんきゅうひゃくはちじゅうえん",m:"2980日圓（下方可調整金額）"},{t:"です",r:"です",m:"禮貌句尾"}] },
   ]},
-  { title:'🏨 飯店（ホテル）', note:'辦理入住、房號與早餐／退房時間', items:[
-    { id:"qa_hotel_0", cn:"顧客：我要辦理入住", note:null, jp:"チェックインをお願いします", romaji:"Chekku-in o onegai shimasu", en:"I'd like to check in" },
-    { id:"qa_hotel_1", cn:"店員問：請告訴我您的姓名", note:null, jp:"お名前をお願いします。", romaji:"Onamae o onegaishimasu.", en:"May I have your name?" },
-    { id:"qa_hotel_2", cn:"店員答：您的房間是305號（標準數字唸法）", note:null, jp:"お部屋は305号室です。", romaji:"O-heya wa san-byaku-go gō-shitsu desu.", en:"Your room is 305" },
-    { id:"qa_hotel_3", cn:"⚠️補充：現場也可能聽到「逐字唸」的房號說法（比較口語，非教材主要教法）", note:'例如305會念成 さん・まる・ご，不是さんびゃくご，兩種都可能遇到', jp:"305号室（さん・まる・ご）", romaji:"San-maru-go gō-shitsu", en:"Room 305 (digit-by-digit style)" },
-    { id:"qa_hotel_4", cn:"顧客問：早餐幾點開始？", note:null, jp:"朝食は何時からですか？", romaji:"Chōshoku wa nan-ji kara desu ka?", en:"What time does breakfast start?" },
-    { id:"qa_hotel_5", cn:"店員答：早上7點開始", note:null, jp:"朝7時からです", romaji:"Asa shichi-ji kara desu", en:"It starts at 7am" },
-    { id:"qa_hotel_6", cn:"顧客問：退房是幾點？", note:null, jp:"チェックアウトは何時ですか？", romaji:"Chekku-auto wa nan-ji desu ka?", en:"What time is checkout?" },
+  { title:"🏨 飯店（ホテル）", note:"辦理入住、房號與早餐／退房時間", items:[
+    { id:"qa_hotel_0", cn:"顧客：我要辦理入住", note:null, jp:"チェックインをお願いします", romaji:"Chekku-in o onegai shimasu", en:"I'd like to check in", segs:[{t:"チェックイン",r:"ちぇっくいん",m:"入住登記"},{t:"を",r:"を",m:"助詞"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_hotel_1", cn:"店員問：請告訴我您的姓名", note:null, jp:"お名前をお願いします。", romaji:"Onamae o onegaishimasu.", en:"May I have your name?", segs:[{t:"お名前",r:"おなまえ",m:"姓名"},{t:"を",r:"を",m:"助詞"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_hotel_2", cn:"店員答：您的房間是305號（標準數字唸法）", note:null, jp:"お部屋は305号室です。", romaji:"O-heya wa san-byaku-go gō-shitsu desu.", en:"Your room is 305", segs:[{t:"お部屋",r:"おへや",m:"房間"},{t:"は",r:"は",m:"助詞"},{t:"305号室",r:"さんびゃくごごうしつ",m:"305號房（下方可調整房號）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_hotel_3", cn:"⚠️補充：現場也可能聽到「逐字唸」的房號說法（比較口語，非教材主要教法）", note:"例如305會念成 さん・まる・ご，不是さんびゃくご，兩種都可能遇到", jp:"305号室（さん・まる・ご）", romaji:"San-maru-go gō-shitsu", en:"Room 305 (digit-by-digit style)", segs:[{t:"305号室",r:"さんびゃくごごうしつ",m:"標準唸法"},{t:"さん・まる・ご",r:"さん・まる・ご",m:"口語逐字唸法"}] },
+    { id:"qa_hotel_4", cn:"顧客問：早餐幾點開始？", note:null, jp:"朝食は何時からですか？", romaji:"Chōshoku wa nan-ji kara desu ka?", en:"What time does breakfast start?", segs:[{t:"朝食",r:"ちょうしょく",m:"早餐"},{t:"は",r:"は",m:"助詞"},{t:"何時",r:"なんじ",m:"幾點"},{t:"から",r:"から",m:"從（起點）"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_hotel_5", cn:"店員答：早上7點開始", note:null, jp:"朝7時からです", romaji:"Asa shichi-ji kara desu", en:"It starts at 7am", segs:[{t:"朝",r:"あさ",m:"早上"},{t:"7時",r:"しちじ",m:"7點（下方可調整時間）"},{t:"から",r:"から",m:"從（起點）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_hotel_6", cn:"顧客問：退房是幾點？", note:null, jp:"チェックアウトは何時ですか？", romaji:"Chekku-auto wa nan-ji desu ka?", en:"What time is checkout?", segs:[{t:"チェックアウト",r:"ちぇっくあうと",m:"退房"},{t:"は",r:"は",m:"助詞"},{t:"何時",r:"なんじ",m:"幾點"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
   ]},
-  { title:'🚃 車站（駅）', note:'問路、月台、票價與班次', items:[
-    { id:"qa_station_0", cn:"顧客問：大阪車站在哪裡？", note:null, jp:"大阪駅はどこですか？", romaji:"Ōsaka-eki wa doko desu ka?", en:"Where is Osaka Station?" },
-    { id:"qa_station_1", cn:"顧客問：前往東京的是幾號月台？", note:null, jp:"東京行きは何番線ですか？", romaji:"Tōkyō-iki wa nan-ban-sen desu ka?", en:"Which platform for Tokyo?" },
-    { id:"qa_station_2", cn:"店員答：3號月台", note:null, jp:"3番線です。", romaji:"San-ban-sen desu.", en:"Platform 3" },
-    { id:"qa_station_3", cn:"顧客問：這班電車會去大阪嗎？", note:null, jp:"この電車は大阪に行きますか？", romaji:"Kono densha wa Ōsaka ni ikimasu ka?", en:"Does this train go to Osaka?" },
-    { id:"qa_station_4", cn:"顧客問：下一班電車是幾點？", note:null, jp:"次の電車は何時ですか？", romaji:"Tsugi no densha wa nan-ji desu ka?", en:"What time is the next train?" },
-    { id:"qa_station_5", cn:"店員答：10點30分", note:null, jp:"10時30分です。", romaji:"Jū-ji san-jup-pun desu.", en:"10:30" },
-    { id:"qa_station_6", cn:"顧客問：到東京站要多少錢？", note:null, jp:"東京駅までいくらですか？", romaji:"Tōkyō-eki made ikura desu ka?", en:"How much to Tokyo Station?" },
-    { id:"qa_station_7", cn:"店員答：220日圓", note:null, jp:"220円です", romaji:"Ni-hyaku ni-jū-en desu", en:"It's 220 yen" },
-    { id:"qa_station_8", cn:"顧客問：在幾號月台？", note:null, jp:"何番線ですか？", romaji:"Nan-ban-sen desu ka?", en:"Which platform?" },
-    { id:"qa_station_9", cn:"店員答：3號月台", note:null, jp:"3番線です", romaji:"San-ban-sen desu", en:"Platform 3" },
+  { title:"🚃 車站（駅）", note:"問路、月台、票價與班次", items:[
+    { id:"qa_station_0", cn:"顧客問：大阪車站在哪裡？", note:null, jp:"大阪駅はどこですか？", romaji:"Ōsaka-eki wa doko desu ka?", en:"Where is Osaka Station?", segs:[{t:"大阪駅",r:"おおさかえき",m:"大阪車站"},{t:"は",r:"は",m:"助詞"},{t:"どこ",r:"どこ",m:"哪裡"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_station_1", cn:"顧客問：前往東京的是幾號月台？", note:null, jp:"東京行きは何番線ですか？", romaji:"Tōkyō-iki wa nan-ban-sen desu ka?", en:"Which platform for Tokyo?", segs:[{t:"東京行き",r:"とうきょういき",m:"往東京"},{t:"は",r:"は",m:"助詞"},{t:"何番線",r:"なんばんせん",m:"幾號月台"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_station_2", cn:"店員答：3號月台", note:null, jp:"3番線です。", romaji:"San-ban-sen desu.", en:"Platform 3", segs:[{t:"3番線",r:"さんばんせん",m:"3號月台（下方可調整月台號）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_station_3", cn:"顧客問：這班電車會去大阪嗎？", note:null, jp:"この電車は大阪に行きますか？", romaji:"Kono densha wa Ōsaka ni ikimasu ka?", en:"Does this train go to Osaka?", segs:[{t:"この",r:"この",m:"這個"},{t:"電車",r:"でんしゃ",m:"電車"},{t:"は",r:"は",m:"助詞"},{t:"大阪",r:"おおさか",m:"大阪"},{t:"に",r:"に",m:"助詞（目的地）"},{t:"行きます",r:"いきます",m:"去"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_station_4", cn:"顧客問：下一班電車是幾點？", note:null, jp:"次の電車は何時ですか？", romaji:"Tsugi no densha wa nan-ji desu ka?", en:"What time is the next train?", segs:[{t:"次",r:"つぎ",m:"下一個"},{t:"の",r:"の",m:"助詞（的）"},{t:"電車",r:"でんしゃ",m:"電車"},{t:"は",r:"は",m:"助詞"},{t:"何時",r:"なんじ",m:"幾點"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_station_5", cn:"店員答：10點30分", note:null, jp:"10時30分です。", romaji:"Jū-ji san-jup-pun desu.", en:"10:30", segs:[{t:"10時30分",r:"じゅうじさんじゅっぷん",m:"10點30分（下方可調整時間）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_station_6", cn:"顧客問：到東京站要多少錢？", note:null, jp:"東京駅までいくらですか？", romaji:"Tōkyō-eki made ikura desu ka?", en:"How much to Tokyo Station?", segs:[{t:"東京駅",r:"とうきょうえき",m:"東京車站"},{t:"まで",r:"まで",m:"到…為止"},{t:"いくら",r:"いくら",m:"多少錢"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_station_7", cn:"店員答：220日圓", note:null, jp:"220円です", romaji:"Ni-hyaku ni-jū-en desu", en:"It's 220 yen", segs:[{t:"220円",r:"にひゃくにじゅうえん",m:"220日圓（下方可調整金額）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_station_8", cn:"顧客問：在幾號月台？", note:null, jp:"何番線ですか？", romaji:"Nan-ban-sen desu ka?", en:"Which platform?", segs:[{t:"何番線",r:"なんばんせん",m:"幾號月台"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_station_9", cn:"店員答：3號月台", note:null, jp:"3番線です", romaji:"San-ban-sen desu", en:"Platform 3", segs:[{t:"3番線",r:"さんばんせん",m:"3號月台（下方可調整月台號）"},{t:"です",r:"です",m:"禮貌句尾"}] },
   ]},
-  { title:'✈️ 機場', note:'登機門、登機時間', items:[
-    { id:"qa_airport_0", cn:"顧客問：登機門是幾號？", note:null, jp:"搭乗口は何番ですか？", romaji:"Tōjō-guchi wa nan-ban desu ka?", en:"What's the boarding gate number?" },
-    { id:"qa_airport_1", cn:"店員答：24號", note:null, jp:"24番です。", romaji:"Ni-jū-yon-ban desu.", en:"Gate 24" },
-    { id:"qa_airport_2", cn:"顧客問：幾點登機？", note:null, jp:"搭乗は何時ですか？", romaji:"Tōjō wa nan-ji desu ka?", en:"What time is boarding?" },
-    { id:"qa_airport_3", cn:"店員答：14點30分", note:null, jp:"14時30分です。", romaji:"Jū-yo-ji san-jup-pun desu.", en:"14:30" },
+  { title:"✈️ 機場", note:"登機門、登機時間", items:[
+    { id:"qa_airport_0", cn:"顧客問：登機門是幾號？", note:null, jp:"搭乗口は何番ですか？", romaji:"Tōjō-guchi wa nan-ban desu ka?", en:"What's the boarding gate number?", segs:[{t:"搭乗口",r:"とうじょうぐち",m:"登機門"},{t:"は",r:"は",m:"助詞"},{t:"何番",r:"なんばん",m:"幾號"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_airport_1", cn:"店員答：24號", note:null, jp:"24番です。", romaji:"Ni-jū-yon-ban desu.", en:"Gate 24", segs:[{t:"24番",r:"にじゅうよんばん",m:"24號（下方可調整號碼）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_airport_2", cn:"顧客問：幾點登機？", note:null, jp:"搭乗は何時ですか？", romaji:"Tōjō wa nan-ji desu ka?", en:"What time is boarding?", segs:[{t:"搭乗",r:"とうじょう",m:"登機"},{t:"は",r:"は",m:"助詞"},{t:"何時",r:"なんじ",m:"幾點"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_airport_3", cn:"店員答：14點30分", note:null, jp:"14時30分です。", romaji:"Jū-yo-ji san-jup-pun desu.", en:"14:30", segs:[{t:"14時30分",r:"じゅうよじさんじゅっぷん",m:"14點30分（下方可調整時間）"},{t:"です",r:"です",m:"禮貌句尾"}] },
   ]},
-  { title:'🎫 電車／新幹線車票', note:'車資、自由座與列車號碼（號碼是逐字唸，跟一般金額不一樣）', items:[
-    { id:"qa_ticket_0", cn:"顧客問：到東京多少錢？", note:null, jp:"東京までいくらですか？", romaji:"Tōkyō made ikura desu ka?", en:"How much to Tokyo?" },
-    { id:"qa_ticket_1", cn:"顧客問：有自由座嗎？", note:null, jp:"自由席はありますか？", romaji:"Jiyūseki wa arimasu ka?", en:"Is there a non-reserved car?" },
-    { id:"qa_ticket_2", cn:"顧客問：第幾號列車？", note:null, jp:"何番の電車ですか？", romaji:"Nan-ban no densha desu ka?", en:"Which train number?" },
-    { id:"qa_ticket_3", cn:"店員答：12號（車次號碼通常逐字唸，跟12,000円這種金額念法不同）", note:null, jp:"12号です。", romaji:"Jū-ni-gō desu.", en:"Train number 12" },
+  { title:"🎫 電車／新幹線車票", note:"車資、自由座與列車號碼（號碼是逐字唸，跟一般金額不一樣）", items:[
+    { id:"qa_ticket_0", cn:"顧客問：到東京多少錢？", note:null, jp:"東京までいくらですか？", romaji:"Tōkyō made ikura desu ka?", en:"How much to Tokyo?", segs:[{t:"東京",r:"とうきょう",m:"東京"},{t:"まで",r:"まで",m:"到…為止"},{t:"いくら",r:"いくら",m:"多少錢"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_ticket_1", cn:"顧客問：有自由座嗎？", note:null, jp:"自由席はありますか？", romaji:"Jiyūseki wa arimasu ka?", en:"Is there a non-reserved car?", segs:[{t:"自由席",r:"じゆうせき",m:"自由座"},{t:"は",r:"は",m:"助詞"},{t:"あります",r:"あります",m:"有"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_ticket_2", cn:"顧客問：第幾號列車？", note:null, jp:"何番の電車ですか？", romaji:"Nan-ban no densha desu ka?", en:"Which train number?", segs:[{t:"何番",r:"なんばん",m:"幾號"},{t:"の",r:"の",m:"助詞（的）"},{t:"電車",r:"でんしゃ",m:"電車"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_ticket_3", cn:"店員答：12號（車次號碼通常逐字唸，跟12,000円這種金額念法不同）", note:null, jp:"12号です。", romaji:"Jū-ni-gō desu.", en:"Train number 12", segs:[{t:"12号",r:"じゅうにごう",m:"12號（下方可調整號碼）"},{t:"です",r:"です",m:"禮貌句尾"}] },
   ]},
-  { title:'🎟️ 景點／門票', note:'人數、票價與開放時間', items:[
-    { id:"qa_ticket2_0", cn:"顧客：兩位成人，麻煩了", note:null, jp:"大人二人お願いします。", romaji:"Otona futari onegaishimasu.", en:"Two adults, please" },
-    { id:"qa_ticket2_1", cn:"顧客問：票多少錢？", note:null, jp:"チケットはいくらですか？", romaji:"Chiketto wa ikura desu ka?", en:"How much are tickets?" },
-    { id:"qa_ticket2_2", cn:"店員答：一位1,200日圓", note:null, jp:"一人1200円です。", romaji:"Hitori sen-ni-hyaku-en desu.", en:"1,200 yen per person" },
-    { id:"qa_ticket2_3", cn:"顧客問：開放到幾點？", note:null, jp:"何時までですか？", romaji:"Nan-ji made desu ka?", en:"Until what time?" },
+  { title:"🎟️ 景點／門票", note:"人數、票價與開放時間", items:[
+    { id:"qa_ticket2_0", cn:"顧客：兩位成人，麻煩了", note:null, jp:"大人二人お願いします。", romaji:"Otona futari onegaishimasu.", en:"Two adults, please", segs:[{t:"大人",r:"おとな",m:"成人"},{t:"二人",r:"ふたり",m:"兩位（下方可調整人數）"},{t:"お願いします",r:"おねがいします",m:"麻煩了"}] },
+    { id:"qa_ticket2_1", cn:"顧客問：票多少錢？", note:null, jp:"チケットはいくらですか？", romaji:"Chiketto wa ikura desu ka?", en:"How much are tickets?", segs:[{t:"チケット",r:"ちけっと",m:"票"},{t:"は",r:"は",m:"助詞"},{t:"いくら",r:"いくら",m:"多少錢"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_ticket2_2", cn:"店員答：一位1,200日圓", note:null, jp:"一人1200円です。", romaji:"Hitori sen-ni-hyaku-en desu.", en:"1,200 yen per person", segs:[{t:"一人",r:"ひとり",m:"一位"},{t:"1200円",r:"せんにひゃくえん",m:"1200日圓（下方可調整金額）"},{t:"です",r:"です",m:"禮貌句尾"}] },
+    { id:"qa_ticket2_3", cn:"顧客問：開放到幾點？", note:null, jp:"何時までですか？", romaji:"Nan-ji made desu ka?", en:"Until what time?", segs:[{t:"何時",r:"なんじ",m:"幾點"},{t:"まで",r:"まで",m:"到…為止"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
   ]},
-  { title:'👕 購物服飾店', note:'尺寸與試穿', items:[
-    { id:"qa_clothes_0", cn:"顧客問：這個多少錢？", note:null, jp:"これ、いくらですか？", romaji:"Kore, ikura desu ka?", en:"How much is this?" },
-    { id:"qa_clothes_1", cn:"顧客問：有M號嗎？", note:null, jp:"Mサイズはありますか？", romaji:"Emu saizu wa arimasu ka?", en:"Do you have a size M?" },
-    { id:"qa_clothes_2", cn:"店員答：有的", note:null, jp:"はい、あります。", romaji:"Hai, arimasu.", en:"Yes, we have it" },
-    { id:"qa_clothes_3", cn:"顧客問：可以試穿嗎？", note:null, jp:"試着できますか？", romaji:"Shichaku dekimasu ka?", en:"Can I try this on?" },
-    { id:"qa_clothes_4", cn:"店員答：可以", note:null, jp:"はい、できます。", romaji:"Hai, dekimasu.", en:"Yes, you can" },
+  { title:"👕 購物服飾店", note:"尺寸與試穿", items:[
+    { id:"qa_clothes_0", cn:"顧客問：這個多少錢？", note:null, jp:"これ、いくらですか？", romaji:"Kore, ikura desu ka?", en:"How much is this?", segs:[{t:"これ",r:"これ",m:"這個"},{t:"いくら",r:"いくら",m:"多少錢"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_clothes_1", cn:"顧客問：有M號嗎？", note:null, jp:"Mサイズはありますか？", romaji:"Emu saizu wa arimasu ka?", en:"Do you have a size M?", segs:[{t:"Mサイズ",r:"えむさいず",m:"M號"},{t:"は",r:"は",m:"助詞"},{t:"あります",r:"あります",m:"有"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_clothes_2", cn:"店員答：有的", note:null, jp:"はい、あります。", romaji:"Hai, arimasu.", en:"Yes, we have it", segs:[{t:"はい",r:"はい",m:"是／有"},{t:"あります",r:"あります",m:"有"}] },
+    { id:"qa_clothes_3", cn:"顧客問：可以試穿嗎？", note:null, jp:"試着できますか？", romaji:"Shichaku dekimasu ka?", en:"Can I try this on?", segs:[{t:"試着",r:"しちゃく",m:"試穿"},{t:"できます",r:"できます",m:"可以"},{t:"か",r:"か",m:"嗎"}] },
+    { id:"qa_clothes_4", cn:"店員答：可以", note:null, jp:"はい、できます。", romaji:"Hai, dekimasu.", en:"Yes, you can", segs:[{t:"はい",r:"はい",m:"是／可以"},{t:"できます",r:"できます",m:"可以"}] },
   ]},
-  { title:'🛒 超市', note:'價格、數量與重量（グラム＝公克）', items:[
-    { id:"qa_market_0", cn:"顧客問：兩個多少錢？", note:null, jp:"二つでいくらですか？", romaji:"Futatsu de ikura desu ka?", en:"How much for two?" },
-    { id:"qa_market_1", cn:"顧客問：這是多少日圓？", note:null, jp:"これは何円ですか？", romaji:"Kore wa nan-en desu ka?", en:"How many yen is this?" },
-    { id:"qa_market_2", cn:"標示：100公克", note:null, jp:"100グラム", romaji:"Hyaku guramu", en:"100 grams" },
-    { id:"qa_market_3", cn:"標示：500公克", note:null, jp:"500グラム", romaji:"Go-hyaku guramu", en:"500 grams" },
+  { title:"🛒 超市", note:"價格、數量與重量（グラム＝公克）", items:[
+    { id:"qa_market_0", cn:"顧客問：兩個多少錢？", note:null, jp:"二つでいくらですか？", romaji:"Futatsu de ikura desu ka?", en:"How much for two?", segs:[{t:"二つ",r:"ふたつ",m:"兩個（下方可調整數量）"},{t:"で",r:"で",m:"助詞"},{t:"いくら",r:"いくら",m:"多少錢"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_market_1", cn:"顧客問：這是多少日圓？", note:null, jp:"これは何円ですか？", romaji:"Kore wa nan-en desu ka?", en:"How many yen is this?", segs:[{t:"これ",r:"これ",m:"這個"},{t:"は",r:"は",m:"助詞"},{t:"何円",r:"なんえん",m:"多少日圓"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_market_2", cn:"標示：100公克", note:null, jp:"100グラム", romaji:"Hyaku guramu", en:"100 grams", segs:[{t:"100グラム",r:"ひゃくぐらむ",m:"100公克（下方可調整重量）"}] },
+    { id:"qa_market_3", cn:"標示：500公克", note:null, jp:"500グラム", romaji:"Go-hyaku guramu", en:"500 grams", segs:[{t:"500グラム",r:"ごひゃくぐらむ",m:"500公克（下方可調整重量）"}] },
   ]},
-  { title:'🚕 計程車／交通', note:'車資詢問', items:[
-    { id:"qa_taxi_0", cn:"顧客問：到大阪車站多少錢？", note:null, jp:"大阪駅までいくらですか？", romaji:"Ōsaka-eki made ikura desu ka?", en:"How much to Osaka Station?" },
-    { id:"qa_taxi_1", cn:"抵達時顧客問：多少錢？", note:null, jp:"いくらですか？", romaji:"Ikura desu ka?", en:"How much is it?" },
-    { id:"qa_taxi_2", cn:"司機答：2,300日圓", note:null, jp:"2300円です。", romaji:"Ni-sen san-byaku-en desu.", en:"It's 2,300 yen" },
+  { title:"🚕 計程車／交通", note:"車資詢問", items:[
+    { id:"qa_taxi_0", cn:"顧客問：到大阪車站多少錢？", note:null, jp:"大阪駅までいくらですか？", romaji:"Ōsaka-eki made ikura desu ka?", en:"How much to Osaka Station?", segs:[{t:"大阪駅",r:"おおさかえき",m:"大阪車站"},{t:"まで",r:"まで",m:"到…為止"},{t:"いくら",r:"いくら",m:"多少錢"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_taxi_1", cn:"抵達時顧客問：多少錢？", note:null, jp:"いくらですか？", romaji:"Ikura desu ka?", en:"How much is it?", segs:[{t:"いくら",r:"いくら",m:"多少錢"},{t:"ですか",r:"ですか",m:"是…嗎？"}] },
+    { id:"qa_taxi_2", cn:"司機答：2,300日圓", note:null, jp:"2300円です。", romaji:"Ni-sen san-byaku-en desu.", en:"It's 2,300 yen", segs:[{t:"2300円",r:"にせんさんびゃくえん",m:"2300日圓（下方可調整金額）"},{t:"です",r:"です",m:"禮貌句尾"}] },
   ]},
-  { title:'🔢 排隊／取號機', note:'號碼牌與廣播叫號', items:[
-    { id:"qa_queue_0", cn:"你拿到：127號", note:null, jp:"127番", romaji:"Hyaku ni-jū nana-ban", en:"Number 127" },
-    { id:"qa_queue_1", cn:"廣播：127號的客人", note:null, jp:"127番のお客様。", romaji:"Hyaku ni-jū nana-ban no okyaku-sama.", en:"Customer number 127" },
+  { title:"🔢 排隊／取號機", note:"號碼牌與廣播叫號", items:[
+    { id:"qa_queue_0", cn:"你拿到：127號", note:null, jp:"127番", romaji:"Hyaku ni-jū nana-ban", en:"Number 127", segs:[{t:"127番",r:"ひゃくにじゅうななばん",m:"127號（下方可調整號碼）"}] },
+    { id:"qa_queue_1", cn:"廣播：127號的客人", note:null, jp:"127番のお客様。", romaji:"Hyaku ni-jū nana-ban no okyaku-sama.", en:"Customer number 127", segs:[{t:"127番",r:"ひゃくにじゅうななばん",m:"127號（下方可調整號碼）"},{t:"の",r:"の",m:"助詞（的）"},{t:"お客様",r:"おきゃくさま",m:"客人（敬語）"}] },
   ]},
-  { title:'📱 電話／聯絡資料', note:'電話號碼要一個數字一個一個唸，跟金額、房號完全不一樣；想查任意電話號碼可以到「電話號碼」主題頁使用查詢工具', items:[
-    { id:"qa_phone_0", cn:"範例：090-1234-5678 要拆成三組，一個數字一個數字唸", note:'不要把090當成「九十」來念', jp:"ぜろ・きゅう・ぜろ　いち・に・さん・よん　ご・ろく・なな・はち", romaji:"Zero-kyū-zero, ichi-ni-san-yon, go-roku-nana-hachi", en:"090-1234-5678, read digit by digit" },
+  { title:"📱 電話／聯絡資料", note:"電話號碼要一個數字一個一個唸，跟金額、房號完全不一樣；想查任意電話號碼可以到「電話號碼」主題頁使用查詢工具", items:[
+    { id:"qa_phone_0", cn:"範例：090-1234-5678 要拆成三組，一個數字一個數字唸", note:"不要把090當成「九十」來念", jp:"ぜろ・きゅう・ぜろ　いち・に・さん・よん　ご・ろく・なな・はち", romaji:"Zero-kyū-zero, ichi-ni-san-yon, go-roku-nana-hachi", en:"090-1234-5678, read digit by digit" },
   ]},
 ];
 
