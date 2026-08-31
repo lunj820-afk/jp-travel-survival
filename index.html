@@ -63,6 +63,13 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 .catchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
 .chip{background:var(--chip);padding:7px 13px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid var(--border);}
 .chip.active{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+.chipsRow{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
+.chipsRow .chip{flex:0 0 auto;white-space:nowrap;}
+.catNavBar{display:flex;gap:8px;margin-bottom:10px;align-items:center;}
+.catNavBar .chipsRow{margin-bottom:0;flex:1;min-width:0;}
+.catNavBar select{flex:0 0 auto;max-width:38%;padding:8px 6px;border-radius:10px;border:1px solid var(--border);background:var(--chip);color:var(--text);font-size:12px;}
+.searchBox{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;margin-bottom:10px;}
+.jpSpeakable{cursor:pointer;}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;}
 .overlay.show{display:flex;}
 .sheet{background:var(--card);width:100%;border-radius:20px 20px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom));max-height:82vh;overflow-y:auto;}
@@ -738,6 +745,13 @@ const FOOD_CATEGORIES = [
     {jp:'半熟卵', reading:'はんじゅくたまご', cn:'溏心蛋', counter:'ko'},
     {jp:'コーラ', reading:'こーら', cn:'可樂', counter:'hai'},
     {jp:'替え玉', reading:'かえだま', cn:'加麵', counter:'ko'},
+    {header:'客製化選項（麵硬度／湯頭，店員常會問，直接回答不用套「をください」）'},
+    {jp:'硬め', reading:'かため', cn:'麵偏硬'},
+    {jp:'普通', reading:'ふつう', cn:'正常'},
+    {jp:'軟らかめ', reading:'やわらかめ', cn:'麵偏軟'},
+    {jp:'味濃いめ', reading:'あじこいめ', cn:'湯頭偏濃'},
+    {jp:'あっさり', reading:'あっさり', cn:'清淡'},
+    {jp:'こってり', reading:'こってり', cn:'濃郁／濃厚'},
   ]},
 
   { title:'🥩④ 燒肉（焼肉・やきにく）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
@@ -973,6 +987,13 @@ const FOOD_CATEGORIES = [
     {jp:'おにぎり', reading:'おにぎり', cn:'飯糰', counter:'ko'},
     {jp:'味噌汁', reading:'みそしる', cn:'味噌湯', counter:'hai'},
     {jp:'焼き魚', reading:'やきざかな', cn:'烤魚', counter:'tsu'},
+    {header:'麵包店單品（パン屋・ぱんや，日本的麵包店非常強，早餐或點心都會遇到）'},
+    {jp:'メロンパン', reading:'めろんぱん', cn:'蜜瓜麵包', counter:'ko'},
+    {jp:'カレーパン', reading:'かれーぱん', cn:'咖哩麵包', counter:'ko'},
+    {jp:'あんパン', reading:'あんぱん', cn:'紅豆麵包', counter:'ko'},
+    {jp:'クリームパン', reading:'くりーむぱん', cn:'克林姆/奶油麵包', counter:'ko'},
+    {jp:'食パン', reading:'しょくぱん', cn:'吐司', counter:'mai', cnUnit:'片'},
+    {jp:'明太子フランス', reading:'めんたいこふらんす', cn:'明太子法國麵包', counter:'ko'},
   ]},
 
   { title:'🍙⑰ 飯糰（おにぎり）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
@@ -1018,6 +1039,11 @@ const FOOD_CATEGORIES = [
     {jp:'クレープ', reading:'くれーぷ', cn:'可麗餅', counter:'ko'},
     {jp:'パンケーキ', reading:'ぱんけーき', cn:'鬆餅', counter:'tsu'},
     {jp:'ワッフル', reading:'わっふる', cn:'格子鬆餅', counter:'ko'},
+    {header:'冰淇淋／冰品（アイス・かき氷）'},
+    {jp:'ソフトクリーム', reading:'そふとくりーむ', cn:'霜淇淋', counter:'ko'},
+    {jp:'かき氷', reading:'かきごおり', cn:'剉冰', counter:'ko'},
+    {jp:'ジェラート', reading:'じぇらーと', cn:'義式冰淇淋', counter:'ko'},
+    {jp:'抹茶ソフト', reading:'まっちゃそふと', cn:'抹茶霜淇淋', counter:'ko'},
   ]},
 
   { title:'🍵⑳ 日式甜點（和菓子）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
@@ -1052,6 +1078,10 @@ const FOOD_CATEGORIES = [
     {jp:'唐揚げ', reading:'からあげ', cn:'炸雞', counter:'ko'},
     {jp:'串カツ', reading:'くしかつ', cn:'炸串', counter:'hon', cnUnit:'支'},
     {jp:'イカ焼き', reading:'いかやき', cn:'烤花枝', counter:'tsu'},
+    {header:'肉鋪熟食（精肉店・せいにくてん，商店街常見的現炸小吃）'},
+    {jp:'メンチカツ', reading:'めんちかつ', cn:'炸肉餅', counter:'ko'},
+    {jp:'ハムカツ', reading:'はむかつ', cn:'炸火腿排', counter:'ko'},
+    {jp:'コロッケ', reading:'ころっけ', cn:'牛肉可樂餅', counter:'ko'},
   ]},
 
   { title:'🥪㉒ 便利商店（コンビニ）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
@@ -1122,6 +1152,11 @@ const FOOD_CATEGORIES = [
     {jp:'グレープフルーツサワー', reading:'ぐれーぷふるーつさわー', cn:'葡萄柚沙瓦', counter:'hai'},
     {jp:'カクテル', reading:'かくてる', cn:'雞尾酒', counter:'hai'},
     {jp:'ワイン', reading:'わいん', cn:'葡萄酒', counter:'hai'},
+    {header:'特調酒（チューハイ・サワー，除了啤酒／Highball外最常出現的類型）'},
+    {jp:'ウーロンハイ', reading:'うーろんはい', cn:'烏龍嗨（烏龍茶調酒）', counter:'hai'},
+    {jp:'緑茶ハイ', reading:'りょくちゃはい', cn:'綠茶調酒', counter:'hai'},
+    {jp:'カルピスサワー', reading:'かるぴすさわー', cn:'可爾必思沙瓦', counter:'hai'},
+    {jp:'プレーンサワー', reading:'ぷれーんさわー', cn:'原味沙瓦', counter:'hai'},
   ]},
 
   { title:'🥢㉕ 中華料理', note:'日本的「中華」跟台灣熟悉的中華料理不完全一樣，旅遊也很常看到。我要＿＿＿。→ ＿＿＿をください。', items:[
@@ -1249,44 +1284,6 @@ const FOOD_CATEGORIES = [
     {header:'仙台'},
     {jp:'牛タン', reading:'ぎゅうたん', cn:'牛舌', counter:'tsu'},
     {jp:'ずんだ餅', reading:'ずんだもち', cn:'毛豆泥麻糬', counter:'ko'},
-  ]},
-
-  { title:'🍞 麵包店（パン屋・ぱんや）', note:'日本的麵包店非常強，去日本買早餐或點心一定會遇到。我要＿＿＿。→ ＿＿＿をください。', items:[
-    {jp:'メロンパン', reading:'めろんぱん', cn:'蜜瓜麵包', counter:'ko'},
-    {jp:'カレーパン', reading:'かれーぱん', cn:'咖哩麵包', counter:'ko'},
-    {jp:'あんパン', reading:'あんぱん', cn:'紅豆麵包', counter:'ko'},
-    {jp:'クリームパン', reading:'くりーむぱん', cn:'克林姆/奶油麵包', counter:'ko'},
-    {jp:'食パン', reading:'しょくぱん', cn:'吐司', counter:'mai', cnUnit:'片'},
-    {jp:'明太子フランス', reading:'めんたいこふらんす', cn:'明太子法國麵包', counter:'ko'},
-  ]},
-
-  { title:'🍨 冰淇淋／冰品（アイス・かき氷）', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
-    {jp:'ソフトクリーム', reading:'そふとくりーむ', cn:'霜淇淋', counter:'ko'},
-    {jp:'かき氷', reading:'かきごおり', cn:'剉冰', counter:'ko'},
-    {jp:'ジェラート', reading:'じぇらーと', cn:'義式冰淇淋', counter:'ko'},
-    {jp:'抹茶ソフト', reading:'まっちゃそふと', cn:'抹茶霜淇淋', counter:'ko'},
-  ]},
-
-  { title:'🍖 熟食／肉鋪小吃（精肉店・せいにくてん）', note:'上野、商店街很常買到的現炸小吃。我要＿＿＿。→ ＿＿＿をください。', items:[
-    {jp:'メンチカツ', reading:'めんちかつ', cn:'炸肉餅', counter:'ko'},
-    {jp:'ハムカツ', reading:'はむかつ', cn:'炸火腿排', counter:'ko'},
-    {jp:'コロッケ', reading:'ころっけ', cn:'牛肉可樂餅', counter:'ko'},
-  ]},
-
-  { title:'🍻 居酒屋特調酒類（チューハイ・サワー）', note:'居酒屋點酒時，除了啤酒Highball外最常出現的類型。我要＿＿＿。→ ＿＿＿をください。', items:[
-    {jp:'ウーロンハイ', reading:'うーろんはい', cn:'烏龍嗨（烏龍茶調酒）', counter:'hai'},
-    {jp:'緑茶ハイ', reading:'りょくちゃはい', cn:'綠茶調酒', counter:'hai'},
-    {jp:'カルピスサワー', reading:'かるぴすさわー', cn:'可爾必思沙瓦', counter:'hai'},
-    {jp:'プレーンサワー', reading:'ぷれーんさわー', cn:'原味沙瓦', counter:'hai'},
-  ]},
-
-  { title:'🍥 拉麵進階「客製化選項」（麵硬度／湯頭）', note:'在拉麵店（特別是博多豚骨或家系拉麵）店員常會問的選項，這幾個不用套「をください」，直接回答就好。', items:[
-    {jp:'硬め', reading:'かため', cn:'麵偏硬'},
-    {jp:'普通', reading:'ふつう', cn:'正常'},
-    {jp:'軟らかめ', reading:'やわらかめ', cn:'麵偏軟'},
-    {jp:'味濃いめ', reading:'あじこいめ', cn:'湯頭偏濃'},
-    {jp:'あっさり', reading:'あっさり', cn:'清淡'},
-    {jp:'こってり', reading:'こってり', cn:'濃郁／濃厚'},
   ]},
 ];
 
@@ -2307,7 +2304,7 @@ function renderSceneItems(sceneId, container){
   const list = container || document.getElementById('learnList');
   list.innerHTML = items.map((it,i)=>`
     <div class="card" data-idx="${i}">
-      <div class="jp">${rb(it.jp)} <span style="font-size:12px;color:var(--accent2);">${it.cn}</span></div>
+      <div class="jp jpSpeakable" data-jpspeak="${i}">${rb(it.jp)} <span style="font-size:12px;color:var(--accent2);">${it.cn}</span></div>
       <div class="hira">${it.reading}</div>
       <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
         <span style="font-size:12px;color:var(--sub);">數量：</span>
@@ -2345,57 +2342,79 @@ function renderSceneItems(sceneId, container){
       speak(full, Number(btn.dataset.rate));
     });
   });
+  list.querySelectorAll('[data-jpspeak]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      speak(items[Number(el.dataset.jpspeak)].jp, 1.0);
+    });
+  });
+}
+
+/* ---- 橫向分類導覽：單排捲動 chips ＋ 下拉選單（給分類很多的頁面用）---- */
+function mountChipRowNav(chipsEl, selectEl, titles, activeIdx, onSelect){
+  chipsEl.innerHTML = `<div class="chip${activeIdx===-1?' active':''}" data-idx="-1">全部</div>` +
+    titles.map((t,i)=>`<div class="chip${i===activeIdx?' active':''}" data-idx="${i}">${t}</div>`).join('');
+  selectEl.innerHTML = `<option value="-1">📂 跳到分類…</option>` +
+    titles.map((t,i)=>`<option value="${i}">${t}</option>`).join('');
+  selectEl.value = String(activeIdx);
+  function setActive(idx){
+    chipsEl.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', Number(c.dataset.idx)===idx));
+    selectEl.value = String(idx);
+  }
+  chipsEl.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const idx = Number(chip.dataset.idx);
+      setActive(idx);
+      onSelect(idx);
+      chip.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+    });
+  });
+  selectEl.addEventListener('change', ()=>{
+    const idx = Number(selectEl.value);
+    setActive(idx);
+    onSelect(idx);
+    const activeChip = chipsEl.querySelector(`.chip[data-idx="${idx}"]`);
+    if(activeChip) activeChip.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+  });
+  return {setActive};
 }
 
 /* ---- 日本美食日文大全：橫向分類瀏覽 ---- */
 function foodItemId(catIdx, itemIdx){ return `food_${catIdx}_${itemIdx}`; }
 
-function renderFoodCategoryList(idx){
-  const inner = document.getElementById('foodListInner');
-  const cats = idx===-1 ? FOOD_CATEGORIES.map((c,i)=>({c,i})) : [{c:FOOD_CATEGORIES[idx], i:idx}];
-  inner.innerHTML = cats.map(({c,i})=>`
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${c.title}</h3>
-    ${c.note?`<div class="section-intro">${c.note}</div>`:''}
-    ${c.items.map((it,j)=>{
-      if(it.header){
-        return `<h4 style="font-size:13px;color:var(--accent2);margin:14px 0 6px;">${it.header}</h4>`;
-      }
-      const id = foodItemId(i,j);
-      if(it.counter){
-        return `
-        <div class="card" data-fooditem="${id}">
-          <div class="jp">${rb(it.jp)} <span style="font-size:12px;color:var(--accent2);">${it.cn}</span></div>
-          <div class="hira">${it.reading}</div>
-          <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
-            <span style="font-size:12px;color:var(--sub);">數量：</span>
-            <input type="number" min="1" max="20" value="1" data-fqty="${id}" style="width:60px;padding:6px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;">
-          </div>
-          <div class="hira" data-fout="${id}" style="margin-top:8px;font-size:16px;color:var(--text);font-weight:700;"></div>
-          <div class="cn" data-foutcn="${id}"></div>
-          <div class="actions">
-            <button data-frate="0.5" data-fsay="${id}">🐢 慢速 0.5x</button>
-            <button data-frate="0.65" data-fsay="${id}">🐢 慢速 0.65x</button>
-            <button data-frate="1.0" data-fsay="${id}">▶️ 正常</button>
-          </div>
-        </div>`;
-      }
-      return `
-        <div class="card" data-fooditem="${id}">
-          <div class="jp">${rb(it.jp)}</div>
-          <div class="hira">${it.reading}</div>
-          <div class="cn">${it.cn}</div>
-          <div class="actions">
-            <button data-frate="0.5" data-fsayplain="${id}">🐢 慢速 0.5x</button>
-            <button data-frate="0.65" data-fsayplain="${id}">🐢 慢速 0.65x</button>
-            <button data-frate="1.0" data-fsayplain="${id}">▶️ 正常</button>
-          </div>
-        </div>`;
-    }).join('')}
-  `).join('');
+function foodCardHTML(id, it){
+  if(it.counter){
+    return `
+    <div class="card" data-fooditem="${id}">
+      <div class="jp jpSpeakable" data-jpspeak="${id}">${rb(it.jp)} <span style="font-size:12px;color:var(--accent2);">${it.cn}</span></div>
+      <div class="hira">${it.reading}</div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:12px;color:var(--sub);">數量：</span>
+        <input type="number" min="1" max="20" value="1" data-fqty="${id}" style="width:60px;padding:6px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;">
+      </div>
+      <div class="hira" data-fout="${id}" style="margin-top:8px;font-size:16px;color:var(--text);font-weight:700;"></div>
+      <div class="cn" data-foutcn="${id}"></div>
+      <div class="actions">
+        <button data-frate="0.5" data-fsay="${id}">🐢 慢速 0.5x</button>
+        <button data-frate="0.65" data-fsay="${id}">🐢 慢速 0.65x</button>
+        <button data-frate="1.0" data-fsay="${id}">▶️ 正常</button>
+      </div>
+    </div>`;
+  }
+  return `
+    <div class="card" data-fooditem="${id}">
+      <div class="jp jpSpeakable" data-jpspeak="${id}">${rb(it.jp)}</div>
+      <div class="hira">${it.reading}</div>
+      <div class="cn">${it.cn}</div>
+      <div class="actions">
+        <button data-frate="0.5" data-fsayplain="${id}">🐢 慢速 0.5x</button>
+        <button data-frate="0.65" data-fsayplain="${id}">🐢 慢速 0.65x</button>
+        <button data-frate="1.0" data-fsayplain="${id}">▶️ 正常</button>
+      </div>
+    </div>`;
+}
 
-  const idMap = {};
-  cats.forEach(({c,i})=>{ c.items.forEach((it,j)=>{ if(!it.header) idMap[foodItemId(i,j)] = it; }); });
-
+/* 綁定卡片內的互動（數量、發音按鈕、點單字直接發音），回傳測驗題庫 */
+function wireFoodCards(inner, idMap){
   function updateSentence(id){
     const it = idMap[id];
     const input = inner.querySelector(`[data-fqty="${id}"]`);
@@ -2424,117 +2443,226 @@ function renderFoodCategoryList(idx){
       speak(idMap[id].jp, Number(btn.dataset.frate));
     });
   });
+  inner.querySelectorAll('[data-jpspeak]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      speak(idMap[el.dataset.jpspeak].jp, 1.0);
+    });
+  });
+  return Object.keys(idMap).map(id=>({id, display: idMap[id].jp, hira: idMap[id].reading}));
+}
 
-  const pool = Object.keys(idMap).map(id=>({id, display: idMap[id].jp, hira: idMap[id].reading}));
+function renderFoodCategoryList(idx){
+  FOOD_LAST_IDX = idx;
+  const inner = document.getElementById('foodListInner');
+  const cats = idx===-1 ? FOOD_CATEGORIES.map((c,i)=>({c,i})) : [{c:FOOD_CATEGORIES[idx], i:idx}];
+  inner.innerHTML = cats.map(({c,i})=>`
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${c.title}</h3>
+    ${c.note?`<div class="section-intro">${c.note}</div>`:''}
+    ${c.items.map((it,j)=>{
+      if(it.header){
+        return `<h4 style="font-size:13px;color:var(--accent2);margin:14px 0 6px;">${it.header}</h4>`;
+      }
+      return foodCardHTML(foodItemId(i,j), it);
+    }).join('')}
+  `).join('');
+
+  const idMap = {};
+  cats.forEach(({c,i})=>{ c.items.forEach((it,j)=>{ if(!it.header) idMap[foodItemId(i,j)] = it; }); });
+  const pool = wireFoodCards(inner, idMap);
   renderTopicQuizToggle(pool, idx===-1 ? '全部日本美食單字' : FOOD_CATEGORIES[idx].title);
 }
+
+function renderFoodSearch(query){
+  const inner = document.getElementById('foodListInner');
+  const q = query.trim().toLowerCase();
+  const results = [];
+  FOOD_CATEGORIES.forEach((c,i)=>{
+    c.items.forEach((it,j)=>{
+      if(it.header) return;
+      const hay = (it.jp+' '+it.reading+' '+it.cn).toLowerCase();
+      if(hay.includes(q)) results.push({id:foodItemId(i,j), it, catTitle:c.title});
+    });
+  });
+  if(!results.length){
+    inner.innerHTML = `<div class="emptyState">找不到符合「${query}」的美食單字，換個關鍵字試試。</div>`;
+    document.getElementById('topicQuizArea').innerHTML = '';
+    return;
+  }
+  inner.innerHTML = `<div class="section-intro">🔍 找到 ${results.length} 筆符合「${query}」的結果</div>` +
+    results.map(r=>foodCardHTML(r.id, r.it)).join('');
+  const idMap = {};
+  results.forEach(r=>{ idMap[r.id] = r.it; });
+  const pool = wireFoodCards(inner, idMap);
+  renderTopicQuizToggle(pool, `搜尋結果：${query}`);
+}
+
+let FOOD_LAST_IDX = 0;
 
 function openFoodBrowser(){
   switchView('learn');
   const oldRelated = document.getElementById('relatedQAArea');
   if(oldRelated) oldRelated.remove();
   document.getElementById('learnTitle').textContent = '🍽️ 日本美食日文大全';
-  document.getElementById('learnIntro').textContent = '橫向點分類切換，每一類都可以套「＿＿＿をください」＝「請給我＿＿＿」直接代入點餐。輸入數量，念法會自動改變（個/本/枚/杯量詞念法都不一樣）。';
+  document.getElementById('learnIntro').textContent = '每一類都可以套「＿＿＿をください」＝「請給我＿＿＿」直接代入點餐；輸入數量，念法會自動改變（個/本/枚/杯量詞念法都不一樣）。點單字本身可以直接聽發音。';
   document.getElementById('phoneToolWrap').innerHTML = '';
   document.getElementById('phoneToolWrap').style.display = 'none';
   document.getElementById('topicQuizArea').innerHTML = '';
   const list = document.getElementById('learnList');
-  list.innerHTML = `<div class="catchips" id="foodChips">
-      <div class="chip" data-idx="-1">全部</div>
-      ${FOOD_CATEGORIES.map((c,i)=>`<div class="chip${i===0?' active':''}" data-idx="${i}">${c.title.replace(/[（(][^）)]*[）)]/g,'').trim()}</div>`).join('')}
+  list.innerHTML = `
+    <input type="text" id="foodSearch" class="searchBox" placeholder="🔍 搜尋美食單字（中文／日文／假名，例如：拉麵、鮭魚、sushi）">
+    <div class="catNavBar">
+      <div class="catchips chipsRow" id="foodChips"></div>
+      <select id="foodCatSelect"></select>
     </div>
     <div id="foodListInner"></div>`;
-  document.getElementById('foodChips').querySelectorAll('.chip').forEach(chip=>{
-    chip.addEventListener('click', ()=>{
+  const titles = FOOD_CATEGORIES.map(c=>c.title.replace(/[（(][^）)]*[）)]/g,'').trim());
+  mountChipRowNav(document.getElementById('foodChips'), document.getElementById('foodCatSelect'), titles, 0, (idx)=>{
+    document.getElementById('foodSearch').value = '';
+    renderFoodCategoryList(idx);
+  });
+  document.getElementById('foodSearch').addEventListener('input', (e)=>{
+    const q = e.target.value;
+    if(q.trim()){
       document.querySelectorAll('#foodChips .chip').forEach(c=>c.classList.remove('active'));
-      chip.classList.add('active');
-      renderFoodCategoryList(Number(chip.dataset.idx));
-    });
+      renderFoodSearch(q);
+    } else {
+      renderFoodCategoryList(FOOD_LAST_IDX);
+      document.querySelectorAll('#foodChips .chip').forEach(c=>c.classList.toggle('active', Number(c.dataset.idx)===FOOD_LAST_IDX));
+      document.getElementById('foodCatSelect').value = String(FOOD_LAST_IDX);
+    }
   });
   renderFoodCategoryList(0);
 }
 
 /* ---- 常用短句／行程專屬瀏覽 ---- */
+function phraseCardHTML(it){
+  const counters = findCounters(it.jp);
+  const initialJp = counters.length ? rebuildPhraseWithCounters(it.jp, counters, counters.map(m=>m.n)) : it.jp;
+  return `
+    <div class="card" data-item="${it.id}">
+      <div class="jp jpSpeakable" data-jpline="${it.id}">${rb(initialJp)}</div>
+      <div class="hira">${it.romaji}</div>
+      <div class="cn" data-cnline="${it.id}">${counters.length?rebuildCnWithCounts(it.cn, counters.map(m=>m.n)):it.cn}${it.note?' · '+it.note:''}</div>
+      <div class="cn" style="color:var(--sub);">${it.en}</div>
+      ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-itemid="${it.id}" data-ci="${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
+      </div>` : ''}
+      <div class="actions">
+        <button data-rate="0.5" data-say="${it.id}">🐢 慢速 0.5x</button>
+        <button data-rate="0.65" data-say="${it.id}">🐢 慢速 0.65x</button>
+        <button data-rate="1.0" data-say="${it.id}">▶️ 正常</button>
+      </div>
+    </div>`;
+}
+
+/* 綁定短句卡片互動（數量、發音按鈕、點句子直接發音），回傳測驗題庫 */
+function wirePhraseCards(inner, flatItems){
+  const currentJp = {};
+  flatItems.forEach(it=>{
+    const counters = findCounters(it.jp);
+    currentJp[it.id] = counters.length ? rebuildPhraseWithCounters(it.jp, counters, counters.map(m=>m.n)) : it.jp;
+  });
+  inner.querySelectorAll('[data-itemid]').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      const itemId = inp.dataset.itemid;
+      const it = flatItems.find(x=>x.id===itemId);
+      const counters = findCounters(it.jp);
+      const values = counters.map((m,ci)=>{
+        const el = inner.querySelector(`[data-itemid="${itemId}"][data-ci="${ci}"]`);
+        return Number(el.value) || m.n;
+      });
+      const newJp = rebuildPhraseWithCounters(it.jp, counters, values);
+      currentJp[itemId] = newJp;
+      inner.querySelector(`[data-jpline="${itemId}"]`).innerHTML = rb(newJp);
+      const cnEl = inner.querySelector(`[data-cnline="${itemId}"]`);
+      if(cnEl) cnEl.textContent = rebuildCnWithCounts(it.cn, values) + (it.note?' · '+it.note:'');
+    });
+  });
+  inner.querySelectorAll('[data-say]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      speak(currentJp[btn.dataset.say], Number(btn.dataset.rate));
+    });
+  });
+  inner.querySelectorAll('[data-jpline]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      speak(currentJp[el.dataset.jpline], 1.0);
+    });
+  });
+  return flatItems.map(it=>({id:it.id, display:it.cn, hira:it.jp}));
+}
+
 function openPhraseBrowser(categories, title){
   switchView('learn');
   const oldRelated = document.getElementById('relatedQAArea');
   if(oldRelated) oldRelated.remove();
   document.getElementById('learnTitle').textContent = title;
-  document.getElementById('learnIntro').textContent = '點分類切換，點卡片下方按鈕直接發音（片假名上方會自動標注音）。';
+  document.getElementById('learnIntro').textContent = '點分類切換，點句子本身可直接聽發音，也可以點卡片下方按鈕聽慢速／正常速度。';
   document.getElementById('phoneToolWrap').innerHTML = '';
   document.getElementById('phoneToolWrap').style.display = 'none';
   document.getElementById('topicQuizArea').innerHTML = '';
   const list = document.getElementById('learnList');
-  list.innerHTML = `<div class="catchips" id="phraseChips">
-      <div class="chip active" data-idx="-1">全部</div>
-      ${categories.map((c,i)=>`<div class="chip" data-idx="${i}">${c.title.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯]\s*/,'')}</div>`).join('')}
+  list.innerHTML = `
+    <input type="text" id="phraseSearch" class="searchBox" placeholder="🔍 搜尋短句（中文／日文／羅馬拼音）">
+    <div class="catNavBar">
+      <div class="catchips chipsRow" id="phraseChips"></div>
+      <select id="phraseCatSelect"></select>
     </div>
     <div id="phraseListInner"></div>`;
+  let lastIdx = -1;
 
   function renderList(idx){
+    lastIdx = idx;
     const inner = document.getElementById('phraseListInner');
     const cats = idx===-1 ? categories : [categories[idx]];
     inner.innerHTML = cats.map(c=>`
       <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${c.title}</h3>
       ${c.note?`<div class="section-intro">${c.note}</div>`:''}
-      ${c.items.map(it=>{
-        const counters = findCounters(it.jp);
-        const initialJp = counters.length ? rebuildPhraseWithCounters(it.jp, counters, counters.map(m=>m.n)) : it.jp;
-        return `
-        <div class="card" data-item="${it.id}">
-          <div class="jp" data-jpline="${it.id}">${rb(initialJp)}</div>
-          <div class="hira">${it.romaji}</div>
-          <div class="cn" data-cnline="${it.id}">${counters.length?rebuildCnWithCounts(it.cn, counters.map(m=>m.n)):it.cn}${it.note?' · '+it.note:''}</div>
-          <div class="cn" style="color:var(--sub);">${it.en}</div>
-          ${counters.length ? `<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            ${counters.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${counters.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-itemid="${it.id}" data-ci="${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
-          </div>` : ''}
-          <div class="actions">
-            <button data-rate="0.5" data-say="${it.id}">🐢 慢速 0.5x</button>
-            <button data-rate="0.65" data-say="${it.id}">🐢 慢速 0.65x</button>
-            <button data-rate="1.0" data-say="${it.id}">▶️ 正常</button>
-          </div>
-        </div>
-      `;}).join('')}
+      ${c.items.map(it=>phraseCardHTML(it)).join('')}
     `).join('');
     const flatItems = cats.flatMap(c=>c.items);
-    const currentJp = {};
-    flatItems.forEach(it=>{
-      const counters = findCounters(it.jp);
-      currentJp[it.id] = counters.length ? rebuildPhraseWithCounters(it.jp, counters, counters.map(m=>m.n)) : it.jp;
-    });
-    inner.querySelectorAll('[data-itemid]').forEach(inp=>{
-      inp.addEventListener('input', ()=>{
-        const itemId = inp.dataset.itemid;
-        const it = flatItems.find(x=>x.id===itemId);
-        const counters = findCounters(it.jp);
-        const values = counters.map((m,ci)=>{
-          const el = inner.querySelector(`[data-itemid="${itemId}"][data-ci="${ci}"]`);
-          return Number(el.value) || m.n;
-        });
-        const newJp = rebuildPhraseWithCounters(it.jp, counters, values);
-        currentJp[itemId] = newJp;
-        inner.querySelector(`[data-jpline="${itemId}"]`).innerHTML = rb(newJp);
-        const cnEl = inner.querySelector(`[data-cnline="${itemId}"]`);
-        if(cnEl) cnEl.textContent = rebuildCnWithCounts(it.cn, values) + (it.note?' · '+it.note:'');
-      });
-    });
-    inner.querySelectorAll('[data-say]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        speak(currentJp[btn.dataset.say], Number(btn.dataset.rate));
-      });
-    });
+    const pool = wirePhraseCards(inner, flatItems);
     const quizLabel = idx===-1 ? '全部' : cats[0].title.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯]\s*/,'');
-    renderTopicQuizToggle(flatItems.map(it=>({id:it.id, display:it.cn, hira:it.jp})), quizLabel);
+    renderTopicQuizToggle(pool, quizLabel);
   }
-  renderList(-1);
-  document.getElementById('phraseChips').querySelectorAll('.chip').forEach(chip=>{
-    chip.addEventListener('click', ()=>{
-      document.querySelectorAll('#phraseChips .chip').forEach(c=>c.classList.remove('active'));
-      chip.classList.add('active');
-      renderList(Number(chip.dataset.idx));
+
+  function renderSearch(query){
+    const inner = document.getElementById('phraseListInner');
+    const q = query.trim().toLowerCase();
+    const results = [];
+    categories.forEach(c=>{
+      c.items.forEach(it=>{
+        const hay = (it.jp+' '+it.romaji+' '+it.cn+' '+(it.en||'')).toLowerCase();
+        if(hay.includes(q)) results.push(it);
+      });
     });
+    if(!results.length){
+      inner.innerHTML = `<div class="emptyState">找不到符合「${query}」的短句，換個關鍵字試試。</div>`;
+      document.getElementById('topicQuizArea').innerHTML = '';
+      return;
+    }
+    inner.innerHTML = `<div class="section-intro">🔍 找到 ${results.length} 筆符合「${query}」的結果</div>` +
+      results.map(it=>phraseCardHTML(it)).join('');
+    const pool = wirePhraseCards(inner, results);
+    renderTopicQuizToggle(pool, `搜尋結果：${query}`);
+  }
+
+  const titles = categories.map(c=>c.title.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯]\s*/,''));
+  mountChipRowNav(document.getElementById('phraseChips'), document.getElementById('phraseCatSelect'), titles, -1, (idx)=>{
+    document.getElementById('phraseSearch').value = '';
+    renderList(idx);
   });
+  document.getElementById('phraseSearch').addEventListener('input', (e)=>{
+    const q = e.target.value;
+    if(q.trim()){
+      document.querySelectorAll('#phraseChips .chip').forEach(c=>c.classList.remove('active'));
+      renderSearch(q);
+    } else {
+      renderList(lastIdx);
+      document.querySelectorAll('#phraseChips .chip').forEach(c=>c.classList.toggle('active', Number(c.dataset.idx)===lastIdx));
+      document.getElementById('phraseCatSelect').value = String(lastIdx);
+    }
+  });
+  renderList(-1);
 }
 
 function renderRoomLookupTool(){
