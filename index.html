@@ -473,6 +473,7 @@ function readingForCounter(counterType, n){
     case 'minute': return minuteReading(n);
     case 'gou': return numberToJapanese(n).reading + 'ごう';
     case 'ban': return numberToJapanese(n).reading + 'ばん';
+    case 'mei': return numberToJapanese(n).reading + 'めい';
     case 'guramu': return numberToJapanese(n).reading + 'グラム';
     default: return String(n);
   }
@@ -487,9 +488,9 @@ function findCounters(jp){
     if(!n) continue;
     matches.push({start:m.index, end:m.index+m[0].length, n, counterType:COUNTER_CHAR_TYPE[m[2]]});
   }
-  // 阿拉伯數字（含千分位逗號）＋円/号室/番線/時/分/号/番/グラム（情境問答常見寫法；較長的詞要排在較短的前面）
-  const ARABIC_SUFFIX_TYPE = {'円':'yen','号室':'goushitsu','番線':'bansen','時':'hour','分':'minute','人':'nin','枚':'mai','グラム':'guramu','号':'gou','番':'ban'};
-  const reArabic = /([0-9][0-9,]*)(号室|番線|グラム|円|時|分|人|枚|号|番)/g;
+  // 阿拉伯數字（含千分位逗號）＋円/号室/番線/時/分/号/番/名/グラム（情境問答常見寫法；較長的詞要排在較短的前面）
+  const ARABIC_SUFFIX_TYPE = {'円':'yen','号室':'goushitsu','番線':'bansen','時':'hour','分':'minute','人':'nin','枚':'mai','グラム':'guramu','号':'gou','番':'ban','名':'mei'};
+  const reArabic = /([0-9][0-9,]*)(号室|番線|グラム|円|時|分|人|枚|号|番|名)/g;
   while((m = reArabic.exec(jp))){
     const n = parseInt(m[1].replace(/,/g,''), 10);
     if(!n && n!==0) continue;
@@ -1252,46 +1253,52 @@ const FOOD_CATEGORIES = [
     {jp:'精進料理', reading:'しょうじんりょうり', cn:'精進料理', counter:'tsu'},
   ]},
 
-  { title:'🗾㉛ 日本各地特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
-    {header:'大阪'},
+  { title:'🗾 大阪特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
     {jp:'お好み焼き', reading:'おこのみやき', cn:'大阪燒', counter:'tsu'},
     {jp:'たこ焼き', reading:'たこやき', cn:'章魚燒', counter:'ko'},
     {jp:'串カツ', reading:'くしかつ', cn:'炸串', counter:'hon', cnUnit:'支'},
     {jp:'ねぎ焼き', reading:'ねぎやき', cn:'蔥燒', counter:'tsu'},
-    {header:'京都'},
+  ]},
+  { title:'🗾 京都特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
     {jp:'湯豆腐', reading:'ゆどうふ', cn:'湯豆腐', counter:'tsu'},
     {jp:'京料理', reading:'きょうりょうり', cn:'京料理', counter:'tsu'},
     {jp:'抹茶スイーツ', reading:'まっちゃすいーつ', cn:'抹茶甜點', counter:'ko'},
     {jp:'にしんそば', reading:'にしんそば', cn:'鯡魚蕎麥麵', counter:'tsu'},
-    {header:'北海道'},
+  ]},
+  { title:'🗾 北海道特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
     {jp:'海鮮丼', reading:'かいせんどん', cn:'海鮮丼', counter:'tsu'},
     {jp:'ジンギスカン', reading:'じんぎすかん', cn:'成吉思汗烤羊肉', counter:'tsu'},
     {jp:'スープカレー', reading:'すーぷかれー', cn:'湯咖哩', counter:'tsu'},
     {jp:'味噌ラーメン', reading:'みそらーめん', cn:'味噌拉麵', counter:'tsu'},
     {jp:'いくら丼', reading:'いくらどん', cn:'鮭魚卵丼', counter:'tsu'},
     {jp:'うに丼', reading:'うにどん', cn:'海膽丼', counter:'tsu'},
-    {header:'沖繩'},
+  ]},
+  { title:'🗾 沖繩特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
     {jp:'沖縄そば', reading:'おきなわそば', cn:'沖繩蕎麥麵', counter:'tsu'},
     {jp:'ゴーヤーチャンプルー', reading:'ごーやーちゃんぷるー', cn:'苦瓜炒蛋', counter:'tsu'},
     {jp:'ラフテー', reading:'らふてー', cn:'沖繩滷豬肉', counter:'tsu'},
     {jp:'海ぶどう', reading:'うみぶどう', cn:'海葡萄', counter:'tsu'},
     {jp:'タコライス', reading:'たこらいす', cn:'塔可飯', counter:'tsu'},
     {jp:'サーターアンダギー', reading:'さーたーあんだぎー', cn:'沖繩甜甜圈', counter:'ko'},
-    {header:'名古屋'},
+  ]},
+  { title:'🗾 名古屋特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
     {jp:'味噌カツ', reading:'みそかつ', cn:'味噌炸豬排', counter:'tsu'},
     {jp:'手羽先', reading:'てばさき', cn:'雞翅', counter:'hon', cnUnit:'隻'},
     {jp:'ひつまぶし', reading:'ひつまぶし', cn:'鰻魚飯三吃', counter:'tsu'},
     {jp:'きしめん', reading:'きしめん', cn:'名古屋扁烏龍麵', counter:'tsu'},
-    {header:'福岡'},
+  ]},
+  { title:'🗾 福岡特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
     {jp:'とんこつラーメン', reading:'とんこつらーめん', cn:'豚骨拉麵', counter:'tsu'},
     {jp:'もつ鍋', reading:'もつなべ', cn:'內臟鍋', counter:'tsu'},
     {jp:'明太子', reading:'めんたいこ', cn:'明太子', counter:'ko'},
     {jp:'水炊き', reading:'みずたき', cn:'水炊雞鍋', counter:'tsu'},
-    {header:'廣島'},
+  ]},
+  { title:'🗾 廣島特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
     {jp:'広島焼き', reading:'ひろしまやき', cn:'廣島燒', counter:'tsu'},
     {jp:'牡蠣', reading:'かき', cn:'牡蠣', counter:'ko'},
     {jp:'牡蠣料理', reading:'かきりょうり', cn:'牡蠣料理', counter:'tsu'},
-    {header:'仙台'},
+  ]},
+  { title:'🗾 仙台特色料理', note:'我要＿＿＿。→ ＿＿＿をください。', items:[
     {jp:'牛タン', reading:'ぎゅうたん', cn:'牛舌', counter:'tsu'},
     {jp:'ずんだ餅', reading:'ずんだもち', cn:'毛豆泥麻糬', counter:'ko'},
   ]},
@@ -1399,8 +1406,8 @@ const SKI_CATEGORIES = [
     {jp:"時", reading:"じ", cn:"～點鐘"},
     {jp:"分", reading:"ふん／ぷん", cn:"～分鐘"},
     {jp:"半", reading:"はん", cn:"半"},
-    {jp:"○時から", reading:"～じから", cn:"從～點開始"},
-    {jp:"○時まで", reading:"～じまで", cn:"到～點為止"},
+    {jp:"1時から", reading:"いちじから", cn:"從1點開始"},
+    {jp:"1時まで", reading:"いちじまで", cn:"到1點為止"},
     {header:"常用短句"},
     {jp:"今何時ですか？", reading:"いま なんじですか？", cn:"現在幾點？"},
     {jp:"何時に始まりますか？", reading:"なんじに はじまりますか？", cn:"幾點開始？"},
@@ -1607,7 +1614,7 @@ const SKI_CATEGORIES = [
     {jp:"全部そろっていますか？", reading:"ぜんぶ そろっていますか？", cn:"東西都有齊嗎？"},
     {jp:"破損はありませんか？", reading:"はそんは ありませんか？", cn:"有沒有損壞？"},
     {jp:"忘れ物はありませんか？", reading:"わすれものは ありませんか？", cn:"有沒有遺漏東西？"},
-    {jp:"返却時間は○時です。", reading:"へんきゃくじかんは ○じです。", cn:"歸還時間是○點。"},
+    {jp:"返却時間は1時です。", reading:"へんきゃくじかんは いちじです。", cn:"歸還時間是1點。"},
     {header:"情境對話"},
     {jp:"スキーのレンタルをしたいんですが。", reading:"すきーの れんたるを したいんですが。", cn:"客人：我想租借滑雪用具。"},
     {jp:"はい。靴のサイズはいくつですか？", reading:"はい。くつの さいずは いくつですか？", cn:"工作人員：好的，鞋子幾號？"},
@@ -1631,7 +1638,7 @@ const SKI_CATEGORIES = [
     {jp:"電子決済", reading:"でんしけっさい", cn:"電子支付"},
     {header:"常用短句"},
     {jp:"何名様ですか？", reading:"なんめいさまですか？", cn:"幾位？"},
-    {jp:"大人○名、子供○名です。", reading:"おとな ○めい、こども ○めいです。", cn:"成人○位、小孩○位。"},
+    {jp:"大人1名、子供1名です。", reading:"おとな いちめい、こども いちめいです。", cn:"成人1位、小孩1位。"},
     {jp:"一日券でよろしいですか？", reading:"いちにちけんで よろしいですか？", cn:"一日券可以嗎？"},
     {jp:"お支払いは現金ですか、カードですか？", reading:"おしはらいは げんきんですか、かーどですか？", cn:"現金還是刷卡？"},
     {jp:"こちらがリフト券です。", reading:"こちらが りふとけんです。", cn:"這是您的纜車票。"},
@@ -1916,7 +1923,7 @@ const HOTEL_CATEGORIES = [
     {jp:'チェックインしたいです。', reading:'ちぇっくいんしたいです。', cn:'我想辦理入住。'},
     {jp:'今、チェックインできますか？', reading:'いま、ちぇっくいんできますか？', cn:'現在可以 Check-in 嗎？'},
     {jp:'早めにチェックインできますか？', reading:'はやめに ちぇっくいんできますか？', cn:'可以提早入住嗎？'},
-    {jp:'チェックインは○時からですよね？', reading:'ちぇっくいんは ○じからですよね？', cn:'我知道 Check-in 時間是○點。'},
+    {jp:'チェックインは1時からですよね？', reading:'ちぇっくいんは いちじからですよね？', cn:'我知道 Check-in 時間是1點。'},
     {jp:'遅い時間にチェックインしても大丈夫ですか？', reading:'おそい じかんに ちぇっくいんしても だいじょうぶですか？', cn:'可以晚一點入住嗎？'},
   ]},
   { title:'② Check-in前／後寄放行李｜荷物を預ける', note:null, items:[
@@ -1999,7 +2006,7 @@ const HOTEL_CATEGORIES = [
   { title:'⑨ 延後退房｜レイトチェックアウト', note:null, items:[
     {jp:'チェックアウトは何時ですか？', reading:'ちぇっくあうとは なんじですか？', cn:'Check-out 是幾點？'},
     {jp:'チェックアウトを遅らせることはできますか？', reading:'ちぇっくあうとを おくらせることは できますか？', cn:'可以延後退房嗎？'},
-    {jp:'○時までチェックアウトを延長できますか？', reading:'○じまで ちぇっくあうとを えんちょうできますか？', cn:'可以延後到○點嗎？'},
+    {jp:'1時までチェックアウトを延長できますか？', reading:'いちじまで ちぇっくあうとを えんちょうできますか？', cn:'可以延後到1點嗎？'},
     {jp:'レイトチェックアウトは有料ですか？', reading:'れいとちぇっくあうとは ゆうりょうですか？', cn:'延後退房需要費用嗎？'},
   ]},
   { title:'⑩ 退房｜チェックアウト', note:null, items:[
@@ -2033,7 +2040,7 @@ const HOTEL_CATEGORIES = [
     {jp:'歩いてどのくらいかかりますか？', reading:'あるいて どのくらい かかりますか？', cn:'走路大概要多久？'},
   ]},
   { title:'⑭ 房間人數／同行者｜人數', note:null, items:[
-    {jp:'○人です。', reading:'○にんです。', cn:'我們有○個人。'},
+    {jp:'1人です。', reading:'ひとりです。', cn:'我們有1個人。'},
     {jp:'二人です。', reading:'ふたりです。', cn:'我們有兩個人。'},
     {jp:'こちらは友達です。', reading:'こちらは ともだちです。', cn:'這是我的朋友。'},
     {jp:'こちらは家族です。', reading:'こちらは かぞくです。', cn:'這是我的家人。'},
@@ -2068,7 +2075,7 @@ const HOTEL_CATEGORIES = [
     {jp:'宿泊日数を延長したいです。', reading:'しゅくはくにっすうを えんちょうしたいです。', cn:'我想增加住宿天數。'},
   ]},
   { title:'⑲ 深夜抵達與臨時聯絡｜深夜到着', note:null, items:[
-    {jp:'到着が遅くなります。夜○時頃になります。', reading:'とうちゃくが おそくなります。よる ○じごろに なります。', cn:'我會很晚才到，大概晚上○點。'},
+    {jp:'到着が遅くなります。夜1時頃になります。', reading:'とうちゃくが おそくなります。よる いちじごろに なります。', cn:'我會很晚才到，大概晚上1點。'},
     {jp:'フロントは何時から何時までですか？', reading:'ふろんとは なんじから なんじまでですか？', cn:'櫃台幾點到幾點有人？'},
     {jp:'深夜でもチェックインできますか？', reading:'しんやでも ちぇっくいんできますか？', cn:'深夜抵達也可以辦理入住嗎？'},
     {jp:'フロントに誰もいません。どうすればいいですか？', reading:'ふろんとに だれも いません。どうすれば いいですか？', cn:'沒有人在櫃台，該怎麼辦？'},
@@ -3284,6 +3291,23 @@ function foodCardHTML(id, it){
       </div>
     </div>`;
   }
+  const embedded = findCounters(it.jp);
+  if(embedded.length){
+    const initialJp = rebuildPhraseWithCounters(it.jp, embedded, embedded.map(m=>m.n));
+    return `
+    <div class="card" data-fooditem="${id}">
+      <div class="jp jpSpeakable" data-jpspeak="${id}">${rb(initialJp)}</div>
+      <div class="cn" data-fcn="${id}">${rebuildCnWithCounts(it.cn, embedded.map(m=>m.n))}</div>
+      <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        ${embedded.map((m,ci)=>`<span style="font-size:12px;color:var(--sub);">數量${embedded.length>1?(ci+1):''}：<input type="number" min="1" max="20" value="${m.n}" data-citemid="${id}" data-cci="${ci}" style="width:56px;padding:5px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;"></span>`).join('')}
+      </div>
+      <div class="actions">
+        <button data-frate="0.5" data-fsayplain="${id}">🐢 慢速 0.5x</button>
+        <button data-frate="0.65" data-fsayplain="${id}">🐢 慢速 0.65x</button>
+        <button data-frate="1.0" data-fsayplain="${id}">▶️ 正常</button>
+      </div>
+    </div>`;
+  }
   return `
     <div class="card" data-fooditem="${id}">
       <div class="jp jpSpeakable" data-jpspeak="${id}">${rb(it.jp)}</div>
@@ -3321,15 +3345,42 @@ function wireFoodCards(inner, idMap){
       speak(full, Number(btn.dataset.frate));
     });
   });
+
+  /* 句中內嵌數字（如「1人です」「305号室」）：可調整數量的版本 */
+  const currentJp = {};
+  Object.keys(idMap).forEach(id=>{
+    const it = idMap[id];
+    if(it.counter) return;
+    const embedded = findCounters(it.jp);
+    if(embedded.length) currentJp[id] = rebuildPhraseWithCounters(it.jp, embedded, embedded.map(m=>m.n));
+  });
+  inner.querySelectorAll('[data-citemid]').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      const itemId = inp.dataset.citemid;
+      const it = idMap[itemId];
+      const embedded = findCounters(it.jp);
+      const values = embedded.map((m,ci)=>{
+        const el = inner.querySelector(`[data-citemid="${itemId}"][data-cci="${ci}"]`);
+        return Number(el.value) || m.n;
+      });
+      const newJp = rebuildPhraseWithCounters(it.jp, embedded, values);
+      currentJp[itemId] = newJp;
+      inner.querySelector(`[data-jpspeak="${itemId}"]`).innerHTML = rb(newJp);
+      const cnEl = inner.querySelector(`[data-fcn="${itemId}"]`);
+      if(cnEl) cnEl.textContent = rebuildCnWithCounts(it.cn, values);
+    });
+  });
+
   inner.querySelectorAll('[data-fsayplain]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const id = btn.dataset.fsayplain;
-      speak(idMap[id].jp, Number(btn.dataset.frate));
+      speak(currentJp[id] || idMap[id].jp, Number(btn.dataset.frate));
     });
   });
   inner.querySelectorAll('[data-jpspeak]').forEach(el=>{
     el.addEventListener('click', ()=>{
-      speak(idMap[el.dataset.jpspeak].jp, 1.0);
+      const id = el.dataset.jpspeak;
+      speak(currentJp[id] || idMap[id].jp, 1.0);
     });
   });
   return Object.keys(idMap).map(id=>({id, display: idMap[id].jp, hira: idMap[id].reading}));
