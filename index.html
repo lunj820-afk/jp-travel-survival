@@ -69,6 +69,13 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 .catNavBar .chipsRow{margin-bottom:0;flex:1;min-width:0;}
 .catNavBar select{flex:0 0 auto;max-width:38%;padding:8px 6px;border-radius:10px;border:1px solid var(--border);background:var(--chip);color:var(--text);font-size:12px;}
 .searchBox{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;margin-bottom:10px;}
+.lineDiagramWrap{position:relative;padding-left:26px;margin:6px 0 20px;}
+.lineDiagramBar{position:absolute;left:9px;top:4px;bottom:4px;width:4px;border-radius:2px;}
+.lineStop{position:relative;padding:9px 0 9px 14px;cursor:pointer;}
+.lineStop::before{content:'';position:absolute;left:-15px;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:var(--card);border:3px solid var(--stopColor,var(--accent2));z-index:1;}
+.lineStop .jp{font-size:16px;font-weight:700;}
+.lineStop .jp .warnTag{margin-left:6px;vertical-align:middle;}
+.lineStop .hira{font-size:12px;color:var(--sub);}
 .jpSpeakable{cursor:pointer;}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;}
 .overlay.show{display:flex;}
@@ -4313,6 +4320,70 @@ const N5_CATEGORIES = [
   ]},
 ];
 
+const SUBWAY_SYSTEMS = {
+  '札幌': [
+    {label:'南北線', color:'#00A650', stations:[{"name":"麻生","reading":"あさぶ"},{"name":"北34条","reading":"きたさんじゅうよんじょう"},{"name":"北24条","reading":"きたにじゅうよんじょう"},{"name":"北18条","reading":"きたじゅうはちじょう"},{"name":"北12条","reading":"きたじゅうにじょう"},{"name":"さっぽろ","reading":"さっぽろ"},{"name":"大通","reading":"おおどおり"},{"name":"すすきの","reading":"すすきの"},{"name":"中島公園","reading":"なかじまこうえん"},{"name":"幌平橋","reading":"ほろひらばし"},{"name":"中の島","reading":"なかのしま"},{"name":"平岸","reading":"ひらぎし"},{"name":"南平岸","reading":"みなみひらぎし"},{"name":"澄川","reading":"すみかわ"},{"name":"自衛隊前","reading":"じえいたいまえ"},{"name":"真駒内","reading":"まこまない"}]},
+    {label:'東西線', color:'#F39800', stations:[{"name":"宮の沢","reading":"みやのさわ"},{"name":"発寒南","reading":"はっさむみなみ"},{"name":"琴似","reading":"ことに"},{"name":"二十四軒","reading":"にじゅうよんけん"},{"name":"西28丁目","reading":"にしにじゅうはっちょうめ"},{"name":"円山公園","reading":"まるやまこうえん"},{"name":"西18丁目","reading":"にしじゅうはっちょうめ"},{"name":"西11丁目","reading":"にしじゅういっちょうめ"},{"name":"大通","reading":"おおどおり"},{"name":"バスセンター前","reading":"ばすせんたーまえ"},{"name":"菊水","reading":"きくすい"},{"name":"東札幌","reading":"ひがしさっぽろ"},{"name":"白石","reading":"しろいし"},{"name":"南郷7丁目","reading":"なんごうななちょうめ"},{"name":"南郷13丁目","reading":"なんごうじゅうさんちょうめ"},{"name":"南郷18丁目","reading":"なんごうじゅうはっちょうめ"},{"name":"大谷地","reading":"おおやち"},{"name":"ひばりが丘","reading":"ひばりがおか"},{"name":"新さっぽろ","reading":"しんさっぽろ"}]},
+    {label:'東豐線', color:'#0068B7', stations:[{"name":"栄町","reading":"さかえまち"},{"name":"新道東","reading":"しんどうひがし"},{"name":"元町","reading":"もとまち"},{"name":"環状通東","reading":"かんじょうどおりひがし"},{"name":"東区役所前","reading":"ひがしくやくしょまえ"},{"name":"北13条東","reading":"きたじゅうさんじょうひがし"},{"name":"さっぽろ","reading":"さっぽろ"},{"name":"大通","reading":"おおどおり"},{"name":"豊水すすきの","reading":"ほうすいすすきの"},{"name":"学園前","reading":"がくえんまえ"},{"name":"豊平公園","reading":"とよひらこうえん"},{"name":"美園","reading":"みその"},{"name":"月寒中央","reading":"つきさむちゅうおう"},{"name":"福住","reading":"ふくずみ"}]},
+  ],
+  '仙台': [
+    {label:'南北線', color:'#00A650', stations:[{"name":"泉中央","reading":"いずみちゅうおう"},{"name":"八乙女","reading":"やおとめ"},{"name":"黒松","reading":"くろまつ"},{"name":"旭ヶ丘","reading":"あさひがおか"},{"name":"台原","reading":"だいのはら"},{"name":"北仙台","reading":"きたせんだい"},{"name":"北四番丁","reading":"きたよばんちょう"},{"name":"勾当台公園","reading":"こうとうだいこうえん"},{"name":"広瀬通","reading":"ひろせどおり"},{"name":"仙台","reading":"せんだい"},{"name":"五橋","reading":"いつつばし"},{"name":"愛宕橋","reading":"あたごばし"},{"name":"河原町","reading":"かわらまち"},{"name":"長町一丁目","reading":"ながまちいっちょうめ"},{"name":"長町","reading":"ながまち"},{"name":"長町南","reading":"ながまちみなみ"},{"name":"富沢","reading":"とみざわ"}]},
+    {label:'東西線', color:'#F39800', stations:[{"name":"八木山動物公園","reading":"やぎやまどうぶつこうえん"},{"name":"青葉山","reading":"あおばやま"},{"name":"川内","reading":"かわうち"},{"name":"国際センター","reading":"こくさいせんたー"},{"name":"大町西公園","reading":"おおまちにしこうえん"},{"name":"青葉通一番町","reading":"あおばどおりいちばんちょう"},{"name":"仙台","reading":"せんだい"},{"name":"宮城野通","reading":"みやぎのどおり"},{"name":"連坊","reading":"れんぼう"},{"name":"薬師堂","reading":"やくしどう"},{"name":"卸町","reading":"おろしまち"},{"name":"六丁の目","reading":"ろくちょうのめ"},{"name":"荒井","reading":"あらい"}]},
+  ],
+  '東京': [
+    {label:'銀座線', color:'#FF9500', stations:[{"name":"渋谷","reading":"しぶや"},{"name":"表参道","reading":"おもてさんどう"},{"name":"外苑前","reading":"がいえんまえ"},{"name":"青山一丁目","reading":"あおやまいっちょうめ"},{"name":"赤坂見附","reading":"あかさかみつけ"},{"name":"溜池山王","reading":"ためいけさんのう"},{"name":"虎ノ門","reading":"とらのもん"},{"name":"新橋","reading":"しんばし"},{"name":"銀座","reading":"ぎんざ"},{"name":"京橋","reading":"きょうばし"},{"name":"日本橋","reading":"にほんばし"},{"name":"三越前","reading":"みつこしまえ"},{"name":"神田","reading":"かんだ"},{"name":"末広町","reading":"すえひろちょう"},{"name":"上野広小路","reading":"うえのひろこうじ"},{"name":"上野","reading":"うえの"},{"name":"稲荷町","reading":"いなりちょう"},{"name":"田原町","reading":"たわらまち"},{"name":"浅草","reading":"あさくさ"}]},
+    {label:'丸之內線', color:'#F62E36', stations:[{"name":"池袋","reading":"いけぶくろ"},{"name":"新大塚","reading":"しんおおつか"},{"name":"茗荷谷","reading":"みょうがだに"},{"name":"後楽園","reading":"こうらくえん"},{"name":"本郷三丁目","reading":"ほんごうさんちょうめ"},{"name":"御茶ノ水","reading":"おちゃのみず"},{"name":"淡路町","reading":"あわじちょう"},{"name":"大手町","reading":"おおてまち"},{"name":"東京","reading":"とうきょう"},{"name":"銀座","reading":"ぎんざ"},{"name":"霞ケ関","reading":"かすみがせき"},{"name":"国会議事堂前","reading":"こっかいぎじどうまえ"},{"name":"赤坂見附","reading":"あかさかみつけ"},{"name":"四ツ谷","reading":"よつや"},{"name":"四谷三丁目","reading":"よつやさんちょうめ"},{"name":"新宿御苑前","reading":"しんじゅくぎょえんまえ"},{"name":"新宿三丁目","reading":"しんじゅくさんちょうめ"},{"name":"新宿","reading":"しんじゅく"},{"name":"西新宿","reading":"にししんじゅく"},{"name":"中野坂上","reading":"なかのさかうえ"},{"name":"新中野","reading":"しんなかの"},{"name":"東高円寺","reading":"ひがしこうえんじ"},{"name":"新高円寺","reading":"しんこうえんじ"},{"name":"南阿佐ケ谷","reading":"みなみあさがや"},{"name":"荻窪","reading":"おぎくぼ"}]},
+    {label:'丸之內線支線（中野坂上－方南町）', color:'#F62E36', stations:[{"name":"中野坂上","reading":"なかのさかうえ"},{"name":"中野新橋","reading":"なかのしんばし"},{"name":"中野富士見町","reading":"なかのふじみちょう"},{"name":"方南町","reading":"ほうなんちょう"}]},
+    {label:'日比谷線', color:'#B5B5AC', stations:[{"name":"中目黒","reading":"なかめぐろ"},{"name":"恵比寿","reading":"えびす"},{"name":"広尾","reading":"ひろお"},{"name":"六本木","reading":"ろっぽんぎ"},{"name":"神谷町","reading":"かみやちょう"},{"name":"虎ノ門ヒルズ","reading":"とらのもんひるず"},{"name":"霞ケ関","reading":"かすみがせき"},{"name":"日比谷","reading":"ひびや"},{"name":"銀座","reading":"ぎんざ"},{"name":"東銀座","reading":"ひがしぎんざ"},{"name":"築地","reading":"つきじ"},{"name":"八丁堀","reading":"はっちょうぼり"},{"name":"茅場町","reading":"かやばちょう"},{"name":"人形町","reading":"にんぎょうちょう"},{"name":"小伝馬町","reading":"こでんまちょう"},{"name":"秋葉原","reading":"あきはばら"},{"name":"仲御徒町","reading":"なかおかちまち"},{"name":"上野","reading":"うえの"},{"name":"入谷","reading":"いりや"},{"name":"三ノ輪","reading":"みのわ"},{"name":"南千住","reading":"みなみせんじゅ"},{"name":"北千住","reading":"きたせんじゅ"}]},
+    {label:'東西線', color:'#009BBF', stations:[{"name":"中野","reading":"なかの"},{"name":"落合","reading":"おちあい"},{"name":"高田馬場","reading":"たかだのばば"},{"name":"早稲田","reading":"わせだ"},{"name":"神楽坂","reading":"かぐらざか"},{"name":"飯田橋","reading":"いいだばし"},{"name":"九段下","reading":"くだんした"},{"name":"竹橋","reading":"たけばし"},{"name":"大手町","reading":"おおてまち"},{"name":"日本橋","reading":"にほんばし"},{"name":"茅場町","reading":"かやばちょう"},{"name":"門前仲町","reading":"もんぜんなかちょう"},{"name":"木場","reading":"きば"},{"name":"東陽町","reading":"とうようちょう"},{"name":"南砂町","reading":"みなみすなまち"},{"name":"西葛西","reading":"にしかさい"},{"name":"葛西","reading":"かさい"},{"name":"浦安","reading":"うらやす"},{"name":"南行徳","reading":"みなみぎょうとく"},{"name":"行徳","reading":"ぎょうとく"},{"name":"妙典","reading":"みょうでん"},{"name":"原木中山","reading":"ばらきなかやま"},{"name":"西船橋","reading":"にしふなばし"}]},
+    {label:'千代田線', color:'#00A650', stations:[{"name":"代々木上原","reading":"よよぎうえはら"},{"name":"代々木公園","reading":"よよぎこうえん"},{"name":"明治神宮前","reading":"めいじじんぐうまえ"},{"name":"表参道","reading":"おもてさんどう"},{"name":"乃木坂","reading":"のぎざか"},{"name":"赤坂","reading":"あかさか"},{"name":"国会議事堂前","reading":"こっかいぎじどうまえ"},{"name":"霞ケ関","reading":"かすみがせき"},{"name":"日比谷","reading":"ひびや"},{"name":"二重橋前","reading":"にじゅうばしまえ"},{"name":"大手町","reading":"おおてまち"},{"name":"新御茶ノ水","reading":"しんおちゃのみず"},{"name":"湯島","reading":"ゆしま"},{"name":"根津","reading":"ねづ"},{"name":"千駄木","reading":"せんだぎ"},{"name":"西日暮里","reading":"にしにっぽり"},{"name":"町屋","reading":"まちや"},{"name":"北千住","reading":"きたせんじゅ"},{"name":"綾瀬","reading":"あやせ"}]},
+    {label:'千代田線支線（綾瀬－北綾瀬）', color:'#00A650', stations:[{"name":"綾瀬","reading":"あやせ"},{"name":"北綾瀬","reading":"きたあやせ"}]},
+    {label:'有樂町線', color:'#C1A470', stations:[{"name":"和光市","reading":"わこうし"},{"name":"地下鉄成増","reading":"ちかてつなります"},{"name":"地下鉄赤塚","reading":"ちかてつあかつか"},{"name":"平和台","reading":"へいわだい"},{"name":"氷川台","reading":"ひかわだい"},{"name":"小竹向原","reading":"こたけむかいはら"},{"name":"千川","reading":"せんかわ"},{"name":"要町","reading":"かなめちょう"},{"name":"池袋","reading":"いけぶくろ"},{"name":"東池袋","reading":"ひがしいけぶくろ"},{"name":"護国寺","reading":"ごこくじ"},{"name":"江戸川橋","reading":"えどがわばし"},{"name":"飯田橋","reading":"いいだばし"},{"name":"市ケ谷","reading":"いちがや"},{"name":"麹町","reading":"こうじまち"},{"name":"永田町","reading":"ながたちょう"},{"name":"桜田門","reading":"さくらだもん"},{"name":"有楽町","reading":"ゆうらくちょう"},{"name":"銀座一丁目","reading":"ぎんざいっちょうめ"},{"name":"新富町","reading":"しんとみちょう"},{"name":"月島","reading":"つきしま"},{"name":"豊洲","reading":"とよす"},{"name":"辰巳","reading":"たつみ"},{"name":"新木場","reading":"しんきば"}]},
+    {label:'半藏門線', color:'#8F76D6', stations:[{"name":"渋谷","reading":"しぶや"},{"name":"表参道","reading":"おもてさんどう"},{"name":"青山一丁目","reading":"あおやまいっちょうめ"},{"name":"永田町","reading":"ながたちょう"},{"name":"半蔵門","reading":"はんぞうもん"},{"name":"九段下","reading":"くだんした"},{"name":"神保町","reading":"じんぼうちょう"},{"name":"大手町","reading":"おおてまち"},{"name":"三越前","reading":"みつこしまえ"},{"name":"水天宮前","reading":"すいてんぐうまえ"},{"name":"清澄白河","reading":"きよすみしらかわ"},{"name":"住吉","reading":"すみよし"},{"name":"錦糸町","reading":"きんしちょう"},{"name":"押上","reading":"おしあげ"}]},
+    {label:'南北線', color:'#00AC9B', stations:[{"name":"目黒","reading":"めぐろ"},{"name":"白金台","reading":"しろかねだい"},{"name":"白金高輪","reading":"しろかねたかなわ"},{"name":"麻布十番","reading":"あざぶじゅうばん"},{"name":"六本木一丁目","reading":"ろっぽんぎいっちょうめ"},{"name":"溜池山王","reading":"ためいけさんのう"},{"name":"永田町","reading":"ながたちょう"},{"name":"四ツ谷","reading":"よつや"},{"name":"市ケ谷","reading":"いちがや"},{"name":"飯田橋","reading":"いいだばし"},{"name":"後楽園","reading":"こうらくえん"},{"name":"東大前","reading":"とうだいまえ"},{"name":"本駒込","reading":"ほんこまごめ"},{"name":"駒込","reading":"こまごめ"},{"name":"西ケ原","reading":"にしがはら"},{"name":"王子","reading":"おうじ"},{"name":"王子神谷","reading":"おうじかみや"},{"name":"志茂","reading":"しも"},{"name":"赤羽岩淵","reading":"あかばねいわぶち"}]},
+    {label:'副都心線', color:'#9C5E31', stations:[{"name":"和光市","reading":"わこうし"},{"name":"地下鉄成増","reading":"ちかてつなります"},{"name":"地下鉄赤塚","reading":"ちかてつあかつか"},{"name":"平和台","reading":"へいわだい"},{"name":"氷川台","reading":"ひかわだい"},{"name":"小竹向原","reading":"こたけむかいはら"},{"name":"千川","reading":"せんかわ"},{"name":"要町","reading":"かなめちょう"},{"name":"池袋","reading":"いけぶくろ"},{"name":"雑司が谷","reading":"ぞうしがや"},{"name":"西早稲田","reading":"にしわせだ"},{"name":"東新宿","reading":"ひがししんじゅく"},{"name":"新宿三丁目","reading":"しんじゅくさんちょうめ"},{"name":"北参道","reading":"きたさんどう"},{"name":"明治神宮前","reading":"めいじじんぐうまえ"},{"name":"渋谷","reading":"しぶや"}]},
+    {label:'淺草線（都營）', color:'#E85298', stations:[{"name":"西馬込","reading":"にしまごめ"},{"name":"馬込","reading":"まごめ"},{"name":"中延","reading":"なかのぶ"},{"name":"戸越","reading":"とごし"},{"name":"五反田","reading":"ごたんだ"},{"name":"高輪台","reading":"たかなわだい"},{"name":"泉岳寺","reading":"せんがくじ"},{"name":"三田","reading":"みた"},{"name":"大門","reading":"だいもん"},{"name":"新橋","reading":"しんばし"},{"name":"東銀座","reading":"ひがしぎんざ"},{"name":"宝町","reading":"たからちょう"},{"name":"日本橋","reading":"にほんばし"},{"name":"人形町","reading":"にんぎょうちょう"},{"name":"東日本橋","reading":"ひがしにほんばし"},{"name":"浅草橋","reading":"あさくさばし"},{"name":"蔵前","reading":"くらまえ"},{"name":"浅草","reading":"あさくさ"},{"name":"本所吾妻橋","reading":"ほんじょあづまばし"},{"name":"押上","reading":"おしあげ"}]},
+    {label:'三田線（都營）', color:'#0079C2', stations:[{"name":"目黒","reading":"めぐろ"},{"name":"白金台","reading":"しろかねだい"},{"name":"白金高輪","reading":"しろかねたかなわ"},{"name":"三田","reading":"みた"},{"name":"芝公園","reading":"しばこうえん"},{"name":"御成門","reading":"おなりもん"},{"name":"内幸町","reading":"うちさいわいちょう"},{"name":"日比谷","reading":"ひびや"},{"name":"大手町","reading":"おおてまち"},{"name":"神保町","reading":"じんぼうちょう"},{"name":"水道橋","reading":"すいどうばし"},{"name":"春日","reading":"かすが"},{"name":"白山","reading":"はくさん"},{"name":"千石","reading":"せんごく"},{"name":"巣鴨","reading":"すがも"},{"name":"西巣鴨","reading":"にしすがも"},{"name":"新板橋","reading":"しんいたばし"},{"name":"板橋区役所前","reading":"いたばしくやくしょまえ"},{"name":"板橋本町","reading":"いたばしほんちょう"},{"name":"本蓮沼","reading":"もとはすぬま"},{"name":"志村坂上","reading":"しむらさかうえ"},{"name":"志村三丁目","reading":"しむらさんちょうめ"},{"name":"蓮根","reading":"はすね"},{"name":"西台","reading":"にしだい"},{"name":"高島平","reading":"たかしまだいら"},{"name":"新高島平","reading":"しんたかしまだいら"},{"name":"西高島平","reading":"にしたかしまだいら"}]},
+    {label:'新宿線（都營）', color:'#6CBB5A', stations:[{"name":"新宿","reading":"しんじゅく"},{"name":"新宿三丁目","reading":"しんじゅくさんちょうめ"},{"name":"曙橋","reading":"あけぼのばし"},{"name":"市ケ谷","reading":"いちがや"},{"name":"九段下","reading":"くだんした"},{"name":"神保町","reading":"じんぼうちょう"},{"name":"小川町","reading":"おがわまち"},{"name":"岩本町","reading":"いわもとちょう"},{"name":"馬喰横山","reading":"ばくろよこやま"},{"name":"浜町","reading":"はまちょう"},{"name":"森下","reading":"もりした"},{"name":"菊川","reading":"きくかわ"},{"name":"住吉","reading":"すみよし"},{"name":"西大島","reading":"にしおおじま"},{"name":"大島","reading":"おおじま"},{"name":"東大島","reading":"ひがしおおじま"},{"name":"船堀","reading":"ふなぼり"},{"name":"一之江","reading":"いちのえ"},{"name":"瑞江","reading":"みずえ"},{"name":"篠崎","reading":"しのざき"},{"name":"本八幡","reading":"もとやわた"}]},
+    {label:'大江戶線（都營）', color:'#B6007A', stations:[{"name":"都庁前","reading":"とちょうまえ"},{"name":"西新宿五丁目","reading":"にししんじゅくごちょうめ"},{"name":"中野坂上","reading":"なかのさかうえ"},{"name":"東中野","reading":"ひがしなかの"},{"name":"中井","reading":"なかい"},{"name":"落合南長崎","reading":"おちあいみなみながさき"},{"name":"新江古田","reading":"しんえごた"},{"name":"練馬","reading":"ねりま"},{"name":"豊島園","reading":"としまえん"},{"name":"練馬春日町","reading":"ねりまかすがちょう"},{"name":"光が丘","reading":"ひかりがおか"},{"name":"新宿西口","reading":"しんじゅくにしぐち"},{"name":"東新宿","reading":"ひがししんじゅく"},{"name":"若松河田","reading":"わかまつかわだ"},{"name":"牛込柳町","reading":"うしごめやなぎちょう"},{"name":"牛込神楽坂","reading":"うしごめかぐらざか"},{"name":"飯田橋","reading":"いいだばし"},{"name":"春日","reading":"かすが"},{"name":"本郷三丁目","reading":"ほんごうさんちょうめ"},{"name":"上野御徒町","reading":"うえのおかちまち"},{"name":"新御徒町","reading":"しんおかちまち"},{"name":"蔵前","reading":"くらまえ"},{"name":"両国","reading":"りょうごく"},{"name":"森下","reading":"もりした"},{"name":"清澄白河","reading":"きよすみしらかわ"},{"name":"門前仲町","reading":"もんぜんなかちょう"},{"name":"月島","reading":"つきしま"},{"name":"勝どき","reading":"かちどき"},{"name":"築地市場","reading":"つきじしじょう"},{"name":"汐留","reading":"しおどめ"},{"name":"大門","reading":"だいもん"},{"name":"赤羽橋","reading":"あかばねばし"},{"name":"麻布十番","reading":"あざぶじゅうばん"},{"name":"六本木","reading":"ろっぽんぎ"},{"name":"青山一丁目","reading":"あおやまいっちょうめ"},{"name":"国立競技場","reading":"こくりつきょうぎじょう"},{"name":"代々木","reading":"よよぎ"},{"name":"新宿","reading":"しんじゅく"}]},
+  ],
+  '橫濱': [
+    {label:'藍線', color:'#0089CF', stations:[{"name":"あざみ野","reading":"あざみの"},{"name":"中川","reading":"なかがわ"},{"name":"センター北","reading":"せんたーきた"},{"name":"センター南","reading":"せんたーみなみ"},{"name":"仲町台","reading":"なかまちだい"},{"name":"新羽","reading":"にっぱ"},{"name":"北新横浜","reading":"きたしんよこはま"},{"name":"新横浜","reading":"しんよこはま"},{"name":"岸根公園","reading":"きしねこうえん"},{"name":"片倉町","reading":"かたくらちょう"},{"name":"三ツ沢上町","reading":"みつざわかみちょう"},{"name":"三ツ沢下町","reading":"みつざわしもちょう"},{"name":"横浜","reading":"よこはま"},{"name":"高島町","reading":"たかしまちょう"},{"name":"桜木町","reading":"さくらぎちょう"},{"name":"関内","reading":"かんない"},{"name":"伊勢佐木長者町","reading":"いせざきちょうじゃまち"},{"name":"阪東橋","reading":"ばんどうばし"},{"name":"吉野町","reading":"よしのちょう"},{"name":"蒔田","reading":"まいた"},{"name":"弘明寺","reading":"ぐみょうじ"},{"name":"上大岡","reading":"かみおおおか"},{"name":"港南中央","reading":"こうなんちゅうおう"},{"name":"上永谷","reading":"かみながや"},{"name":"下永谷","reading":"しもながや"},{"name":"舞岡","reading":"まいおか"},{"name":"戸塚","reading":"とつか"},{"name":"踊場","reading":"おどりば"},{"name":"中田","reading":"なかだ"},{"name":"立場","reading":"たてば"},{"name":"下飯田","reading":"しもいいだ"},{"name":"湘南台","reading":"しょうなんだい"}]},
+    {label:'綠線', color:'#00A650', stations:[{"name":"中山","reading":"なかやま"},{"name":"川和町","reading":"かわわちょう"},{"name":"都筑ふれあいの丘","reading":"つづきふれあいのおか"},{"name":"センター南","reading":"せんたーみなみ"},{"name":"センター北","reading":"せんたーきた"},{"name":"北山田","reading":"きたやまた"},{"name":"東山田","reading":"ひがしやまた"},{"name":"高田","reading":"たかた"},{"name":"日吉本町","reading":"ひよしほんちょう"},{"name":"日吉","reading":"ひよし"}]},
+  ],
+  '名古屋': [
+    {label:'東山線', color:'#FFD400', stations:[{"name":"高畑","reading":"たかはた"},{"name":"八田","reading":"はった"},{"name":"岩塚","reading":"いわつか"},{"name":"中村公園","reading":"なかむらこうえん"},{"name":"中村日赤","reading":"なかむらにっせき"},{"name":"本陣","reading":"ほんじん"},{"name":"亀島","reading":"かめじま"},{"name":"名古屋","reading":"なごや"},{"name":"伏見","reading":"ふしみ"},{"name":"栄","reading":"さかえ"},{"name":"新栄町","reading":"しんさかえまち"},{"name":"千種","reading":"ちくさ"},{"name":"今池","reading":"いまいけ"},{"name":"池下","reading":"いけした"},{"name":"覚王山","reading":"かくおうざん"},{"name":"本山","reading":"もとやま"},{"name":"東山公園","reading":"ひがしやまこうえん"},{"name":"星ヶ丘","reading":"ほしがおか"},{"name":"一社","reading":"いっしゃ"},{"name":"上社","reading":"かみやしろ"},{"name":"本郷","reading":"ほんごう"},{"name":"藤が丘","reading":"ふじがおか"}]},
+    {label:'名城線', color:'#9B7CB6', stations:[{"name":"金山","reading":"かなやま"},{"name":"東別院","reading":"ひがしべついん"},{"name":"上前津","reading":"かみまえづ"},{"name":"矢場町","reading":"やばちょう"},{"name":"栄","reading":"さかえ"},{"name":"久屋大通","reading":"ひさやおおどおり"},{"name":"名古屋城","reading":"なごやじょう"},{"name":"名城公園","reading":"めいじょうこうえん"},{"name":"黒川","reading":"くろかわ"},{"name":"志賀本通","reading":"しがほんどおり"},{"name":"平安通","reading":"へいあんどおり"},{"name":"大曽根","reading":"おおぞね"},{"name":"ナゴヤドーム前矢田","reading":"なごやどーむまえやだ"},{"name":"砂田橋","reading":"すなだばし"},{"name":"茶屋ヶ坂","reading":"ちゃやがさか"},{"name":"自由ヶ丘","reading":"じゆうがおか"},{"name":"本山","reading":"もとやま"},{"name":"名古屋大学","reading":"なごやだいがく"},{"name":"八事日赤","reading":"やごとにっせき"},{"name":"八事","reading":"やごと"},{"name":"総合リハビリセンター","reading":"そうごうりはびりせんたー"},{"name":"瑞穂運動場東","reading":"みずほうんどうじょうひがし"},{"name":"新瑞橋","reading":"あらたまばし"},{"name":"妙音通","reading":"みょうおんどおり"},{"name":"堀田","reading":"ほりた"},{"name":"熱田神宮伝馬町","reading":"あつたじんぐうてんまちょう"},{"name":"熱田神宮西","reading":"あつたじんぐうにし"},{"name":"西高蔵","reading":"にしたかくら"}]},
+    {label:'鶴舞線', color:'#0075C2', stations:[{"name":"上小田井","reading":"かみおたい"},{"name":"庄内緑地公園","reading":"しょうないりょくちこうえん"},{"name":"庄内通","reading":"しょうないどおり"},{"name":"浄心","reading":"じょうしん"},{"name":"浅間町","reading":"せんげんちょう"},{"name":"丸の内","reading":"まるのうち"},{"name":"伏見","reading":"ふしみ"},{"name":"大須観音","reading":"おおすかんのん"},{"name":"上前津","reading":"かみまえづ"},{"name":"鶴舞","reading":"つるまい"},{"name":"荒畑","reading":"あらはた"},{"name":"御器所","reading":"ごきそ"},{"name":"川名","reading":"かわな"},{"name":"いりなか","reading":"いりなか"},{"name":"八事","reading":"やごと"},{"name":"塩釜口","reading":"しおがまぐち"},{"name":"植田","reading":"うえだ"},{"name":"原","reading":"はら"},{"name":"平針","reading":"ひらばり"},{"name":"赤池","reading":"あかいけ"}]},
+    {label:'櫻通線', color:'#D2333C', stations:[{"name":"太閤通","reading":"たいこうどおり"},{"name":"名古屋","reading":"なごや"},{"name":"国際センター","reading":"こくさいせんたー"},{"name":"丸の内","reading":"まるのうち"},{"name":"久屋大通","reading":"ひさやおおどおり"},{"name":"高岳","reading":"たかおか"},{"name":"車道","reading":"くるまみち"},{"name":"今池","reading":"いまいけ"},{"name":"吹上","reading":"ふきあげ"},{"name":"御器所","reading":"ごきそ"},{"name":"桜山","reading":"さくらやま"},{"name":"瑞穂区役所","reading":"みずほくやくしょ"},{"name":"瑞穂運動場西","reading":"みずほうんどうじょうにし"},{"name":"新瑞橋","reading":"あらたまばし"},{"name":"桜本町","reading":"さくらほんまち"},{"name":"鶴里","reading":"つるさと"},{"name":"野並","reading":"のなみ"},{"name":"鳴子北","reading":"なるここきた"},{"name":"相生山","reading":"あいおいやま"},{"name":"神沢","reading":"かみさわ"},{"name":"徳重","reading":"とくしげ"}]},
+    {label:'上飯田線', color:'#EC8FC0', stations:[{"name":"平安通","reading":"へいあんどおり"},{"name":"上飯田","reading":"かみいいだ"}]},
+    {label:'名港線', color:'#9B7CB6', stations:[{"name":"金山","reading":"かなやま"},{"name":"日比野","reading":"ひびの"},{"name":"六番町","reading":"ろくばんちょう"},{"name":"東海通","reading":"とうかいどおり"},{"name":"港区役所","reading":"みなとくやくしょ"},{"name":"築地口","reading":"つきじぐち"},{"name":"名古屋港","reading":"なごやこう"}]},
+  ],
+  '京都': [
+    {label:'烏丸線', color:'#0BA149', stations:[{"name":"国際会館","reading":"こくさいかいかん"},{"name":"松ヶ崎","reading":"まつがさき"},{"name":"北山","reading":"きたやま"},{"name":"北大路","reading":"きたおおじ"},{"name":"鞍馬口","reading":"くらまぐち"},{"name":"今出川","reading":"いまでがわ"},{"name":"丸太町","reading":"まるたまち"},{"name":"烏丸御池","reading":"からすまおいけ"},{"name":"四条","reading":"しじょう"},{"name":"五条","reading":"ごじょう"},{"name":"京都","reading":"きょうと"},{"name":"九条","reading":"くじょう"},{"name":"十条","reading":"じゅうじょう"},{"name":"くいな橋","reading":"くいなばし"},{"name":"竹田","reading":"たけだ"}]},
+    {label:'東西線', color:'#E85413', stations:[{"name":"太秦天神川","reading":"うずまさてんじんがわ"},{"name":"西大路御池","reading":"にしおおじおいけ"},{"name":"二条","reading":"にじょう"},{"name":"二条城前","reading":"にじょうじょうまえ"},{"name":"烏丸御池","reading":"からすまおいけ"},{"name":"京都市役所前","reading":"きょうとしやくしょまえ"},{"name":"三条京阪","reading":"さんじょうけいはん"},{"name":"東山","reading":"ひがしやま"},{"name":"蹴上","reading":"けあげ"},{"name":"御陵","reading":"みささぎ"},{"name":"山科","reading":"やましな"},{"name":"東野","reading":"ひがしの"},{"name":"椥辻","reading":"なぎつじ"},{"name":"小野","reading":"おの"},{"name":"醍醐","reading":"だいご"},{"name":"石田","reading":"いしだ"},{"name":"六地蔵","reading":"ろくじぞう"}]},
+  ],
+  '大阪': [
+    {label:'御堂筋線', color:'#E5171F', stations:[{"name":"江坂","reading":"えさか"},{"name":"東三国","reading":"ひがしみくに"},{"name":"新大阪","reading":"しんおおさか"},{"name":"西中島南方","reading":"にしなかじまみなみがた"},{"name":"中津","reading":"なかつ"},{"name":"梅田","reading":"うめだ"},{"name":"淀屋橋","reading":"よどやばし"},{"name":"本町","reading":"ほんまち"},{"name":"心斎橋","reading":"しんさいばし"},{"name":"難波","reading":"なんば"},{"name":"大国町","reading":"だいこくちょう"},{"name":"動物園前","reading":"どうぶつえんまえ"},{"name":"天王寺","reading":"てんのうじ"},{"name":"昭和町","reading":"しょうわちょう"},{"name":"西田辺","reading":"にしたなべ"},{"name":"長居","reading":"ながい"},{"name":"あびこ","reading":"あびこ"},{"name":"北花田","reading":"きたはなだ"},{"name":"新金岡","reading":"しんかなおか"},{"name":"なかもず","reading":"なかもず"}]},
+    {label:'谷町線', color:'#762282', stations:[{"name":"大日","reading":"だいにち"},{"name":"守口","reading":"もりぐち"},{"name":"太子橋今市","reading":"たいしばしいまいち"},{"name":"千林大宮","reading":"せんばやしおおみや"},{"name":"関目高殿","reading":"せきめたかどの"},{"name":"野江内代","reading":"のえうちんだい"},{"name":"都島","reading":"みやこじま"},{"name":"天神橋筋六丁目","reading":"てんじんばしすじろくちょうめ"},{"name":"中崎町","reading":"なかざきちょう"},{"name":"東梅田","reading":"ひがしうめだ"},{"name":"南森町","reading":"みなみもりまち"},{"name":"天満橋","reading":"てんまばし"},{"name":"谷町四丁目","reading":"たにまちよんちょうめ"},{"name":"谷町六丁目","reading":"たにまちろくちょうめ"},{"name":"谷町九丁目","reading":"たにまちきゅうちょうめ"},{"name":"四天王寺前夕陽ヶ丘","reading":"してんのうじまえゆうひがおか"},{"name":"天王寺","reading":"てんのうじ"},{"name":"阿倍野","reading":"あべの"},{"name":"文の里","reading":"ふみのさと"},{"name":"田辺","reading":"たなべ"},{"name":"駒川中野","reading":"こまがわなかの"},{"name":"平野","reading":"ひらの"},{"name":"喜連瓜破","reading":"きれうりわり"},{"name":"出戸","reading":"でと"},{"name":"長原","reading":"ながはら"},{"name":"八尾南","reading":"やおみなみ"}]},
+    {label:'四橋線', color:'#0078BA', stations:[{"name":"西梅田","reading":"にしうめだ"},{"name":"肥後橋","reading":"ひごばし"},{"name":"本町","reading":"ほんまち"},{"name":"四ツ橋","reading":"よつばし"},{"name":"難波","reading":"なんば"},{"name":"大国町","reading":"だいこくちょう"},{"name":"花園町","reading":"はなぞのちょう"},{"name":"岸里","reading":"きしのさと"},{"name":"玉出","reading":"たまで"},{"name":"北加賀屋","reading":"きたかがや"},{"name":"住之江公園","reading":"すみのえこうえん"}]},
+    {label:'中央線', color:'#00A650', stations:[{"name":"夢洲","reading":"ゆめしま"},{"name":"コスモスクエア","reading":"こすもすくえあ"},{"name":"大阪港","reading":"おおさかこう"},{"name":"朝潮橋","reading":"あさしおばし"},{"name":"弁天町","reading":"べんてんちょう"},{"name":"九条","reading":"くじょう"},{"name":"阿波座","reading":"あわざ"},{"name":"本町","reading":"ほんまち"},{"name":"堺筋本町","reading":"さかいすじほんまち"},{"name":"谷町四丁目","reading":"たにまちよんちょうめ"},{"name":"森ノ宮","reading":"もりのみや"},{"name":"緑橋","reading":"みどりばし"},{"name":"深江橋","reading":"ふかえばし"},{"name":"高井田","reading":"たかいだ"},{"name":"長田","reading":"ながた"}]},
+    {label:'千日前線', color:'#ED6EA0', stations:[{"name":"野田阪神","reading":"のだはんしん"},{"name":"玉川","reading":"たまがわ"},{"name":"阿波座","reading":"あわざ"},{"name":"西長堀","reading":"にしながほり"},{"name":"桜川","reading":"さくらがわ"},{"name":"難波","reading":"なんば"},{"name":"日本橋","reading":"にっぽんばし"},{"name":"谷町九丁目","reading":"たにまちきゅうちょうめ"},{"name":"鶴橋","reading":"つるはし"},{"name":"今里","reading":"いまざと"},{"name":"新深江","reading":"しんふかえ"},{"name":"小路","reading":"しょうじ"},{"name":"北巽","reading":"きたたつみ"},{"name":"南巽","reading":"みなみたつみ"}]},
+    {label:'堺筋線', color:'#8F6A50', stations:[{"name":"天神橋筋六丁目","reading":"てんじんばしすじろくちょうめ"},{"name":"扇町","reading":"おうぎまち"},{"name":"南森町","reading":"みなみもりまち"},{"name":"北浜","reading":"きたはま"},{"name":"堺筋本町","reading":"さかいすじほんまち"},{"name":"長堀橋","reading":"ながほりばし"},{"name":"日本橋","reading":"にっぽんばし"},{"name":"恵美須町","reading":"えびすちょう"},{"name":"動物園前","reading":"どうぶつえんまえ"},{"name":"天下茶屋","reading":"てんがちゃや"}]},
+    {label:'長堀鶴見綠地線', color:'#82B622', stations:[{"name":"大正","reading":"たいしょう"},{"name":"ドーム前千代崎","reading":"どーむまえちよざき"},{"name":"西長堀","reading":"にしながほり"},{"name":"西大橋","reading":"にしおおはし"},{"name":"心斎橋","reading":"しんさいばし"},{"name":"長堀橋","reading":"ながほりばし"},{"name":"松屋町","reading":"まつやまち"},{"name":"谷町六丁目","reading":"たにまちろくちょうめ"},{"name":"玉造","reading":"たまつくり"},{"name":"森ノ宮","reading":"もりのみや"},{"name":"大阪ビジネスパーク","reading":"おおさかびじねすぱーく"},{"name":"京橋","reading":"きょうばし"},{"name":"蒲生四丁目","reading":"がもうよんちょうめ"},{"name":"今福鶴見","reading":"いまふくつるみ"},{"name":"横堤","reading":"よこづつみ"},{"name":"鶴見緑地","reading":"つるみりょくち"},{"name":"門真南","reading":"かどまみなみ"}]},
+    {label:'今里筋線', color:'#EE7B1A', stations:[{"name":"井高野","reading":"いたかの"},{"name":"瑞光四丁目","reading":"ずいこうよんちょうめ"},{"name":"だいどう豊里","reading":"だいどうとよさと"},{"name":"太子橋今市","reading":"たいしばしいまいち"},{"name":"清水","reading":"きよみず"},{"name":"新森古市","reading":"しんもりふるいち"},{"name":"関目成育","reading":"せきめせいいく"},{"name":"蒲生四丁目","reading":"がもうよんちょうめ"},{"name":"鴫野","reading":"しぎの"},{"name":"緑橋","reading":"みどりばし"},{"name":"今里","reading":"いまざと"}]},
+  ],
+  '神戶': [
+    {label:'西神・山手線', color:'#00A650', stations:[{"name":"西神中央","reading":"せいしんちゅうおう"},{"name":"西神南","reading":"せいしんみなみ"},{"name":"伊川谷","reading":"いかわだに"},{"name":"学園都市","reading":"がくえんとし"},{"name":"総合運動公園","reading":"そうごううんどうこうえん"},{"name":"名谷","reading":"みょうだに"},{"name":"妙法寺","reading":"みょうほうじ"},{"name":"板宿","reading":"いたやど"},{"name":"新長田","reading":"しんながた"},{"name":"長田","reading":"ながた"},{"name":"上沢","reading":"かみさわ"},{"name":"湊川公園","reading":"みなとがわこうえん"},{"name":"大倉山","reading":"おおくらやま"},{"name":"県庁前","reading":"けんちょうまえ"},{"name":"三宮","reading":"さんのみや"},{"name":"新神戸","reading":"しんこうべ"}]},
+    {label:'海岸線', color:'#0068B7', stations:[{"name":"三宮・花時計前","reading":"さんのみや・はなどけいまえ"},{"name":"旧居留地・大丸前","reading":"きゅうきょりゅうち・だいまるまえ"},{"name":"みなと元町","reading":"みなともとまち"},{"name":"ハーバーランド","reading":"はーばーらんど"},{"name":"中央市場前","reading":"ちゅうおうしじょうまえ"},{"name":"和田岬","reading":"わだみさき"},{"name":"御崎公園","reading":"みさきこうえん"},{"name":"苅藻","reading":"かるも"},{"name":"駒ヶ林","reading":"こまがばやし"},{"name":"新長田","reading":"しんながた"}]},
+  ],
+  '福岡': [
+    {label:'機場線', color:'#EE7B1A', stations:[{"name":"姪浜","reading":"めいのはま"},{"name":"室見","reading":"むろみ"},{"name":"藤崎","reading":"ふじさき"},{"name":"西新","reading":"にしじん"},{"name":"唐人町","reading":"とうじんまち"},{"name":"大濠公園","reading":"おおほりこうえん"},{"name":"赤坂","reading":"あかさか"},{"name":"天神","reading":"てんじん"},{"name":"中洲川端","reading":"なかすかわばた"},{"name":"祇園","reading":"ぎおん"},{"name":"博多","reading":"はかた"},{"name":"東比恵","reading":"ひがしひえ"},{"name":"福岡空港","reading":"ふくおかくうこう"}]},
+    {label:'箱崎線', color:'#0089CE', stations:[{"name":"中洲川端","reading":"なかすかわばた"},{"name":"呉服町","reading":"ごふくまち"},{"name":"千代県庁口","reading":"ちよけんちょうぐち"},{"name":"馬出九大病院前","reading":"まいだしきゅうだいびょういんまえ"},{"name":"箱崎宮前","reading":"はこざきみやまえ"},{"name":"箱崎九大前","reading":"はこざききゅうだいまえ"},{"name":"貝塚","reading":"かいづか"}]},
+    {label:'七隈線', color:'#00A79D', stations:[{"name":"橋本","reading":"はしもと"},{"name":"次郎丸","reading":"じろうまる"},{"name":"賀茂","reading":"かも"},{"name":"野芥","reading":"のけ"},{"name":"梅林","reading":"ばいりん"},{"name":"福大前","reading":"ふくだいまえ"},{"name":"七隈","reading":"ななくま"},{"name":"金山","reading":"かなやま"},{"name":"茶山","reading":"ちゃやま"},{"name":"別府","reading":"べふ"},{"name":"六本松","reading":"ろっぽんまつ"},{"name":"桜坂","reading":"さくらざか"},{"name":"薬院大通","reading":"やくいんおおどおり"},{"name":"薬院","reading":"やくいん"},{"name":"渡辺通","reading":"わたなべどおり"},{"name":"天神南","reading":"てんじんみなみ"},{"name":"櫛田神社前","reading":"くしだじんじゃまえ"},{"name":"博多","reading":"はかた"}]},
+  ],
+};
+
 const PHRASE_CATEGORIES = [
   { title: "① 萬用開場", note: "這三句一定要會", items: [
     { id:"phrase_0_0", cn:"不好意思", note:"請問、不好意思、借過、打擾一下都能用", jp:"すみません", romaji:"Su-mi-ma-sen", en:"Excuse me" },
@@ -4789,13 +4860,15 @@ function renderHome(){
       `<div class="scenecard" data-phrase="trip"><div class="emoji">📍</div><div class="label">這趟行程專屬</div></div>` +
       `<div class="scenecard" data-phrase="qa"><div class="emoji">🗨️</div><div class="label">情境問答</div></div>` +
       `<div class="scenecard" data-phrase="life"><div class="emoji">🗣️</div><div class="label">生活日語會話</div></div>` +
-      `<div class="scenecard" data-phrase="n5"><div class="emoji">📗</div><div class="label">N5 基礎單字</div></div>`;
+      `<div class="scenecard" data-phrase="n5"><div class="emoji">📗</div><div class="label">N5 基礎單字</div></div>` +
+      `<div class="scenecard" data-phrase="subway"><div class="emoji">🗺️</div><div class="label">地下鐵路線圖</div></div>`;
     phraseGrid.querySelectorAll('[data-phrase]').forEach(el=>{
       el.addEventListener('click', ()=>{
         if(el.dataset.phrase==='general') openPhraseBrowser(PHRASE_CATEGORIES, '🗣️ 旅遊短句');
         else if(el.dataset.phrase==='trip') openPhraseBrowser(TRIP_CATEGORIES, '📍 這趟行程專屬');
         else if(el.dataset.phrase==='life') openLifeBrowser();
         else if(el.dataset.phrase==='n5') openN5Browser();
+        else if(el.dataset.phrase==='subway') openSubwayMapBrowser();
         else openPhraseBrowser(SCENARIO_QA, '🗨️ 情境問答');
       });
     });
@@ -5856,6 +5929,129 @@ function openN5Browser(){
     }
   });
   renderN5CategoryList(0);
+}
+
+/* ---- 日本地下鐵路線圖：城市→路線→逐站示意圖 ---- */
+const SUBWAY_CITY_ORDER = ['東京','大阪','名古屋','京都','神戶','福岡','橫濱','札幌','仙台'];
+let SUBWAY_CURRENT_CITY = '東京';
+let SUBWAY_LAST_LINE_IDX = 0;
+
+/* 每一站的讀音都是逐站個別查證過的，直接用站名整體包ruby，不吃全站共用的KANJI_SIMPLE字典
+   （同樣的漢字在不同城市讀音可能不同，例如大阪「日本橋」念にっぽんばし、東京念にほんばし） */
+function jpRuby(name, reading){
+  return `<ruby>${name}<rt>${reading}</rt></ruby>`;
+}
+
+function renderSubwayCityContent(idx){
+  SUBWAY_LAST_LINE_IDX = idx;
+  const lines = SUBWAY_SYSTEMS[SUBWAY_CURRENT_CITY];
+  const targets = idx===-1 ? lines.map((l,i)=>({l,i})) : [{l:lines[idx], i:idx}];
+  const inner = document.getElementById('subwayLineInner');
+  const nameCount = {};
+  lines.forEach(l=>l.stations.forEach(s=>{ nameCount[s.name] = (nameCount[s.name]||0)+1; }));
+  inner.innerHTML = targets.map(({l,i})=>`
+    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${l.label}（${l.stations.length}站）</h3>
+    <div class="lineDiagramWrap">
+      <div class="lineDiagramBar" style="background:${l.color}"></div>
+      ${l.stations.map((s,j)=>`
+        <div class="lineStop" data-line="${i}" data-stop="${j}" style="--stopColor:${l.color}">
+          <div class="jp jpSpeakable">${jpRuby(s.name, s.reading)}${nameCount[s.name]>1?'<span class="warnTag">轉乘</span>':''}</div>
+          <div class="hira">${s.reading}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  inner.querySelectorAll('[data-stop]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const l = lines[Number(el.dataset.line)];
+      const s = l.stations[Number(el.dataset.stop)];
+      speak(s.reading, 0.9);
+    });
+  });
+}
+
+function renderSubwaySearch(query){
+  const inner = document.getElementById('subwayLineInner');
+  const q = query.trim().toLowerCase();
+  const results = [];
+  for(const city of SUBWAY_CITY_ORDER){
+    SUBWAY_SYSTEMS[city].forEach(l=>{
+      l.stations.forEach(s=>{
+        const hay = (s.name+' '+s.reading).toLowerCase();
+        if(hay.includes(q)) results.push({city, line:l, station:s});
+      });
+    });
+  }
+  if(!results.length){
+    inner.innerHTML = `<div class="emptyState">找不到符合「${query}」的車站，換個關鍵字試試。</div>`;
+    return;
+  }
+  inner.innerHTML = `<div class="section-intro">🔍 找到 ${results.length} 筆符合「${query}」的結果</div>` +
+    results.map((r,idx)=>`
+      <div class="card" data-sidx="${idx}">
+        <div class="jp jpSpeakable">${jpRuby(r.station.name, r.station.reading)}</div>
+        <div class="hira">${r.station.reading}</div>
+        <div class="cn">${r.city}・${r.line.label}</div>
+      </div>
+    `).join('');
+  inner.querySelectorAll('[data-sidx]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const r = results[Number(el.dataset.sidx)];
+      speak(r.station.reading, 0.9);
+    });
+  });
+}
+
+function renderSubwayLineNav(){
+  const lines = SUBWAY_SYSTEMS[SUBWAY_CURRENT_CITY];
+  const titles = lines.map(l=>l.label);
+  mountChipRowNav(document.getElementById('subwayLineChips'), document.getElementById('subwayLineSelect'), titles, 0, (idx)=>{
+    document.getElementById('subwaySearch').value = '';
+    renderSubwayCityContent(idx);
+  });
+  renderSubwayCityContent(0);
+}
+
+function openSubwayMapBrowser(){
+  switchView('learn');
+  const oldRelated = document.getElementById('relatedQAArea');
+  if(oldRelated) oldRelated.remove();
+  document.getElementById('learnTitle').textContent = '🗺️ 日本地下鐵路線圖';
+  document.getElementById('learnIntro').textContent = '先選城市、再選路線，逐站點下去就會唸給你聽。這是依照公開的官方站序資訊整理的簡化示意圖（不是官方地圖圖片），同一站名出現在超過一條線上會標「轉乘」。';
+  document.getElementById('phoneToolWrap').innerHTML = '';
+  document.getElementById('phoneToolWrap').style.display = 'none';
+  document.getElementById('topicQuizArea').innerHTML = '';
+  const list = document.getElementById('learnList');
+  list.innerHTML = `
+    <input type="text" id="subwaySearch" class="searchBox" placeholder="🔍 搜尋任何城市的車站（例如：渋谷、日本橋）">
+    <div class="catchips chipsRow" id="subwayCityChips" style="margin-bottom:10px;"></div>
+    <div class="catNavBar">
+      <div class="catchips chipsRow" id="subwayLineChips"></div>
+      <select id="subwayLineSelect"></select>
+    </div>
+    <div id="subwayLineInner"></div>`;
+  const cityChips = document.getElementById('subwayCityChips');
+  cityChips.innerHTML = SUBWAY_CITY_ORDER.map(c=>`<div class="chip${c===SUBWAY_CURRENT_CITY?' active':''}" data-city="${c}">${c}</div>`).join('');
+  cityChips.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      SUBWAY_CURRENT_CITY = chip.dataset.city;
+      document.getElementById('subwaySearch').value = '';
+      cityChips.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c===chip));
+      renderSubwayLineNav();
+    });
+  });
+  document.getElementById('subwaySearch').addEventListener('input', (e)=>{
+    const q = e.target.value;
+    if(q.trim()){
+      document.querySelectorAll('#subwayLineChips .chip').forEach(c=>c.classList.remove('active'));
+      renderSubwaySearch(q);
+    } else {
+      renderSubwayCityContent(SUBWAY_LAST_LINE_IDX);
+      document.querySelectorAll('#subwayLineChips .chip').forEach(c=>c.classList.toggle('active', Number(c.dataset.idx)===SUBWAY_LAST_LINE_IDX));
+      document.getElementById('subwayLineSelect').value = String(SUBWAY_LAST_LINE_IDX);
+    }
+  });
+  renderSubwayLineNav();
 }
 
 /* ---- 金額實用短句與詞彙：附加在「金額 Money」主題頁下方，不影響原本的任意金額查詢工具 ---- */
