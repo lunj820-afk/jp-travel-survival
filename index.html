@@ -122,6 +122,31 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 .rescueRow .r{font-size:12px;color:var(--sub);}
 .rescueRow button{background:var(--chip);border:none;border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;}
 .emptyState{text-align:center;color:var(--sub);padding:40px 20px;font-size:14px;}
+.progressSummary{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center;margin-bottom:18px;box-shadow:var(--shadow);}
+.progressSummary .big{font-size:30px;font-weight:800;color:var(--accent2);}
+.progressSummary .sub{font-size:12px;color:var(--sub);margin-top:2px;}
+.progressGroup{margin-bottom:20px;}
+.progressGroupHead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+.progressGroupHead .t{font-size:14px;font-weight:700;}
+.progressGroupHead .c{font-size:12px;color:var(--sub);}
+.progressBarOuter{height:6px;background:var(--chip);border-radius:3px;overflow:hidden;margin-bottom:10px;}
+.progressBarInner{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:3px;transition:width .5s ease;}
+.progressRow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:7px;cursor:pointer;box-shadow:var(--shadow);}
+.progressRow.mastered{border-color:var(--accent2);}
+.progressRow .rowLabel{font-size:13px;font-weight:600;flex:1;min-width:0;}
+.toggleSwitch{width:44px;height:25px;border-radius:14px;background:var(--border);position:relative;flex:0 0 auto;transition:background .3s;}
+.toggleSwitch.on{background:var(--accent2);}
+.toggleSwitch .knob{position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .3s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:center;font-size:12px;}
+.toggleSwitch.on .knob{left:21px;}
+@keyframes masteryPop{0%{transform:scale(.4) rotate(-20deg);opacity:0;}55%{transform:scale(1.25) rotate(8deg);opacity:1;}100%{transform:scale(1) rotate(0);opacity:1;}}
+.toggleSwitch.justMastered{animation:masteryPop .55s cubic-bezier(.34,1.56,.64,1);}
+.masteryCelebrate{text-align:center;padding:14px 0 4px;}
+@keyframes trophyPop{0%{transform:scale(0) rotate(-30deg);opacity:0;}50%{transform:scale(1.3) rotate(10deg);opacity:1;}75%{transform:scale(.92) rotate(-4deg);}100%{transform:scale(1) rotate(0);opacity:1;}}
+.masteryCelebrate .trophy{font-size:64px;display:inline-block;animation:trophyPop .7s cubic-bezier(.34,1.56,.64,1);}
+@keyframes celebrateGlow{0%,100%{box-shadow:0 0 0 0 rgba(47,143,122,.35);}50%{box-shadow:0 0 0 14px rgba(47,143,122,0);}}
+.masteryCelebrate .glowRing{display:inline-flex;align-items:center;justify-content:center;width:96px;height:96px;border-radius:50%;background:var(--warnBg);animation:celebrateGlow 1.6s ease-out 1;}
+.masteryCelebrate .title{font-size:19px;font-weight:800;margin-top:12px;}
+.masteryCelebrate .sub{font-size:13px;color:var(--sub);margin-top:4px;}
 .phoneBox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;text-align:center;}
 .phoneBox input{width:100%;font-size:22px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);letter-spacing:2px;}
 .phoneBox .out{margin-top:14px;font-size:18px;line-height:1.8;}
@@ -165,11 +190,11 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
     <div id="learnList"></div>
   </section>
 
-  <!-- 情境對話 -->
-  <section class="view" id="view-dialogue">
-    <h2 class="sect">🎬 情境對話拆解</h2>
-    <div class="catchips" id="sceneChips"></div>
-    <div id="dialogueList"></div>
+  <!-- 學習進度目錄 -->
+  <section class="view" id="view-progress">
+    <h2 class="sect">📋 學習進度</h2>
+    <div class="section-intro">每個小分類都能挑戰一次「全對測驗」，全部答對才會解鎖打勾，重考不會取消已解鎖的項目。</div>
+    <div id="progressList"></div>
   </section>
 
   <!-- 急救卡 -->
@@ -191,7 +216,7 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 
 <nav class="tabbar">
   <button data-view="home" class="active"><span class="ic">🏠</span>首頁</button>
-  <button data-view="dialogue"><span class="ic">🎬</span>情境例句</button>
+  <button data-view="progress"><span class="ic">📋</span>學習進度</button>
   <button data-view="rescue"><span class="ic">🆘</span>急救卡</button>
   <button data-view="me"><span class="ic">⭐</span>我的</button>
 </nav>
@@ -4695,71 +4720,6 @@ const SCENES = [
   {id:'station',emoji:'🚃',title:'車站',tool:'train'},
 ];
 
-/* 情境對話（逐字拆解）*/
-const DIALOGUES = [
-  {sceneId:'store', title:'🏪 便利商店結帳', lines:[
-    {sp:'店員', jp:'お会計は580円です。', cn:'結帳金額是580日圓。', segs:[
-      {t:'お会計',r:'おかいけい',m:'結帳／帳單'},{t:'は',r:'は',m:'助詞・主題標記'},{t:'580円',r:'ごひゃくはちじゅうえん',m:'580日圓'},{t:'です',r:'です',m:'禮貌句尾「是」'}
-    ]},
-  ]},
-  {sceneId:'drug', title:'🛍️ 藥妝店結帳', lines:[
-    {sp:'店員', jp:'1,580円です。', cn:'1,580日圓。', segs:[
-      {t:'せん',r:'せん',m:'1,000'},{t:'ごひゃく',r:'ごひゃく',m:'500'},{t:'はちじゅう',r:'はちじゅう',m:'80'},{t:'えん',r:'えん',m:'日圓'},{t:'です',r:'です',m:'禮貌句尾'}
-    ]},
-  ]},
-  {sceneId:'ramen', title:'🍜 拉麵店結帳', lines:[
-    {sp:'店員', jp:'お会計は980円です。', cn:'結帳是980日圓。', segs:[
-      {t:'お会計',r:'おかいけい',m:'結帳'},{t:'は',r:'は',m:'助詞'},{t:'980円',r:'きゅうひゃくはちじゅうえん',m:'980日圓'},{t:'です',r:'です',m:'禮貌句尾'}
-    ]},
-  ]},
-  {sceneId:'vending', title:'🥤 自動販賣機', lines:[
-    {sp:'標示', jp:'この飲み物は150円です。', cn:'這個飲料150日圓。', segs:[
-      {t:'この',r:'この',m:'這個'},{t:'飲み物',r:'のみもの',m:'飲料'},{t:'は',r:'は',m:'助詞'},{t:'150円',r:'ひゃくごじゅうえん',m:'150日圓'},{t:'です',r:'です',m:'禮貌句尾'}
-    ]},
-  ]},
-  {sceneId:'restaurant', title:'🍣 餐廳帶位', lines:[
-    {sp:'店員', jp:'何名様ですか？', cn:'請問幾位？', segs:[
-      {t:'何名様',r:'なんめいさま',m:'幾位（敬語）'},{t:'ですか',r:'ですか',m:'是…嗎？'}
-    ]},
-    {sp:'你', jp:'二人です。', cn:'兩位。', segs:[
-      {t:'二人',r:'ふたり',m:'兩人'},{t:'です',r:'です',m:'禮貌句尾'}
-    ]},
-    {sp:'店員', jp:'3時に会いましょう。', cn:'3點見。', segs:[
-      {t:'3時',r:'さんじ',m:'3點'},{t:'に',r:'に',m:'助詞（時間點）'},{t:'会いましょう',r:'あいましょう',m:'一起見面吧'}
-    ]},
-  ]},
-  {sceneId:'hotel', title:'🏨 飯店櫃檯', lines:[
-    {sp:'櫃檯', jp:'お部屋は305号室です。', cn:'您的房間是305號。', segs:[
-      {t:'お部屋',r:'おへや',m:'房間'},{t:'は',r:'は',m:'助詞'},{t:'305号室',r:'さんびゃくごごうしつ',m:'305號房'},{t:'です',r:'です',m:'禮貌句尾'}
-    ]},
-    {sp:'你', jp:'部屋番号は何番ですか？', cn:'房間號碼是多少？', segs:[
-      {t:'部屋番号',r:'へやばんごう',m:'房間號碼'},{t:'は',r:'は',m:'助詞'},{t:'何番',r:'なんばん',m:'幾號'},{t:'ですか',r:'ですか',m:'是…嗎？'}
-    ]},
-  ]},
-  {sceneId:'station', title:'🚃 車站找月台', lines:[
-    {sp:'廣播', jp:'大阪駅の3番線です。', cn:'大阪車站的3號月台。', segs:[
-      {t:'大阪駅',r:'おおさかえき',m:'大阪車站'},{t:'の',r:'の',m:'助詞（的）'},{t:'3番線',r:'さんばんせん',m:'3號月台'},{t:'です',r:'です',m:'禮貌句尾'}
-    ]},
-    {sp:'你', jp:'東京行きは何番線ですか？', cn:'前往東京的車是幾號月台？', segs:[
-      {t:'東京行き',r:'とうきょういき',m:'往東京'},{t:'は',r:'は',m:'助詞'},{t:'何番線',r:'なんばんせん',m:'幾號月台'},{t:'ですか',r:'ですか',m:'是…嗎？'}
-    ]},
-  ]},
-  {sceneId:'phone_date', title:'📞📅 電話與日期', lines:[
-    {sp:'店員', jp:'電話番号をお願いします。', cn:'請告訴我電話號碼。', segs:[
-      {t:'電話番号',r:'でんわばんごう',m:'電話號碼'},{t:'を',r:'を',m:'助詞（受詞標記）'},{t:'お願いします',r:'おねがいします',m:'麻煩您了'}
-    ]},
-    {sp:'標示', jp:'8月20日です。', cn:'8月20日。', segs:[
-      {t:'8月',r:'はちがつ',m:'8月'},{t:'20日',r:'はつか',m:'20日（不規則）'},{t:'です',r:'です',m:'禮貌句尾'}
-    ]},
-  ]},
-];
-
-/* 腦袋當機卡 */
-const BRAIN_CARDS = [
-  {jp:'せんごひゃくはちじゅうえんです。', steps:[['せん','1,000'],['ごひゃく','500'],['はちじゅう','80'],['えん','日圓']], total:'1,000 + 500 + 80 = 1,580円'},
-  {jp:'にせんきゅうひゃくはちじゅうえんです。', steps:[['にせん','2,000'],['きゅうひゃく','900'],['はちじゅう','80'],['えん','日圓']], total:'2,000 + 900 + 80 = 2,980円'},
-];
-
 /* 急救卡內容 */
 const RESCUE = {
   '💰 價格': MONEY_LIST.filter(m=>[110,500,1000,1580,2980].includes(Number(m.id.split('_')[1]))),
@@ -4785,6 +4745,16 @@ function recordMistake(item){
   if(!m[item.id]) m[item.id] = {item, count:0};
   m[item.id].count++;
   localStorage.setItem(LS_MIS, JSON.stringify(m));
+}
+
+/* 學習進度（每個小分類的「全對測驗」解鎖狀態），一旦解鎖就不會因為重考而取消 */
+const LS_MASTERY = 'jp_survival_mastery';
+function getMastery(){ return JSON.parse(localStorage.getItem(LS_MASTERY)||'{}'); }
+function isMastered(id){ return !!getMastery()[id]; }
+function setMastered(id){
+  const m = getMastery();
+  if(!m[id]) m[id] = Date.now();
+  localStorage.setItem(LS_MASTERY, JSON.stringify(m));
 }
 
 /* ============ 4. TTS ============ */
@@ -4819,7 +4789,7 @@ function switchView(v){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
   document.querySelectorAll('nav.tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.view===v));
-  if(v==='dialogue') renderDialogueView();
+  if(v==='progress') renderProgressView();
   if(v==='rescue') renderRescue();
   if(v==='me') renderMe();
   if(v==='learn'){ const mpw = document.getElementById('moneyPhraseWrap'); if(mpw) mpw.innerHTML=''; }
@@ -7185,65 +7155,6 @@ function openSheet(item){
 function closeSheet(){ document.getElementById('overlay').classList.remove('show'); }
 document.getElementById('overlay').addEventListener('click', (e)=>{ if(e.target.id==='overlay') closeSheet(); });
 
-/* ============ 8. 情境對話 ============ */
-function renderDialogueView(){
-  const chips = document.getElementById('sceneChips');
-  chips.innerHTML = `<div class="chip active" data-s="all">全部</div>` + SCENES.map(s=>`<div class="chip" data-s="${s.id}">${s.emoji} ${s.title}</div>`).join('');
-  chips.querySelectorAll('.chip').forEach(c=>{
-    c.addEventListener('click', ()=>{
-      chips.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
-      c.classList.add('active');
-      renderDialogueList(c.dataset.s);
-    });
-  });
-  renderDialogueList('all');
-}
-function renderDialogueList(filter){
-  const dlgs = DIALOGUES.filter(d=> filter==='all' || d.sceneId===filter || (filter==='phone_date'&&d.sceneId==='phone_date'));
-  const list = document.getElementById('dialogueList');
-  list.innerHTML = dlgs.map(d=>`
-    <h3 style="font-size:14px;color:var(--sub);margin:16px 0 8px;">${d.title}</h3>
-    ${d.lines.map((ln,li)=>`
-      <div class="dialogueLine" data-dlg="${d.title}" data-li="${li}">
-        <div class="speaker">${ln.sp}</div>
-        <div class="sent">${ln.segs.map((s,si)=>`<span class="tok" data-si="${si}">${rb(s.t)}</span>`).join('')}</div>
-        <div class="cn">${ln.cn}</div>
-        <div class="tts">
-          <button data-full="1">🔊 整句</button>
-          <button data-full="1" data-rate="0.5">🐢 慢速</button>
-        </div>
-      </div>
-    `).join('')}
-  `).join('') || '<div class="emptyState">這個情境目前還沒有例句，先看看其他情境吧！</div>';
-
-  list.querySelectorAll('.dialogueLine').forEach(el=>{
-    const d = dlgs.find(x=>x.title===el.dataset.dlg);
-    const ln = d.lines[Number(el.dataset.li)];
-    el.querySelectorAll('.tok').forEach(tok=>{
-      tok.addEventListener('click', ()=>{
-        const seg = ln.segs[Number(tok.dataset.si)];
-        openSegSheet(seg);
-      });
-    });
-    el.querySelectorAll('[data-full]').forEach(btn=>{
-      btn.addEventListener('click', ()=>speak(ln.jp, btn.dataset.rate?Number(btn.dataset.rate):1.0));
-    });
-  });
-
-  // 腦袋當機卡插入
-  if(filter==='all'){
-    const brainHtml = BRAIN_CARDS.map(b=>`
-      <div class="brainCard">
-        <div class="q">😭 腦袋當機：「${rb(b.jp)}」</div>
-        <div class="steps">${b.steps.map(([t,m])=>`<div>🧠 ${t} → ${m}</div>`).join('')}</div>
-        <div style="margin-top:8px;font-weight:700;">💡 ${b.total}</div>
-        <div class="playrow"><button data-brain="${b.jp}">🎉 再聽一次</button></div>
-      </div>
-    `).join('');
-    list.insertAdjacentHTML('afterbegin', `<h3 style="font-size:14px;color:var(--sub);margin:0 0 8px;">😭 真實旅遊腦袋當機練習</h3>${brainHtml}`);
-    list.querySelectorAll('[data-brain]').forEach(b=>b.addEventListener('click',()=>speak(b.dataset.brain,0.8)));
-  }
-}
 function openSegSheet(seg){
   const overlay = document.getElementById('overlay');
   const sheet = document.getElementById('sheetContent');
@@ -7345,6 +7256,173 @@ function renderTopicQuizToggle(pool, label, containerId){
     if(inner.dataset.open==='1'){ inner.innerHTML=''; inner.dataset.open='0'; return; }
     inner.dataset.open='1';
     mountQuiz(inner, pool);
+  });
+}
+
+/* ============ 9. 學習進度目錄（每個小分類的「全對測驗」挑戰） ============ */
+/* 把X_CATEGORIES風格（items:[{jp,reading,cn,header?}]）的某一分類，轉成測驗題庫格式 {id,display,hira} */
+function vocabCategoryPool(categories, catIdx, prefix){
+  const c = categories[catIdx];
+  const pool = [];
+  c.items.forEach((it,j)=>{
+    if(it.header || !it.jp) return;
+    pool.push({id:`${prefix}_${catIdx}_${j}`, display: it.jp, hira: it.reading});
+  });
+  return pool;
+}
+/* 把PHRASE_CATEGORIES／TRIP_CATEGORIES風格（items:[{id,jp,cn,romaji}]）轉成測驗題庫格式（看中文選日文） */
+function phraseCategoryPool(categories, catIdx){
+  const c = categories[catIdx];
+  return c.items.map(it=>({id:it.id, display: it.jp, hira: it.jp}));
+}
+
+const MASTERY_GROUPS = [
+  {label:'🍽️ 日本美食', units: FOOD_CATEGORIES.map((c,i)=>({id:`food_${i}`, title:c.title, pool:()=>vocabCategoryPool(FOOD_CATEGORIES,i,'food')}))},
+  {label:'⛷️ 雪場打工', units: SKI_CATEGORIES.map((c,i)=>({id:`ski_${i}`, title:c.title, pool:()=>vocabCategoryPool(SKI_CATEGORIES,i,'ski')}))},
+  {label:'🏨 飯店', units: HOTEL_CATEGORIES.map((c,i)=>({id:`hotel_${i}`, title:c.title, pool:()=>vocabCategoryPool(HOTEL_CATEGORIES,i,'hotel')}))},
+  {label:'🚃 車站', units: STATION_CATEGORIES.map((c,i)=>({id:`station_${i}`, title:c.title, pool:()=>vocabCategoryPool(STATION_CATEGORIES,i,'station')}))},
+  {label:'🛍️ 藥妝店', units: DRUG_CATEGORIES.map((c,i)=>({id:`drug_${i}`, title:c.title, pool:()=>vocabCategoryPool(DRUG_CATEGORIES,i,'drug')}))},
+  {label:'🥤 自動販賣機', units: VENDING_CATEGORIES.map((c,i)=>({id:`vending_${i}`, title:c.title, pool:()=>vocabCategoryPool(VENDING_CATEGORIES,i,'vending')}))},
+  {label:'💰 金額實用短句', units: MONEY_CATEGORIES.map((c,i)=>({id:`moneyp_${i}`, title:c.title, pool:()=>vocabCategoryPool(MONEY_CATEGORIES,i,'moneyp')}))},
+  {label:'🗣️ 生活日語會話', units: LIFE_CATEGORIES.map((c,i)=>({id:`life_${i}`, title:c.title, pool:()=>vocabCategoryPool(LIFE_CATEGORIES,i,'life')}))},
+  {label:'📗 N5 基礎單字', units: N5_CATEGORIES.map((c,i)=>({id:`n5_${i}`, title:c.title, pool:()=>vocabCategoryPool(N5_CATEGORIES,i,'n5')}))},
+  {label:'🗣️ 旅遊短句', units: PHRASE_CATEGORIES.map((c,i)=>({id:`phrase_${i}`, title:c.title, pool:()=>phraseCategoryPool(PHRASE_CATEGORIES,i)}))},
+  {label:'📍 這趟行程專屬', units: TRIP_CATEGORIES.map((c,i)=>({id:`trip_${i}`, title:c.title, pool:()=>phraseCategoryPool(TRIP_CATEGORIES,i)}))},
+  {label:'📚 依主題學習', units: [
+    {id:'cat_time', title:CATEGORIES.time.title, pool:()=>CATEGORIES.time.items},
+    {id:'cat_date', title:CATEGORIES.date.title, pool:()=>CATEGORIES.date.items},
+    {id:'cat_weekday', title:CATEGORIES.weekday.title, pool:()=>CATEGORIES.weekday.items},
+    {id:'cat_people', title:CATEGORIES.people.title, pool:()=>CATEGORIES.people.items},
+    {id:'cat_floor', title:CATEGORIES.floor.title, pool:()=>CATEGORIES.floor.items},
+    {id:'cat_train', title:CATEGORIES.train.title, pool:()=>CATEGORIES.train.items},
+    {id:'cat_room', title:CATEGORIES.room.title, pool:()=>CATEGORIES.room.items},
+  ]},
+];
+
+/* 挑戰模式：把題庫裡每一題都出過一次（洗牌、不重複），全對才算解鎖，重考失敗不會取消已解鎖狀態 */
+function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange){
+  const order = [...pool].sort(()=>Math.random()-0.5);
+  let idx = 0, wrong = 0;
+  function draw(){
+    if(idx >= order.length){
+      if(wrong===0){
+        const wasNew = !isMastered(unitId);
+        setMastered(unitId);
+        sheet.innerHTML = `
+          <div class="masteryCelebrate">
+            <div class="glowRing"><span class="trophy">🏆</span></div>
+            <div class="title">全部答對！</div>
+            <div class="sub">「${unitLabel}」${wasNew?'已解鎖 ✓':'再次全對 ✓'}</div>
+          </div>
+          <button class="closeSheet" id="closeSheetBtn">關閉</button>`;
+        document.getElementById('closeSheetBtn').addEventListener('click', ()=>{ closeSheet(); if(onChange) onChange(); });
+      } else {
+        sheet.innerHTML = `
+          <div class="masteryCelebrate">
+            <div style="font-size:48px;">😅</div>
+            <div class="title">這次錯了 ${wrong} 題</div>
+            <div class="sub">全部答對才會解鎖，再試一次！</div>
+          </div>
+          <div class="playrow"><button class="ghost" id="retryBtn">🔄 重新挑戰</button></div>
+          <button class="closeSheet" id="closeSheetBtn">關閉</button>`;
+        document.getElementById('retryBtn').addEventListener('click', ()=>mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange));
+        document.getElementById('closeSheetBtn').addEventListener('click', closeSheet);
+      }
+      return;
+    }
+    const item = order[idx];
+    const distractors = randPick(pool, 3, item.id);
+    const options = [item, ...distractors].sort(()=>Math.random()-0.5);
+    sheet.innerHTML = `
+      <div style="text-align:center;color:var(--sub);font-size:12px;margin-bottom:6px;">第 ${idx+1} / ${order.length} 題・已錯 ${wrong} 題</div>
+      <div class="progressBarOuter"><div class="progressBarInner" style="width:${(idx/order.length)*100}%;"></div></div>
+      <div class="qCard">
+        <div style="text-align:center;color:var(--sub);font-size:13px;">請選出正確答案</div>
+        <div class="qPrompt">「${item.hira}」</div>
+        <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${rb(o.display)}</button>`).join('')}</div>
+        <div class="qFeedback" id="qFeedback"></div>
+        <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
+      </div>`;
+    sheet.querySelectorAll('.qOptions button').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const correct = b.dataset.id===item.id;
+        b.classList.add(correct?'correct':'wrong');
+        sheet.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）';
+        speak(item.hira, 0.9);
+        if(!correct) wrong++;
+        sheet.querySelectorAll('.qOptions button').forEach(x=>x.disabled=true);
+        sheet.querySelector('#qNext').style.display='inline-block';
+      });
+    });
+    sheet.querySelector('#qNext').addEventListener('click', ()=>{ idx++; draw(); });
+  }
+  draw();
+}
+
+function openMasteryChallenge(unit, onChange){
+  const pool = unit.pool();
+  const overlay = document.getElementById('overlay');
+  const sheet = document.getElementById('sheetContent');
+  if(!pool || pool.length<4){
+    sheet.innerHTML = `<div class="emptyState">這個分類項目太少（至少需要4筆才能出選擇題）。</div><button class="closeSheet" id="closeSheetBtn">關閉</button>`;
+    document.getElementById('closeSheetBtn').addEventListener('click', closeSheet);
+    overlay.classList.add('show');
+    return;
+  }
+  overlay.classList.add('show');
+  mountMasteryChallenge(sheet, pool, unit.id, unit.title.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱🆘⭐]\s*/,''), onChange);
+}
+
+function renderProgressView(){
+  const list = document.getElementById('progressList');
+  const mastery = getMastery();
+  let totalUnits=0, totalMastered=0;
+  MASTERY_GROUPS.forEach(g=>g.units.forEach(u=>{ totalUnits++; if(mastery[u.id]) totalMastered++; }));
+  list.innerHTML = `
+    <div class="progressSummary">
+      <div class="big">${totalMastered} / ${totalUnits}</div>
+      <div class="sub">已解鎖的分類數・全對挑戰才會打勾</div>
+    </div>
+    ${MASTERY_GROUPS.map((g,gi)=>{
+      const done = g.units.filter(u=>mastery[u.id]).length;
+      return `
+      <div class="progressGroup">
+        <div class="progressGroupHead"><div class="t">${g.label}</div><div class="c">${done} / ${g.units.length}</div></div>
+        <div class="progressBarOuter"><div class="progressBarInner" style="width:${g.units.length?(done/g.units.length*100):0}%;"></div></div>
+        <div data-gidx="${gi}">
+          ${g.units.map((u,ui)=>`
+            <div class="progressRow${mastery[u.id]?' mastered':''}" data-gidx="${gi}" data-uidx="${ui}">
+              <div class="rowLabel">${u.title}</div>
+              <div class="toggleSwitch${mastery[u.id]?' on':''}"><div class="knob">${mastery[u.id]?'✓':''}</div></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+  list.querySelectorAll('.progressRow').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const g = MASTERY_GROUPS[Number(row.dataset.gidx)];
+      const u = g.units[Number(row.dataset.uidx)];
+      const wasMastered = isMastered(u.id);
+      openMasteryChallenge(u, ()=>{
+        if(!wasMastered && isMastered(u.id)){
+          row.classList.add('mastered');
+          const sw = row.querySelector('.toggleSwitch');
+          sw.classList.add('on','justMastered');
+          sw.querySelector('.knob').textContent = '✓';
+          const head = row.closest('.progressGroup').querySelector('.c');
+          const bar = row.closest('.progressGroup').querySelector('.progressBarInner');
+          const gUnits = g.units.length;
+          const gDone = g.units.filter(x=>isMastered(x.id)).length;
+          head.textContent = `${gDone} / ${gUnits}`;
+          bar.style.width = (gDone/gUnits*100)+'%';
+          const summaryBig = document.querySelector('.progressSummary .big');
+          const [doneAll, totalAll] = summaryBig.textContent.split('/').map(s=>Number(s.trim()));
+          summaryBig.textContent = `${doneAll+1} / ${totalAll}`;
+        }
+      });
+    });
   });
 }
 
