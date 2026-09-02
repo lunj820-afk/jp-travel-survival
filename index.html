@@ -5974,9 +5974,14 @@ function jpRuby(name, reading){
   return `<ruby>${name}<rt>${reading}</rt></ruby>`;
 }
 
-/* Google地圖連結：用「站名＋駅＋城市」查詢，city可省略（例如搜尋結果已跨城市時仍帶上該站所屬城市） */
+/* 畫面上用繁體中文城市名（神戶／橫濱），但Google地圖查詢要用日文正確漢字（神戸／横浜），
+   否則「戶」≠「戸」、「橫濱」≠「横浜」，地圖會查不到結果 */
+const SUBWAY_CITY_JP_NAME = {'東京':'東京','大阪':'大阪','名古屋':'名古屋','京都':'京都','神戶':'神戸','福岡':'福岡','橫濱':'横浜','札幌':'札幌','仙台':'仙台'};
+
+/* Google地圖連結：用「站名＋駅＋城市（日文漢字）」查詢，city可省略（例如搜尋結果已跨城市時仍帶上該站所屬城市） */
 function mapLinkHTML(name, city){
-  const q = encodeURIComponent(`${name}駅 ${city||''}`.trim());
+  const cityJp = SUBWAY_CITY_JP_NAME[city] || city || '';
+  const q = encodeURIComponent(`${name}駅 ${cityJp}`.trim());
   return `<a class="mapLink" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener" data-mapstop="1">📍</a>`;
 }
 /* 讓地圖連結的點擊不要一併觸發外層卡片的「唸讀音」事件 */
