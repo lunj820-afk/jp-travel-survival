@@ -7318,6 +7318,7 @@ function mountQuiz(container, pool){
         const correct = b.dataset.id===item.id;
         b.classList.add(correct?'correct':'wrong');
         cardEl.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）';
+        if(mode==='read') speak(item.hira, 0.9);
         if(!correct) recordMistake(item);
         cardEl.querySelectorAll('.qOptions button').forEach(x=>x.disabled=true);
         cardEl.querySelector('#qNext').style.display='inline-block';
