@@ -7356,6 +7356,7 @@ const MASTERY_GROUPS = [
   {label:'📗 N5 基礎單字', units: N5_CATEGORIES.map((c,i)=>({id:`n5_${i}`, title:c.title, pool:()=>vocabCategoryPool(N5_CATEGORIES,i,'n5')}))},
   {label:'🗣️ 旅遊短句', units: PHRASE_CATEGORIES.map((c,i)=>({id:`phrase_${i}`, title:c.title, pool:()=>phraseCategoryPool(PHRASE_CATEGORIES,i)}))},
   {label:'📍 這趟行程專屬', units: TRIP_CATEGORIES.map((c,i)=>({id:`trip_${i}`, title:c.title, pool:()=>phraseCategoryPool(TRIP_CATEGORIES,i)}))},
+  {label:'🗨️ 情境問答', units: SCENARIO_QA.map((c,i)=>({id:`qa_${i}`, title:c.title, pool:()=>phraseCategoryPool(SCENARIO_QA,i)}))},
   {label:'📚 依主題學習', units: [
     {id:'cat_time', title:CATEGORIES.time.title, pool:()=>CATEGORIES.time.items},
     {id:'cat_date', title:CATEGORIES.date.title, pool:()=>CATEGORIES.date.items},
