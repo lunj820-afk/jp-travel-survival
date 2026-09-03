@@ -105,7 +105,9 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 .brainCard .q{font-size:15px;font-weight:700;}
 .brainCard .steps div{margin-top:6px;font-size:14px;}
 .quizModeRow{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px;}
-.qCard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow);}
+.qCard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow);position:relative;}
+.qCard .star{position:absolute;top:12px;right:14px;font-size:18px;background:none;border:none;cursor:pointer;color:var(--sub);}
+.qCard .star.on{color:var(--warn);}
 .qPrompt{font-size:20px;font-weight:800;text-align:center;margin:10px 0 18px;}
 .qOptions{display:grid;gap:10px;}
 .qOptions button{padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--chip);font-size:15px;cursor:pointer;text-align:left;}
@@ -7270,9 +7272,11 @@ function mountQuiz(container, pool){
     const item = pool[Math.floor(Math.random()*pool.length)];
     const distractors = randPick(pool,3,item.id);
     const options = [item,...distractors].sort(()=>Math.random()-0.5);
+    const starBtn = `<button class="star ${isFav(item.id)?'on':''}" id="qStar">${isFav(item.id)?'★':'☆'}</button>`;
     if(mode==='listen'){
       cardEl.innerHTML = `
         <div class="qCard">
+          ${starBtn}
           <div style="text-align:center;color:var(--sub);font-size:13px;">🎧 聽發音，選出正確答案</div>
           <div class="playrow"><button id="qPlay">🔊 播放</button></div>
           <div class="qOptions" style="margin-top:16px;">${options.map(o=>`<button data-id="${o.id}">${rb(o.display)}</button>`).join('')}</div>
@@ -7284,21 +7288,34 @@ function mountQuiz(container, pool){
     } else {
       cardEl.innerHTML = `
         <div class="qCard">
+          ${starBtn}
           <div style="text-align:center;color:var(--sub);font-size:13px;">請選出正確答案</div>
           <div class="qPrompt">「${item.hira}」</div>
-          <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${rb(o.display)}</button>`).join('')}</div>
+          <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
           <div class="qFeedback" id="qFeedback"></div>
           <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
         </div>`;
     }
+    cardEl.querySelector('#qStar').addEventListener('click', (e)=>{
+      const on = toggleFav(item);
+      e.currentTarget.textContent = on?'★':'☆';
+      e.currentTarget.classList.toggle('on', on);
+    });
+    let answered = false;
     cardEl.querySelectorAll('.qOptions button').forEach(b=>{
       b.addEventListener('click', ()=>{
+        const opt = options.find(o=>o.id===b.dataset.id);
+        speak(opt.hira, 0.9);
+        if(answered) return;
+        answered = true;
         const correct = b.dataset.id===item.id;
         b.classList.add(correct?'correct':'wrong');
-        cardEl.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）';
-        if(mode==='read') speak(item.hira, 0.9);
-        if(!correct) recordMistake(item);
-        cardEl.querySelectorAll('.qOptions button').forEach(x=>x.disabled=true);
+        if(!correct){
+          const correctBtn = cardEl.querySelector(`.qOptions button[data-id="${item.id}"]`);
+          if(correctBtn) correctBtn.classList.add('correct');
+          recordMistake(item);
+        }
+        cardEl.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）點其他選項可以重複聽發音';
         cardEl.querySelector('#qNext').style.display='inline-block';
       });
     });
@@ -7402,24 +7419,39 @@ function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange){
     const item = order[idx];
     const distractors = randPick(pool, 3, item.id);
     const options = [item, ...distractors].sort(()=>Math.random()-0.5);
+    const starBtn = `<button class="star ${isFav(item.id)?'on':''}" id="qStar">${isFav(item.id)?'★':'☆'}</button>`;
     sheet.innerHTML = `
       <div style="text-align:center;color:var(--sub);font-size:12px;margin-bottom:6px;">第 ${idx+1} / ${order.length} 題・已錯 ${wrong} 題</div>
       <div class="progressBarOuter"><div class="progressBarInner" style="width:${(idx/order.length)*100}%;"></div></div>
       <div class="qCard">
+        ${starBtn}
         <div style="text-align:center;color:var(--sub);font-size:13px;">請選出正確答案</div>
         <div class="qPrompt">「${item.hira}」</div>
-        <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${rb(o.display)}</button>`).join('')}</div>
+        <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
         <div class="qFeedback" id="qFeedback"></div>
         <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
       </div>`;
+    sheet.querySelector('#qStar').addEventListener('click', (e)=>{
+      const on = toggleFav(item);
+      e.currentTarget.textContent = on?'★':'☆';
+      e.currentTarget.classList.toggle('on', on);
+    });
+    let answered = false;
     sheet.querySelectorAll('.qOptions button').forEach(b=>{
       b.addEventListener('click', ()=>{
+        const opt = options.find(o=>o.id===b.dataset.id);
+        speak(opt.hira, 0.9);
+        if(answered) return;
+        answered = true;
         const correct = b.dataset.id===item.id;
         b.classList.add(correct?'correct':'wrong');
-        sheet.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）';
-        speak(item.hira, 0.9);
-        if(!correct) wrong++;
-        sheet.querySelectorAll('.qOptions button').forEach(x=>x.disabled=true);
+        if(!correct){
+          const correctBtn = sheet.querySelector(`.qOptions button[data-id="${item.id}"]`);
+          if(correctBtn) correctBtn.classList.add('correct');
+          recordMistake(item);
+          wrong++;
+        }
+        sheet.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）點其他選項可以重複聽發音';
         sheet.querySelector('#qNext').style.display='inline-block';
       });
     });
