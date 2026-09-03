@@ -7351,6 +7351,7 @@ const MASTERY_GROUPS = [
   {label:'🛍️ 藥妝店', units: DRUG_CATEGORIES.map((c,i)=>({id:`drug_${i}`, title:c.title, pool:()=>vocabCategoryPool(DRUG_CATEGORIES,i,'drug')}))},
   {label:'🥤 自動販賣機', units: VENDING_CATEGORIES.map((c,i)=>({id:`vending_${i}`, title:c.title, pool:()=>vocabCategoryPool(VENDING_CATEGORIES,i,'vending')}))},
   {label:'💰 金額實用短句', units: MONEY_CATEGORIES.map((c,i)=>({id:`moneyp_${i}`, title:c.title, pool:()=>vocabCategoryPool(MONEY_CATEGORIES,i,'moneyp')}))},
+  {label:'💰 金額數字（依位數）', units: MONEY_MAGNITUDES.map(mag=>({id:`moneymag_${mag}`, title:`${mag.toLocaleString()} ~ ${(mag*10-1).toLocaleString()}`, pool:()=>MONEY_LIST.filter(it=>{ const v=Number(it.id.split('_')[1]); return v>=mag && v<mag*10; })}))},
   {label:'🗣️ 生活日語會話', units: LIFE_CATEGORIES.map((c,i)=>({id:`life_${i}`, title:c.title, pool:()=>vocabCategoryPool(LIFE_CATEGORIES,i,'life')}))},
   {label:'📗 N5 基礎單字', units: N5_CATEGORIES.map((c,i)=>({id:`n5_${i}`, title:c.title, pool:()=>vocabCategoryPool(N5_CATEGORIES,i,'n5')}))},
   {label:'🗣️ 旅遊短句', units: PHRASE_CATEGORIES.map((c,i)=>({id:`phrase_${i}`, title:c.title, pool:()=>phraseCategoryPool(PHRASE_CATEGORIES,i)}))},
