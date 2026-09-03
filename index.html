@@ -7440,34 +7440,28 @@ function openMasteryChallenge(unit, onChange){
   mountMasteryChallenge(sheet, pool, unit.id, unit.title.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱🆘⭐]\s*/,''), onChange);
 }
 
-function renderProgressView(){
-  const list = document.getElementById('progressList');
+function renderProgressGroups(idx){
+  PROGRESS_LAST_IDX = idx;
+  const inner = document.getElementById('progressGroupsInner');
   const mastery = getMastery();
-  let totalUnits=0, totalMastered=0;
-  MASTERY_GROUPS.forEach(g=>g.units.forEach(u=>{ totalUnits++; if(mastery[u.id]) totalMastered++; }));
-  list.innerHTML = `
-    <div class="progressSummary">
-      <div class="big">${totalMastered} / ${totalUnits}</div>
-      <div class="sub">已解鎖的分類數・全對挑戰才會打勾</div>
-    </div>
-    ${MASTERY_GROUPS.map((g,gi)=>{
-      const done = g.units.filter(u=>mastery[u.id]).length;
-      return `
-      <div class="progressGroup">
-        <div class="progressGroupHead"><div class="t">${g.label}</div><div class="c">${done} / ${g.units.length}</div></div>
-        <div class="progressBarOuter"><div class="progressBarInner" style="width:${g.units.length?(done/g.units.length*100):0}%;"></div></div>
-        <div data-gidx="${gi}">
-          ${g.units.map((u,ui)=>`
-            <div class="progressRow${mastery[u.id]?' mastered':''}" data-gidx="${gi}" data-uidx="${ui}">
-              <div class="rowLabel">${u.title}</div>
-              <div class="toggleSwitch${mastery[u.id]?' on':''}"><div class="knob">${mastery[u.id]?'✓':''}</div></div>
-            </div>
-          `).join('')}
-        </div>
-      </div>`;
-    }).join('')}
-  `;
-  list.querySelectorAll('.progressRow').forEach(row=>{
+  const targets = idx===-1 ? MASTERY_GROUPS.map((g,i)=>({g,i})) : [{g:MASTERY_GROUPS[idx], i:idx}];
+  inner.innerHTML = targets.map(({g,i})=>{
+    const done = g.units.filter(u=>mastery[u.id]).length;
+    return `
+    <div class="progressGroup">
+      <div class="progressGroupHead"><div class="t">${g.label}</div><div class="c">${done} / ${g.units.length}</div></div>
+      <div class="progressBarOuter"><div class="progressBarInner" style="width:${g.units.length?(done/g.units.length*100):0}%;"></div></div>
+      <div data-gidx="${i}">
+        ${g.units.map((u,ui)=>`
+          <div class="progressRow${mastery[u.id]?' mastered':''}" data-gidx="${i}" data-uidx="${ui}">
+            <div class="rowLabel">${u.title}</div>
+            <div class="toggleSwitch${mastery[u.id]?' on':''}"><div class="knob">${mastery[u.id]?'✓':''}</div></div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  inner.querySelectorAll('.progressRow').forEach(row=>{
     row.addEventListener('click', ()=>{
       const g = MASTERY_GROUPS[Number(row.dataset.gidx)];
       const u = g.units[Number(row.dataset.uidx)];
@@ -7491,6 +7485,30 @@ function renderProgressView(){
       });
     });
   });
+}
+
+let PROGRESS_LAST_IDX = 0;
+
+function renderProgressView(){
+  const list = document.getElementById('progressList');
+  const mastery = getMastery();
+  let totalUnits=0, totalMastered=0;
+  MASTERY_GROUPS.forEach(g=>g.units.forEach(u=>{ totalUnits++; if(mastery[u.id]) totalMastered++; }));
+  list.innerHTML = `
+    <div class="progressSummary">
+      <div class="big">${totalMastered} / ${totalUnits}</div>
+      <div class="sub">已解鎖的分類數・全對挑戰才會打勾</div>
+    </div>
+    <div class="catNavBar">
+      <div class="catchips chipsRow" id="progressChips"></div>
+      <select id="progressCatSelect"></select>
+    </div>
+    <div id="progressGroupsInner"></div>`;
+  const titles = MASTERY_GROUPS.map(g=>g.label);
+  mountChipRowNav(document.getElementById('progressChips'), document.getElementById('progressCatSelect'), titles, 0, (idx)=>{
+    renderProgressGroups(idx);
+  });
+  renderProgressGroups(0);
 }
 
 /* ============ 10. 急救卡 ============ */
