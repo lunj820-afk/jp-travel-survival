@@ -113,6 +113,7 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 .qOptions button{padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--chip);font-size:15px;cursor:pointer;text-align:left;}
 .qOptions button.correct{background:#d7f2e0;border-color:#2f8f7a;}
 .qOptions button.wrong{background:#fcdcd6;border-color:#e8604c;}
+.qOptCn{font-size:12px;color:var(--sub);margin-top:3px;font-weight:400;}
 .qInputRow{display:flex;gap:8px;margin-top:10px;}
 .qInputRow input{flex:1;font-size:18px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);}
 .qInputRow button{background:var(--btn);color:var(--btnText);border:none;border-radius:10px;padding:0 18px;font-weight:700;}
@@ -7273,13 +7274,14 @@ function mountQuiz(container, pool){
     const distractors = randPick(pool,3,item.id);
     const options = [item,...distractors].sort(()=>Math.random()-0.5);
     const starBtn = `<button class="star ${isFav(item.id)?'on':''}" id="qStar">${isFav(item.id)?'★':'☆'}</button>`;
+    const isPhrase = /[一-龯㐀-䶿]/.test(item.hira);
     if(mode==='listen'){
       cardEl.innerHTML = `
         <div class="qCard">
           ${starBtn}
           <div style="text-align:center;color:var(--sub);font-size:13px;">🎧 聽發音，選出正確答案</div>
           <div class="playrow"><button id="qPlay">🔊 播放</button></div>
-          <div class="qOptions" style="margin-top:16px;">${options.map(o=>`<button data-id="${o.id}">${rb(o.display)}</button>`).join('')}</div>
+          <div class="qOptions" style="margin-top:16px;">${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
           <div class="qFeedback" id="qFeedback"></div>
           <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
         </div>`;
@@ -7302,7 +7304,6 @@ function mountQuiz(container, pool){
       e.currentTarget.classList.toggle('on', on);
     });
     let answered = false;
-    const isPhrase = /[一-龯㐀-䶿]/.test(item.hira);
     cardEl.querySelectorAll('.qOptions button').forEach(b=>{
       b.addEventListener('click', ()=>{
         const opt = options.find(o=>o.id===b.dataset.id);
@@ -7316,14 +7317,14 @@ function mountQuiz(container, pool){
           if(correctBtn) correctBtn.classList.add('correct');
           recordMistake(item);
         }
-        /* 答案揭曉後才顯示假名／片假名（避免答題前用假名直接比對作弊），並補上中文意思 */
+        /* 答案揭曉後才顯示假名／片假名跟每個選項的中文意思（不論聽力或看讀音模式，答題前都不能先看到，避免直接比對作弊） */
         if(isPhrase){
           const promptEl = cardEl.querySelector('.qPrompt');
           if(promptEl) promptEl.innerHTML = `「${rb(item.hira)}」`;
         } else {
           cardEl.querySelectorAll('.qOptions button').forEach(btn=>{
             const o = options.find(x=>x.id===btn.dataset.id);
-            btn.innerHTML = rb(o.display);
+            btn.innerHTML = `${rb(o.display)}${o.cn?`<div class="qOptCn">${o.cn}</div>`:''}`;
           });
         }
         const meaning = isPhrase ? item.display : item.cn;
@@ -7401,9 +7402,10 @@ const MASTERY_GROUPS = [
 ];
 
 /* 挑戰模式：把題庫裡每一題都出過一次（洗牌、不重複），全對才算解鎖，重考失敗不會取消已解鎖狀態 */
-function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange){
+function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange, startMode){
   const order = [...pool].sort(()=>Math.random()-0.5);
   let idx = 0, wrong = 0;
+  let mode = startMode || 'listen';
   function draw(){
     if(idx >= order.length){
       if(wrong===0){
@@ -7426,7 +7428,7 @@ function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange){
           </div>
           <div class="playrow"><button class="ghost" id="retryBtn">🔄 重新挑戰</button></div>
           <button class="closeSheet" id="closeSheetBtn">關閉</button>`;
-        document.getElementById('retryBtn').addEventListener('click', ()=>mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange));
+        document.getElementById('retryBtn').addEventListener('click', ()=>mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange, mode));
         document.getElementById('closeSheetBtn').addEventListener('click', closeSheet);
       }
       return;
@@ -7435,24 +7437,43 @@ function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange){
     const distractors = randPick(pool, 3, item.id);
     const options = [item, ...distractors].sort(()=>Math.random()-0.5);
     const starBtn = `<button class="star ${isFav(item.id)?'on':''}" id="qStar">${isFav(item.id)?'★':'☆'}</button>`;
+    const isPhrase = /[一-龯㐀-䶿]/.test(item.hira);
+    const questionBlock = mode==='listen'
+      ? `<div style="text-align:center;color:var(--sub);font-size:13px;">🎧 聽發音，選出正確答案</div>
+         <div class="playrow"><button id="qPlay">🔊 播放</button></div>`
+      : `<div style="text-align:center;color:var(--sub);font-size:13px;">請選出正確答案</div>
+         <div class="qPrompt">「${item.hira}」</div>`;
     sheet.innerHTML = `
-      <div style="text-align:center;color:var(--sub);font-size:12px;margin-bottom:6px;">第 ${idx+1} / ${order.length} 題・已錯 ${wrong} 題</div>
+      <div class="quizModeRow" id="qmRow">
+        <div class="chip${mode==='listen'?' active':''}" data-m="listen">🎧 聽力選擇</div>
+        <div class="chip${mode==='read'?' active':''}" data-m="read">📖 看讀音選答案</div>
+      </div>
+      <div style="text-align:center;color:var(--sub);font-size:12px;margin:10px 0 6px;">第 ${idx+1} / ${order.length} 題・已錯 ${wrong} 題</div>
       <div class="progressBarOuter"><div class="progressBarInner" style="width:${(idx/order.length)*100}%;"></div></div>
       <div class="qCard">
         ${starBtn}
-        <div style="text-align:center;color:var(--sub);font-size:13px;">請選出正確答案</div>
-        <div class="qPrompt">「${item.hira}」</div>
-        <div class="qOptions">${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
+        ${questionBlock}
+        <div class="qOptions"${mode==='listen'?' style="margin-top:16px;"':''}>${options.map(o=>`<button data-id="${o.id}">${o.display}</button>`).join('')}</div>
         <div class="qFeedback" id="qFeedback"></div>
         <div class="playrow"><button class="ghost" id="qNext" style="display:none;">下一題 →</button></div>
       </div>`;
+    if(mode==='listen'){
+      sheet.querySelector('#qPlay').addEventListener('click',()=>speak(item.hira,0.9));
+      speak(item.hira,0.9);
+    }
+    sheet.querySelectorAll('#qmRow .chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        if(chip.dataset.m===mode) return;
+        mode = chip.dataset.m;
+        draw();
+      });
+    });
     sheet.querySelector('#qStar').addEventListener('click', (e)=>{
       const on = toggleFav(item);
       e.currentTarget.textContent = on?'★':'☆';
       e.currentTarget.classList.toggle('on', on);
     });
     let answered = false;
-    const isPhrase = /[一-龯㐀-䶿]/.test(item.hira);
     sheet.querySelectorAll('.qOptions button').forEach(b=>{
       b.addEventListener('click', ()=>{
         const opt = options.find(o=>o.id===b.dataset.id);
@@ -7467,14 +7488,14 @@ function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange){
           recordMistake(item);
           wrong++;
         }
-        /* 答案揭曉後才顯示假名／片假名（避免答題前用假名直接比對作弊），並補上中文意思 */
+        /* 答案揭曉後才顯示假名／片假名跟每個選項的中文意思（不論聽力或看讀音模式，答題前都不能先看到，避免直接比對作弊） */
         if(isPhrase){
           const promptEl = sheet.querySelector('.qPrompt');
           if(promptEl) promptEl.innerHTML = `「${rb(item.hira)}」`;
         } else {
           sheet.querySelectorAll('.qOptions button').forEach(btn=>{
             const o = options.find(x=>x.id===btn.dataset.id);
-            btn.innerHTML = rb(o.display);
+            btn.innerHTML = `${rb(o.display)}${o.cn?`<div class="qOptCn">${o.cn}</div>`:''}`;
           });
         }
         const meaning = isPhrase ? item.display : item.cn;
