@@ -5213,7 +5213,7 @@ function wireFoodCards(inner, idMap){
       speak(currentJp[id] || idMap[id].jp, 1.0);
     });
   });
-  return Object.keys(idMap).map(id=>({id, display: idMap[id].jp, hira: idMap[id].reading}));
+  return Object.keys(idMap).map(id=>({id, display: idMap[id].jp, hira: idMap[id].reading, cn: idMap[id].cn}));
 }
 
 function renderFoodCategoryList(idx){
@@ -7302,6 +7302,7 @@ function mountQuiz(container, pool){
       e.currentTarget.classList.toggle('on', on);
     });
     let answered = false;
+    const isPhrase = /[一-龯㐀-䶿]/.test(item.hira);
     cardEl.querySelectorAll('.qOptions button').forEach(b=>{
       b.addEventListener('click', ()=>{
         const opt = options.find(o=>o.id===b.dataset.id);
@@ -7315,7 +7316,21 @@ function mountQuiz(container, pool){
           if(correctBtn) correctBtn.classList.add('correct');
           recordMistake(item);
         }
-        cardEl.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）點其他選項可以重複聽發音';
+        /* 答案揭曉後才顯示假名／片假名（避免答題前用假名直接比對作弊），並補上中文意思 */
+        if(isPhrase){
+          const promptEl = cardEl.querySelector('.qPrompt');
+          if(promptEl) promptEl.innerHTML = `「${rb(item.hira)}」`;
+        } else {
+          cardEl.querySelectorAll('.qOptions button').forEach(btn=>{
+            const o = options.find(x=>x.id===btn.dataset.id);
+            btn.innerHTML = rb(o.display);
+          });
+        }
+        const meaning = isPhrase ? item.display : item.cn;
+        const feedbackMsg = correct
+          ? '🎉 正確！ '+item.hira + (meaning?'（'+meaning+'）':'')
+          : '❌ 正確答案：'+item.display+'（'+item.hira+'）' + (!isPhrase && meaning ? '（'+meaning+'）' : '');
+        cardEl.querySelector('#qFeedback').textContent = feedbackMsg + ' 點其他選項可以重複聽發音';
         cardEl.querySelector('#qNext').style.display='inline-block';
       });
     });
@@ -7350,14 +7365,14 @@ function vocabCategoryPool(categories, catIdx, prefix){
   const pool = [];
   c.items.forEach((it,j)=>{
     if(it.header || !it.jp) return;
-    pool.push({id:`${prefix}_${catIdx}_${j}`, display: it.jp, hira: it.reading});
+    pool.push({id:`${prefix}_${catIdx}_${j}`, display: it.jp, hira: it.reading, cn: it.cn});
   });
   return pool;
 }
-/* 把PHRASE_CATEGORIES／TRIP_CATEGORIES風格（items:[{id,jp,cn,romaji}]）轉成測驗題庫格式（看中文選日文） */
+/* 把PHRASE_CATEGORIES／TRIP_CATEGORIES風格（items:[{id,jp,cn,romaji}]）轉成測驗題庫格式（看日文句子選中文意思） */
 function phraseCategoryPool(categories, catIdx){
   const c = categories[catIdx];
-  return c.items.map(it=>({id:it.id, display: it.jp, hira: it.jp}));
+  return c.items.map(it=>({id:it.id, display: it.cn, hira: it.jp}));
 }
 
 const MASTERY_GROUPS = [
@@ -7437,6 +7452,7 @@ function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange){
       e.currentTarget.classList.toggle('on', on);
     });
     let answered = false;
+    const isPhrase = /[一-龯㐀-䶿]/.test(item.hira);
     sheet.querySelectorAll('.qOptions button').forEach(b=>{
       b.addEventListener('click', ()=>{
         const opt = options.find(o=>o.id===b.dataset.id);
@@ -7451,7 +7467,21 @@ function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange){
           recordMistake(item);
           wrong++;
         }
-        sheet.querySelector('#qFeedback').textContent = correct? '🎉 正確！ '+item.hira : '❌ 正確答案：'+item.display+'（'+item.hira+'）點其他選項可以重複聽發音';
+        /* 答案揭曉後才顯示假名／片假名（避免答題前用假名直接比對作弊），並補上中文意思 */
+        if(isPhrase){
+          const promptEl = sheet.querySelector('.qPrompt');
+          if(promptEl) promptEl.innerHTML = `「${rb(item.hira)}」`;
+        } else {
+          sheet.querySelectorAll('.qOptions button').forEach(btn=>{
+            const o = options.find(x=>x.id===btn.dataset.id);
+            btn.innerHTML = rb(o.display);
+          });
+        }
+        const meaning = isPhrase ? item.display : item.cn;
+        const feedbackMsg = correct
+          ? '🎉 正確！ '+item.hira + (meaning?'（'+meaning+'）':'')
+          : '❌ 正確答案：'+item.display+'（'+item.hira+'）' + (!isPhrase && meaning ? '（'+meaning+'）' : '');
+        sheet.querySelector('#qFeedback').textContent = feedbackMsg + ' 點其他選項可以重複聽發音';
         sheet.querySelector('#qNext').style.display='inline-block';
       });
     });
