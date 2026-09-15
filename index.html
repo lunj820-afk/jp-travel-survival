@@ -139,8 +139,9 @@ rt{font-size:.55em;color:var(--sub);user-select:none;}
 .progressRow .rowLabel{font-size:13px;font-weight:600;flex:1;min-width:0;}
 .toggleSwitch{width:44px;height:25px;border-radius:14px;background:var(--border);position:relative;flex:0 0 auto;transition:background .3s;}
 .toggleSwitch.on{background:var(--accent2);}
+.toggleSwitch.half{background:var(--warn);}
 .toggleSwitch .knob{position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .3s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:center;font-size:12px;}
-.toggleSwitch.on .knob{left:21px;}
+.toggleSwitch.on .knob,.toggleSwitch.half .knob{left:21px;}
 @keyframes masteryPop{0%{transform:scale(.4) rotate(-20deg);opacity:0;}55%{transform:scale(1.25) rotate(8deg);opacity:1;}100%{transform:scale(1) rotate(0);opacity:1;}}
 .toggleSwitch.justMastered{animation:masteryPop .55s cubic-bezier(.34,1.56,.64,1);}
 .masteryCelebrate{text-align:center;padding:14px 0 4px;}
@@ -4783,6 +4784,7 @@ const SCENES = [
   {id:'vending',emoji:'🥤',title:'自動販賣機'},
   {id:'hotel',emoji:'🏨',title:'飯店',tool:'room'},
   {id:'station',emoji:'🚃',title:'車站',tool:'train'},
+  {id:'store',emoji:'📍',title:'必去好店'},
 ];
 
 /* 急救卡內容 */
@@ -4812,14 +4814,28 @@ function recordMistake(item){
   localStorage.setItem(LS_MIS, JSON.stringify(m));
 }
 
-/* 學習進度（每個小分類的「全對測驗」解鎖狀態），一旦解鎖就不會因為重考而取消 */
+/* 學習進度：每個小分類要「🎧 聽力選擇」與「📖 看讀音選答案」兩個模式都各自全對挑戰過一次，才算完全解鎖打勾。
+   任一模式一旦全對過，就不會因為之後重考失敗而取消（sticky）。
+   舊資料格式是單一時間戳（代表舊版「任一模式全對即解鎖」），視為兩個模式都已完成，保留使用者原本已解鎖的項目。 */
 const LS_MASTERY = 'jp_survival_mastery';
-function getMastery(){ return JSON.parse(localStorage.getItem(LS_MASTERY)||'{}'); }
-function isMastered(id){ return !!getMastery()[id]; }
-function setMastered(id){
-  const m = getMastery();
-  if(!m[id]) m[id] = Date.now();
-  localStorage.setItem(LS_MASTERY, JSON.stringify(m));
+function getMastery(){
+  const raw = JSON.parse(localStorage.getItem(LS_MASTERY)||'{}');
+  const out = {};
+  Object.keys(raw).forEach(id=>{
+    const v = raw[id];
+    if(v && typeof v === 'object'){ out[id] = v; }
+    else if(v){ out[id] = {listen:v, read:v}; }
+  });
+  return out;
+}
+function isModeMastered(id, mode){ const m = getMastery()[id]; return !!(m && m[mode]); }
+function isMastered(id){ const m = getMastery()[id]; return !!(m && m.listen && m.read); }
+function setMasteredMode(id, mode){
+  const raw = JSON.parse(localStorage.getItem(LS_MASTERY)||'{}');
+  const cur = (raw[id] && typeof raw[id]==='object') ? raw[id] : (raw[id] ? {listen:raw[id], read:raw[id]} : {});
+  if(!cur[mode]) cur[mode] = Date.now();
+  raw[id] = cur;
+  localStorage.setItem(LS_MASTERY, JSON.stringify(raw));
 }
 
 /* ============ 4. TTS ============ */
@@ -4875,6 +4891,7 @@ function renderHome(){
       else if(el.dataset.scene==='station') openStationBrowser();
       else if(el.dataset.scene==='drug') openDrugBrowser();
       else if(el.dataset.scene==='vending') openVendingBrowser();
+      else if(el.dataset.scene==='store') openStoreBrowser();
       else openScene(el.dataset.scene);
     });
   });
@@ -6108,6 +6125,134 @@ function openSubwayMapBrowser(){
     }
   });
   renderSubwayLineNav();
+}
+
+/* ---- 日本必去好店：網友推薦、值得專程飛一趟的店家清單 ---- */
+/* 店名/地址/最近車站皆已逐筆查證官方或多方資料來源（2026-09），非憑印象填寫 */
+const STORE_LIST = [
+  {id:'store_abu', area:'池袋', cat:'🍖 燒肉', name:'焼肉あぶる。池袋店', hira:'やきにく あぶる。いけぶくろてん',
+    desc:'網友激推的池袋燒肉，稀有部位和牛講究到讓人想再訪。',
+    addr:'東京都豊島区池袋１丁目１－５ 村田ビル1F', station:'JR池袋駅北口 徒歩3分'},
+  {id:'store_papier', area:'澀谷', cat:'📎 文具雜貨', name:'Papier Labo.', hira:'パピエラボ',
+    desc:'神宮前的高質感文具紙品選物店，卡片信紙送禮自用兩相宜。',
+    addr:'東京都渋谷区神宮前1-1-1', station:'東京メトロ副都心線 北参道駅 徒歩8分'},
+  {id:'store_inoue', area:'銀座', cat:'🍖 燒肉', name:'東京焼肉いのうえ 銀座店', hira:'とうきょうやきにく いのうえ ぎんざてん',
+    desc:'銀座巷弄裡的高級燒肉名店，一位難求。',
+    addr:'東京都中央区銀座1-6-6', station:'東京メトロ有楽町線「銀座一丁目駅」6番出口 徒歩1分'},
+  {id:'store_fukuyoshi', area:'浅草', cat:'🍔 漢堡排', name:'とろけるハンバーグ福よし 浅草蔵前店', hira:'とろけるはんばーぐ ふくよし あさくさくらまえてん',
+    desc:'入口即化的溫泉蛋滑蛋漢堡排，浅草人氣排隊店。',
+    addr:'東京都台東区寿1-6-7', station:'都営大江戸線 蔵前駅 徒歩約3分'},
+  {id:'store_unatoto', area:'浅草', cat:'🐟 鰻魚飯', name:'名代宇奈とと 浅草店', hira:'なだい うなとと あさくさてん',
+    desc:'平價高CP值鰻魚飯，浅草觀光必吃選項之一。',
+    addr:'東京都台東区花川戸1-5-2', station:'東京メトロ銀座線 浅草駅 徒歩1分'},
+  {id:'store_harbs', area:'新宿', cat:'🍰 甜點', name:'HARBS ルミネエスト新宿店', hira:'ハーブス るみねえすとしんじゅくてん',
+    desc:'招牌千層蛋糕（ミルクレープ）人氣名店，新宿車站直結超好找。',
+    addr:'東京都新宿区新宿3-38-1 ルミネエスト新宿 B2F', station:'JR新宿駅東口 直結'},
+  {id:'store_kiwamiya', area:'澀谷', cat:'🍔 滑蛋漢堡排', name:'極味や 渋谷店', hira:'きわみや しぶやてん',
+    desc:'自己炙燒的滑蛋和牛漢堡排，白飯、沙拉、湯、霜淇淋吃到飽。',
+    note:'原留言寫「極位屋」，查證後應為此店',
+    addr:'東京都渋谷区宇田川町15-1 B1F', station:'JR・各線 渋谷駅 徒歩約5分'},
+  {id:'store_komehyo', area:'澀谷', cat:'⌚ 名品收購', name:'KOMEHYO SHIBUYA', hira:'コメヒョウ しぶや',
+    desc:'日本最大二手精品連鎖，挖寶名錶、名牌包的好去處。',
+    addr:'東京都渋谷区宇田川町16-9 渋谷ZERO GATE 1-4F', station:'渋谷駅A2出口 徒歩約2分'},
+  {id:'store_imahan', area:'池袋', cat:'🍲 壽喜燒', name:'人形町今半 池袋東武店', hira:'にんぎょうちょう いまはん いけぶくろとうぶてん',
+    desc:'百年老字號壽喜燒／涮涮鍋名店，東武百貨15樓用餐。',
+    note:'池袋有東武、西武兩間分店，這間是樓上正式餐廳（西武店為地下街熟食外帶）',
+    addr:'東京都豊島区西池袋1-1-25 東武百貨店池袋店 15F', station:'JR・各線 池袋駅 徒歩0分'},
+];
+const STORE_AREA_ORDER = ['池袋','澀谷','新宿','銀座','浅草'];
+let STORE_LAST_IDX = -1;
+
+function storeMapLinkHTML(store){
+  const q = encodeURIComponent(`${store.name} ${store.addr}`);
+  return `<a class="mapLink" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener" data-mapstop="1">📍 地圖</a>`;
+}
+
+function storeCardHTML(store){
+  return `
+    <div class="card" data-store="${store.id}">
+      <div class="cn" style="color:var(--accent2);font-size:12px;margin-bottom:2px;">${store.area}・${store.cat}</div>
+      <div class="jp jpSpeakable">${store.name}</div>
+      <div class="hira">${store.hira}</div>
+      <div class="cn">${store.desc}${store.note?' · '+store.note:''}</div>
+      <div class="cn" style="color:var(--sub);margin-top:6px;">📮 ${store.addr}</div>
+      <div class="cn" style="color:var(--sub);">🚉 ${store.station}</div>
+      <div class="actions">
+        <button data-say="${store.id}">▶️ 唸店名</button>
+        ${storeMapLinkHTML(store)}
+      </div>
+    </div>`;
+}
+
+function renderStoreList(areaIdx){
+  STORE_LAST_IDX = areaIdx;
+  const inner = document.getElementById('storeListInner');
+  const items = areaIdx===-1 ? STORE_LIST : STORE_LIST.filter(s=>s.area===STORE_AREA_ORDER[areaIdx]);
+  inner.innerHTML = items.map(storeCardHTML).join('');
+  const idMap = {};
+  items.forEach(s=>{ idMap[s.id] = s; });
+  inner.querySelectorAll('[data-say]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      speak(idMap[btn.dataset.say].hira, 0.85);
+    });
+  });
+  wireMapLinks(inner);
+}
+
+function renderStoreSearch(query){
+  const inner = document.getElementById('storeListInner');
+  const q = query.trim().toLowerCase();
+  const results = STORE_LIST.filter(s=>(s.name+' '+s.hira+' '+s.desc+' '+s.area+' '+s.cat).toLowerCase().includes(q));
+  if(!results.length){
+    inner.innerHTML = `<div class="emptyState">找不到符合「${query}」的店家，換個關鍵字試試。</div>`;
+    return;
+  }
+  inner.innerHTML = `<div class="section-intro">🔍 找到 ${results.length} 筆符合「${query}」的結果</div>` + results.map(storeCardHTML).join('');
+  const idMap = {};
+  results.forEach(s=>{ idMap[s.id] = s; });
+  inner.querySelectorAll('[data-say]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      speak(idMap[btn.dataset.say].hira, 0.85);
+    });
+  });
+  wireMapLinks(inner);
+}
+
+function openStoreBrowser(){
+  switchView('learn');
+  const oldRelated = document.getElementById('relatedQAArea');
+  if(oldRelated) oldRelated.remove();
+  document.getElementById('learnTitle').textContent = '📍 日本必去好店';
+  document.getElementById('learnIntro').textContent = '網友激推、值得專程飛一趟的東京店家清單，含地址、最近車站與地圖連結。持續蒐集中。';
+  document.getElementById('phoneToolWrap').innerHTML = '';
+  document.getElementById('phoneToolWrap').style.display = 'none';
+  document.getElementById('topicQuizArea').innerHTML = '';
+  const list = document.getElementById('learnList');
+  list.innerHTML = `
+    <input type="text" id="storeSearch" class="searchBox" placeholder="🔍 搜尋店家（例如：燒肉、浅草、甜點）">
+    <div class="catNavBar">
+      <div class="catchips chipsRow" id="storeChips"></div>
+      <select id="storeCatSelect"></select>
+    </div>
+    <div id="storeListInner"></div>`;
+  mountChipRowNav(document.getElementById('storeChips'), document.getElementById('storeCatSelect'), STORE_AREA_ORDER, -1, (idx)=>{
+    document.getElementById('storeSearch').value = '';
+    renderStoreList(idx);
+  });
+  document.getElementById('storeSearch').addEventListener('input', (e)=>{
+    const q = e.target.value;
+    if(q.trim()){
+      document.querySelectorAll('#storeChips .chip').forEach(c=>c.classList.remove('active'));
+      renderStoreSearch(q);
+    } else {
+      renderStoreList(STORE_LAST_IDX);
+      document.querySelectorAll('#storeChips .chip').forEach(c=>c.classList.toggle('active', Number(c.dataset.idx)===STORE_LAST_IDX));
+      document.getElementById('storeCatSelect').value = String(STORE_LAST_IDX);
+    }
+  });
+  renderStoreList(-1);
 }
 
 /* ---- 金額實用短句與詞彙：附加在「金額 Money」主題頁下方，不影響原本的任意金額查詢工具 ---- */
@@ -7409,16 +7554,32 @@ function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange, startMo
   function draw(){
     if(idx >= order.length){
       if(wrong===0){
-        const wasNew = !isMastered(unitId);
-        setMastered(unitId);
-        sheet.innerHTML = `
-          <div class="masteryCelebrate">
-            <div class="glowRing"><span class="trophy">🏆</span></div>
-            <div class="title">全部答對！</div>
-            <div class="sub">「${unitLabel}」${wasNew?'已解鎖 ✓':'再次全對 ✓'}</div>
-          </div>
-          <button class="closeSheet" id="closeSheetBtn">關閉</button>`;
-        document.getElementById('closeSheetBtn').addEventListener('click', ()=>{ closeSheet(); if(onChange) onChange(); });
+        const modeLabel = mode==='listen' ? '🎧 聽力選擇' : '📖 看讀音選答案';
+        const otherMode = mode==='listen' ? 'read' : 'listen';
+        const otherModeLabel = otherMode==='listen' ? '🎧 聽力選擇' : '📖 看讀音選答案';
+        const wasThisModeNew = !isModeMastered(unitId, mode);
+        setMasteredMode(unitId, mode);
+        if(isMastered(unitId)){
+          sheet.innerHTML = `
+            <div class="masteryCelebrate">
+              <div class="glowRing"><span class="trophy">🏆</span></div>
+              <div class="title">全部答對！</div>
+              <div class="sub">「${unitLabel}」聽力＋看讀音都全對，${wasThisModeNew?'已完全解鎖 ✓':'再次全對 ✓'}</div>
+            </div>
+            <button class="closeSheet" id="closeSheetBtn">關閉</button>`;
+          document.getElementById('closeSheetBtn').addEventListener('click', ()=>{ closeSheet(); if(onChange) onChange(); });
+        } else {
+          sheet.innerHTML = `
+            <div class="masteryCelebrate">
+              <div class="glowRing"><span class="trophy">✅</span></div>
+              <div class="title">${modeLabel} 全部答對！</div>
+              <div class="sub">還差「${otherModeLabel}」全對，兩個模式都過關才會打勾解鎖</div>
+            </div>
+            <div class="playrow"><button class="ghost" id="tryOtherBtn">挑戰 ${otherModeLabel} →</button></div>
+            <button class="closeSheet" id="closeSheetBtn">關閉</button>`;
+          document.getElementById('tryOtherBtn').addEventListener('click', ()=>mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange, otherMode));
+          document.getElementById('closeSheetBtn').addEventListener('click', ()=>{ closeSheet(); if(onChange) onChange(); });
+        }
       } else {
         sheet.innerHTML = `
           <div class="masteryCelebrate">
@@ -7464,8 +7625,8 @@ function mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange, startMo
     sheet.querySelectorAll('#qmRow .chip').forEach(chip=>{
       chip.addEventListener('click', ()=>{
         if(chip.dataset.m===mode) return;
-        mode = chip.dataset.m;
-        draw();
+        /* 切換模式＝重新挑戰該模式的完整一輪，這樣「全對」才能明確歸屬到單一模式，不會兩種模式混著算 */
+        mountMasteryChallenge(sheet, pool, unitId, unitLabel, onChange, chip.dataset.m);
       });
     });
     sheet.querySelector('#qStar').addEventListener('click', (e)=>{
@@ -7529,20 +7690,25 @@ function renderProgressGroups(idx){
   PROGRESS_LAST_IDX = idx;
   const inner = document.getElementById('progressGroupsInner');
   const mastery = getMastery();
+  const isDone = id => !!(mastery[id] && mastery[id].listen && mastery[id].read);
+  const isHalf = id => !!(mastery[id] && (mastery[id].listen || mastery[id].read) && !isDone(id));
   const targets = idx===-1 ? MASTERY_GROUPS.map((g,i)=>({g,i})) : [{g:MASTERY_GROUPS[idx], i:idx}];
   inner.innerHTML = targets.map(({g,i})=>{
-    const done = g.units.filter(u=>mastery[u.id]).length;
+    const done = g.units.filter(u=>isDone(u.id)).length;
     return `
     <div class="progressGroup">
       <div class="progressGroupHead"><div class="t">${g.label}</div><div class="c">${done} / ${g.units.length}</div></div>
       <div class="progressBarOuter"><div class="progressBarInner" style="width:${g.units.length?(done/g.units.length*100):0}%;"></div></div>
       <div data-gidx="${i}">
-        ${g.units.map((u,ui)=>`
-          <div class="progressRow${mastery[u.id]?' mastered':''}" data-gidx="${i}" data-uidx="${ui}">
-            <div class="rowLabel">${u.title}</div>
-            <div class="toggleSwitch${mastery[u.id]?' on':''}"><div class="knob">${mastery[u.id]?'✓':''}</div></div>
+        ${g.units.map((u,ui)=>{
+          const half = isHalf(u.id), done1 = isDone(u.id);
+          const knob = done1 ? '✓' : (half ? (mastery[u.id].listen?'🎧':'📖') : '');
+          return `
+          <div class="progressRow${done1?' mastered':''}" data-gidx="${i}" data-uidx="${ui}">
+            <div class="rowLabel">${u.title}${half?'<span style="color:var(--sub);font-size:11px;"> ・還差一個模式</span>':''}</div>
+            <div class="toggleSwitch${done1?' on':''}${half?' half':''}"><div class="knob">${knob}</div></div>
           </div>
-        `).join('')}
+        `;}).join('')}
       </div>
     </div>`;
   }).join('');
@@ -7552,11 +7718,18 @@ function renderProgressGroups(idx){
       const u = g.units[Number(row.dataset.uidx)];
       const wasMastered = isMastered(u.id);
       openMasteryChallenge(u, ()=>{
-        if(!wasMastered && isMastered(u.id)){
-          row.classList.add('mastered');
-          const sw = row.querySelector('.toggleSwitch');
-          sw.classList.add('on','justMastered');
-          sw.querySelector('.knob').textContent = '✓';
+        const m = getMastery()[u.id];
+        const nowDone = !!(m && m.listen && m.read);
+        const nowHalf = !!(m && (m.listen || m.read) && !nowDone);
+        const knob = nowDone ? '✓' : (nowHalf ? (m.listen?'🎧':'📖') : '');
+        row.classList.toggle('mastered', nowDone);
+        const sw = row.querySelector('.toggleSwitch');
+        sw.classList.toggle('on', nowDone);
+        sw.classList.toggle('half', nowHalf);
+        if(!wasMastered && nowDone) sw.classList.add('justMastered');
+        sw.querySelector('.knob').textContent = knob;
+        row.querySelector('.rowLabel').innerHTML = `${u.title}${nowHalf?'<span style="color:var(--sub);font-size:11px;"> ・還差一個模式</span>':''}`;
+        if(!wasMastered && nowDone){
           const head = row.closest('.progressGroup').querySelector('.c');
           const bar = row.closest('.progressGroup').querySelector('.progressBarInner');
           const gUnits = g.units.length;
@@ -7578,11 +7751,11 @@ function renderProgressView(){
   const list = document.getElementById('progressList');
   const mastery = getMastery();
   let totalUnits=0, totalMastered=0;
-  MASTERY_GROUPS.forEach(g=>g.units.forEach(u=>{ totalUnits++; if(mastery[u.id]) totalMastered++; }));
+  MASTERY_GROUPS.forEach(g=>g.units.forEach(u=>{ totalUnits++; if(mastery[u.id] && mastery[u.id].listen && mastery[u.id].read) totalMastered++; }));
   list.innerHTML = `
     <div class="progressSummary">
       <div class="big">${totalMastered} / ${totalUnits}</div>
-      <div class="sub">已解鎖的分類數・全對挑戰才會打勾</div>
+      <div class="sub">已解鎖的分類數・聽力＋看讀音兩個模式都全對才會打勾</div>
     </div>
     <div class="catNavBar">
       <div class="catchips chipsRow" id="progressChips"></div>
