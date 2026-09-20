@@ -42,3 +42,6 @@ next-env.d.ts
 
 # 管理後台／回報功能的本機資料存放（Phase 1 用 JSON 檔模擬資料庫，正式上線建議改接 Supabase）
 /data-store/
+
+# scripts/build-pages.sh 產生 GitHub Pages 靜態版時的暫存資料夾
+/.pages-export-tmp/

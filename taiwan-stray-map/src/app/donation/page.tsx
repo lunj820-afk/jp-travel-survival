@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { getAllFacilities, getActiveSupplyNeeds } from "@/lib/facilities";
 import FacilityExplorer from "@/components/FacilityExplorer";
@@ -47,7 +48,9 @@ export default function DonationPage() {
 
       <section>
         <h2 className="font-bold text-coffee mb-2">接受捐款／物資的單位</h2>
-        <FacilityExplorer facilities={facilities} />
+        <Suspense>
+          <FacilityExplorer facilities={facilities} />
+        </Suspense>
       </section>
     </div>
   );

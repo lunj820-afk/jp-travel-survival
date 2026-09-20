@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { COUNTIES } from "@/data/counties";
 import { filterFacilities, FacilityFilters } from "@/lib/facilities";
 import { Facility, FACILITY_TYPE_LABELS, FacilityType, AnimalType, OperatingStatus, STATUS_LABELS } from "@/types/facility";
@@ -44,15 +45,14 @@ function toggle<T>(arr: T[], value: T): T[] {
 export default function FacilityExplorer({
   facilities,
   showMap = false,
-  initialQuery = "",
   lockedCounty,
 }: {
   facilities: Facility[];
   showMap?: boolean;
-  initialQuery?: string;
   lockedCounty?: string;
 }) {
-  const [query, setQuery] = useState(initialQuery);
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [county, setCounty] = useState<string>(lockedCounty ?? "");
   const [types, setTypes] = useState<FacilityType[]>([]);
   const [animals, setAnimals] = useState<AnimalType[]>([]);

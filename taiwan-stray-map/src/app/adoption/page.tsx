@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { filterFacilities } from "@/lib/facilities";
 import FacilityExplorer from "@/components/FacilityExplorer";
 
@@ -18,7 +19,9 @@ export default function AdoptionPage() {
         （年齡／體型／個性等），這部分需要單位或志工提供第一手資料才能上架，避免我們自行編造。
         建議直接聯絡單位詢問目前可認養的毛孩狀況。
       </p>
-      <FacilityExplorer facilities={adoptionFacilities} initialQuery="" />
+      <Suspense>
+        <FacilityExplorer facilities={adoptionFacilities} />
+      </Suspense>
     </div>
   );
 }

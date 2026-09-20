@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Facility } from "@/types/facility";
 
 const REPORT_TYPES: { value: string; label: string }[] = [
@@ -12,8 +13,9 @@ const REPORT_TYPES: { value: string; label: string }[] = [
   { value: "other", label: "其他" },
 ];
 
-export default function ReportForm({ facilities, defaultSlug }: { facilities: Facility[]; defaultSlug?: string }) {
-  const [facilitySlug, setFacilitySlug] = useState(defaultSlug ?? facilities[0]?.slug ?? "");
+export default function ReportForm({ facilities }: { facilities: Facility[] }) {
+  const searchParams = useSearchParams();
+  const [facilitySlug, setFacilitySlug] = useState(searchParams.get("facility") ?? facilities[0]?.slug ?? "");
   const [reportType, setReportType] = useState("correct");
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");

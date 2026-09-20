@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import FacilityExplorer from "@/components/FacilityExplorer";
 import { getAllFacilities } from "@/lib/facilities";
 
@@ -15,7 +16,9 @@ export default function MapPage() {
       <p className="text-sm text-muted">
         🔵 公立收容所　🟠 民間狗園／私人救援　🟢 動物保護協會／教育園區　🟣 中途之家 —— 圖示以形狀＋顏色雙重標示，避免色盲使用者無法判斷。
       </p>
-      <FacilityExplorer facilities={facilities} showMap />
+      <Suspense>
+        <FacilityExplorer facilities={facilities} showMap />
+      </Suspense>
     </div>
   );
 }

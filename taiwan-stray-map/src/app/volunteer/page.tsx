@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { filterFacilities } from "@/lib/facilities";
 import FacilityExplorer from "@/components/FacilityExplorer";
 
@@ -24,7 +25,9 @@ export default function VolunteerPage() {
       <p className="text-xs text-muted">
         各單位需要的志工技能差異很大，目前網站尚未逐一記錄每個單位具體需要的志工類型，請直接聯絡單位詢問。
       </p>
-      <FacilityExplorer facilities={volunteerFacilities} />
+      <Suspense>
+        <FacilityExplorer facilities={volunteerFacilities} />
+      </Suspense>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { COUNTIES, getCountyBySlug } from "@/data/counties";
 import { getFacilitiesByCounty, getStats } from "@/lib/facilities";
 import FacilityExplorer from "@/components/FacilityExplorer";
@@ -34,7 +35,9 @@ export default async function CountyPage(props: PageProps<"/county/[slug]">) {
         <p className="text-sm text-muted mt-1">共收錄 {facilities.length} 個單位</p>
       </div>
       <StatsGrid stats={stats} />
-      <FacilityExplorer facilities={facilities} showMap lockedCounty={county.name} />
+      <Suspense>
+        <FacilityExplorer facilities={facilities} showMap lockedCounty={county.name} />
+      </Suspense>
     </div>
   );
 }
