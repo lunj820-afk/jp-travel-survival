@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fbf6ee;
+  --foreground: #3a2f28;
+  --surface: #ffffff;
+  --muted: #7a6f62;
+  --border: #e7ddcc;
+  --brand: #2f6b4f;
+  --brand-dark: #234f3a;
+  --accent: #e0883f;
+  --accent-soft: #fbe4c8;
+  --coffee: #4a3b31;
+  --chip: #f1ebe3;
+
+  --status-green: #2f8f5b;
+  --status-green-bg: #e4f4ea;
+  --status-yellow: #b3821c;
+  --status-yellow-bg: #fbedd0;
+  --status-orange: #cf6a2c;
+  --status-orange-bg: #fbe3d0;
+  --status-red: #c14545;
+  --status-red-bg: #fbe1e1;
+  --status-gray: #7a7266;
+  --status-gray-bg: #ececE5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-coffee: var(--coffee);
+  --color-chip: var(--chip);
+  --font-sans: var(--font-noto), system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-noto), -apple-system, "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-green { color: var(--status-green); background: var(--status-green-bg); }
+.badge-yellow { color: var(--status-yellow); background: var(--status-yellow-bg); }
+.badge-orange { color: var(--status-orange); background: var(--status-orange-bg); }
+.badge-red { color: var(--status-red); background: var(--status-red-bg); }
+.badge-gray { color: var(--status-gray); background: var(--status-gray-bg); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(58, 47, 40, 0.06);
+}
